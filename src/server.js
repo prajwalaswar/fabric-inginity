@@ -103,9 +103,11 @@ function sanitizeImageUrl(url) {
 // Helper: get the public URL from a multer file object (Cloudinary or local)
 function getImageUrl(file) {
   if (!file) return "";
-  if (cloudinaryEnabled && file.path) return file.path; // Cloudinary returns full HTTPS URL in file.path
+  if (cloudinaryEnabled && file.path) return file.path;
   return `/uploads/${encodeURIComponent(file.filename)}`;
 }
+
+async function seedOwner() {
   const email = config.adminEmail.toLowerCase();
   const existing = await User.findOne({ email });
   if (existing) return;
