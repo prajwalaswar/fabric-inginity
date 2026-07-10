@@ -7,6 +7,8 @@ const morgan = require("morgan");
 const multer = require("multer");
 const bcrypt = require("bcryptjs");
 const Razorpay = require("razorpay");
+const cloudinaryModule = require("cloudinary");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
 const config = require("./config");
 const { connectDb } = require("./db");
@@ -16,6 +18,52 @@ const Order = require("./models/Order");
 const { signToken, requireAuth } = require("./middleware/auth");
 const { createShipmentForOrder } = require("./services/shipping");
 const MegaMenu = require("./models/Category");
+
+// ── Cloudinary or local disk storage ────────────────────────
+const cloudinary = cloudinaryModule.v2;
+const cloudinaryEnabled = Boolean(
+  config.cloudinary.cloudName && config.cloudinary.apiKey && config.cloudinary.apiSecret
+);
+
+let upload;
+if (cloudinaryEnabled) {
+  cloudinary.config({
+    cloud_name: config.cloudinary.cloudName,
+    api_key:    config.cloudinary.apiKey,
+    api_secret: config.cloudinary.apiSecret
+  });
+  const cloudStorage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+      folder: "fabric-infinity/products",
+      allowed_formats: ["jpg", "jpeg", "png", "webp"],
+      transformation: [{ width: 1200, height: 1200, crop: "limit", quality: "auto" }]
+    }
+  });
+  upload = multer({ storage: cloudStorage, limits: { fileSize: 5 * 1024 * 1024 } });
+} else {
+  // Local disk fallback (for development)
+  const diskStorage = multer.diskStorage({
+    destination: async (req, file, cb) => {
+      try {
+        await fs.mkdir(config.uploadsDir, { recursive: true });
+        cb(null, config.uploadsDir);
+      } catch (err) { cb(err); }
+    },
+    filename: (req, file, cb) => {
+      const ext = path.extname(file.originalname).toLowerCase() || ".jpg";
+      cb(null, `${Date.now()}-${crypto.randomUUID()}${ext}`);
+    }
+  });
+  upload = multer({
+    storage: diskStorage,
+    limits: { fileSize: 5 * 1024 * 1024 },
+    fileFilter: (req, file, cb) => {
+      if (!file.mimetype.startsWith("image/")) return cb(new Error("Only images allowed"));
+      cb(null, true);
+    }
+  });
+}
 
 const app = express();
 app.disable("x-powered-by");
@@ -52,33 +100,12 @@ function sanitizeImageUrl(url) {
   return String(url).trim();
 }
 
-const storage = multer.diskStorage({
-  destination: async (req, file, cb) => {
-    try {
-      await fs.mkdir(config.uploadsDir, { recursive: true });
-      cb(null, config.uploadsDir);
-    } catch (err) {
-      cb(err);
-    }
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase() || ".jpg";
-    cb(null, `${Date.now()}-${crypto.randomUUID()}${ext}`);
-  }
-});
-
-const upload = multer({
-  storage,
-  limits: { fileSize: 5 * 1024 * 1024 },
-  fileFilter: (req, file, cb) => {
-    if (!file.mimetype.startsWith("image/")) {
-      return cb(new Error("Only image uploads are allowed"));
-    }
-    return cb(null, true);
-  }
-});
-
-async function seedOwner() {
+// Helper: get the public URL from a multer file object (Cloudinary or local)
+function getImageUrl(file) {
+  if (!file) return "";
+  if (cloudinaryEnabled && file.path) return file.path; // Cloudinary returns full HTTPS URL in file.path
+  return `/uploads/${encodeURIComponent(file.filename)}`;
+}
   const email = config.adminEmail.toLowerCase();
   const existing = await User.findOne({ email });
   if (existing) return;
@@ -311,7 +338,7 @@ app.post("/api/admin/products", requireAuth, upload.single("image"), async (req,
     description: String(req.body.description || "").trim(),
     price: money(req.body.price),
     stock: money(req.body.stock),
-    imageUrl: `/uploads/${encodeURIComponent(req.file.filename)}`
+    imageUrl: getImageUrl(req.file)
   };
   if (!payload.name || !payload.category || !payload.description || payload.price <= 0 || payload.stock < 0) {
     return fail(res, 400, "Invalid product data");
@@ -330,7 +357,7 @@ app.put("/api/admin/products/:id", requireAuth, upload.single("image"), async (r
   if (req.body.price !== undefined) product.price = money(req.body.price);
   if (req.body.stock !== undefined) product.stock = money(req.body.stock);
   if (req.body.isActive !== undefined) product.isActive = String(req.body.isActive) !== "false";
-  if (req.file) product.imageUrl = `/uploads/${encodeURIComponent(req.file.filename)}`;
+  if (req.file) product.imageUrl = getImageUrl(req.file);
   if (req.body.imageUrl) product.imageUrl = sanitizeImageUrl(req.body.imageUrl);
 
   await product.save();
@@ -580,8 +607,8 @@ Respond ONLY with valid JSON. No markdown, no explanation.`;
 
     // Attach the uploaded file URL if present
     if (req.file) {
-      suggestion.imageUrl = `/uploads/${encodeURIComponent(req.file.filename)}`;
-      suggestion._uploadedFilename = req.file.filename;
+      suggestion.imageUrl = getImageUrl(req.file);
+      suggestion._uploadedFilename = req.file.filename || req.file.public_id;
     }
 
     return res.json({ suggestion });

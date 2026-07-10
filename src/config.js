@@ -25,5 +25,10 @@ module.exports = {
     baseUrl: process.env.DELHIVERY_BASE_URL || "",
     token: process.env.DELHIVERY_TOKEN || ""
   },
-  groqApiKey: process.env.GROQ_API_KEY || ""
+  groqApiKey: process.env.GROQ_API_KEY || "",
+  cloudinary: {
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME || "",
+    apiKey:    process.env.CLOUDINARY_API_KEY || "",
+    apiSecret: process.env.CLOUDINARY_API_SECRET || ""
+  }
 };
