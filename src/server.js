@@ -130,7 +130,7 @@ async function seedProducts() {
       description: "Premium indigo print cotton for elegant silhouettes.",
       price: 1899,
       stock: 120,
-      imageUrl: "/assets/WhatsApp%20Image%202026-06-24%20at%202.26.13%20PM.jpeg"
+      imageUrl: "/assets/WhatsApp-Image-2026-06-24-at-2.26.13-PM.jpeg"
     },
     {
       name: "Ajrakh Heritage Print",
@@ -138,7 +138,7 @@ async function seedProducts() {
       description: "Classic Ajrakh motifs crafted with rich earthy tones.",
       price: 2499,
       stock: 80,
-      imageUrl: "/assets/WhatsApp%20Image%202026-06-24%20at%202.24.13%20PM%20(1).jpeg"
+      imageUrl: "/assets/WhatsApp-Image-2026-06-24-at-2.24.13-PM-1.jpeg"
     },
     {
       name: "Bagru Cotton Floral",
@@ -146,7 +146,7 @@ async function seedProducts() {
       description: "Soft handblock floral bagru cotton for all-season wear.",
       price: 1799,
       stock: 95,
-      imageUrl: "/assets/WhatsApp%20Image%202026-06-24%20at%202.24.38%20PM.jpeg"
+      imageUrl: "/assets/WhatsApp-Image-2026-06-24-at-2.24.38-PM.jpeg"
     }
   ]);
 }
