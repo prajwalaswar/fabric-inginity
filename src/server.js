@@ -751,18 +751,41 @@ app.use((err, req, res, next) => {
   return next();
 });
 
-async function start() {
-  await fs.mkdir(config.uploadsDir, { recursive: true });
-  await connectDb();
-  await seedOwner();
-  await seedProducts();
-  await seedMegaMenu();
-  app.listen(config.port, () => {
-    console.log(`Fabric Infinity running on http://localhost:${config.port}`);
+// ── Startup: connect DB + seed, then either listen (local) or export (Vercel) ──
+let _ready = false;
+let _readyPromise = null;
+
+async function ensureReady() {
+  if (_ready) return;
+  if (_readyPromise) return _readyPromise;
+  _readyPromise = (async () => {
+    await fs.mkdir(config.uploadsDir, { recursive: true }).catch(() => {});
+    await connectDb();
+    await seedOwner();
+    await seedProducts();
+    await seedMegaMenu();
+    _ready = true;
+  })();
+  return _readyPromise;
+}
+
+// Wrap app so Vercel waits for DB before first request
+const handler = async (req, res) => {
+  await ensureReady();
+  return app(req, res);
+};
+
+// Local dev: just listen normally
+if (process.env.VERCEL !== "1") {
+  ensureReady().then(() => {
+    app.listen(config.port, () => {
+      console.log(`Fabric Infinity running on http://localhost:${config.port}`);
+    });
+  }).catch((err) => {
+    console.error("Failed to start server", err);
+    process.exit(1);
   });
 }
 
-start().catch((err) => {
-  console.error("Failed to start server", err);
-  process.exit(1);
-});
+// Vercel serverless export
+module.exports = handler;

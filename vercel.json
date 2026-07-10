@@ -8,6 +8,14 @@
   ],
   "routes": [
     {
+      "src": "/assets/(.*)",
+      "dest": "frontend/assets/$1"
+    },
+    {
+      "src": "/uploads/(.*)",
+      "dest": "src/server.js"
+    },
+    {
       "src": "/(.*)",
       "dest": "src/server.js"
     }
