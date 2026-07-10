@@ -1,0 +1,32 @@
+[
+  {
+    "id": "f2ef89ae-eb88-49bb-b995-2e540f2421ce",
+    "name": "Bagru Handblock Cotton Print",
+    "category": "Bagru",
+    "description": "Soft Breathable ,Pure Cotton",
+    "price": 200,
+    "stock": 1,
+    "imageUrl": "/uploads/1783087135912-91ed145a-2af0-422e-91da-76b9fb6dd1a4.jpeg",
+    "createdAt": "2026-07-03T13:58:55.918Z"
+  },
+  {
+    "id": "65d533c3-d3c1-461c-b5f1-3fbb85e9c055",
+    "name": "Ajrakh Heritage Print",
+    "category": "Ajrakh",
+    "description": "Classic Ajrakh motifs crafted with rich earthy tones.",
+    "price": 2499,
+    "stock": 80,
+    "imageUrl": "/assets/WhatsApp%20Image%202026-06-24%20at%202.24.13%20PM%20(1).jpeg",
+    "createdAt": "2026-07-03T13:56:23.438Z"
+  },
+  {
+    "id": "1af94f79-132f-4e19-aa59-52cedc3271b6",
+    "name": "Indigo Handblock Bloom",
+    "category": "Indigo",
+    "description": "Premium indigo print cotton for elegant silhouettes.",
+    "price": 1899,
+    "stock": 120,
+    "imageUrl": "/assets/WhatsApp%20Image%202026-06-24%20at%202.26.13%20PM.jpeg",
+    "createdAt": "2026-07-03T13:56:23.437Z"
+  }
+]
