@@ -308,6 +308,17 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+// ── Force re-seed categories (admin only, safe to call multiple times) ──
+app.post("/api/admin/reseed-menu", requireAuth, async (req, res) => {
+  try {
+    await seedMegaMenu();
+    const menus = await MegaMenu.find({}).lean();
+    res.json({ message: "Menu re-seeded", count: menus.length, menus: menus.map(m => m.navLabel) });
+  } catch(e) {
+    fail(res, 500, "Re-seed failed: " + e.message);
+  }
+});
+
 app.post("/api/auth/login", async (req, res) => {
   const email = String(req.body.email || "").toLowerCase().trim();
   const password = String(req.body.password || "");

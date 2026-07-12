@@ -2203,8 +2203,12 @@
             <h4 style="margin-bottom:14px;">Mega Menu Manager</h4>
             <p style="color:#5f7395;font-size:.9rem;margin-bottom:14px;">Each entry becomes a dropdown in the storefront navbar. Columns and items inside each dropdown are editable below.</p>
 
-            <!-- New top-level menu form -->
-            <form id="addMenuForm" style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #e8f0fb;">
+          <!-- New top-level menu form -->
+          <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
+            <button class="btn primary" id="reseedMenuBtn" style="font-size:.82rem;padding:7px 16px;">↻ Reset Categories to Default</button>
+            <span id="reseedMsg" style="font-size:.84rem;font-weight:700;"></span>
+          </div>
+          <form id="addMenuForm" style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #e8f0fb;">
               <div style="flex:1;min-width:160px;">
                 <label style="display:block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#3d5e89;margin-bottom:4px">Nav Label *</label>
                 <input id="newMenuLabel" required placeholder="e.g. SAREES" style="width:100%;border:1px solid #ccdaf8;border-radius:9px;padding:8px 10px;font:inherit"/>
@@ -3595,6 +3599,32 @@
     if (refreshProductsBtn) refreshProductsBtn.addEventListener("click", () => loadDashboardData());
     const refreshOrdersBtn = document.getElementById("refreshOrdersBtn");
     if (refreshOrdersBtn) refreshOrdersBtn.addEventListener("click", () => loadDashboardData());
+
+    // Reset categories to default seed
+    const reseedMenuBtn = document.getElementById("reseedMenuBtn");
+    if (reseedMenuBtn) {
+      reseedMenuBtn.addEventListener("click", async () => {
+        if (!confirm("This will reset ALL mega-menu categories to the default Fabric Infinity tree. Any manual changes will be lost. Continue?")) return;
+        const msg = document.getElementById("reseedMsg");
+        msg.textContent = "Resetting…"; msg.style.color = "#5f7395";
+        reseedMenuBtn.disabled = true;
+        try {
+          const data = await api("/api/admin/reseed-menu", { method: "POST" });
+          msg.textContent = `✓ Done — ${data.count} menus: ${data.menus.join(", ")}`;
+          msg.style.color = "#1fa97a";
+          // Refresh storefront navbar live
+          const pubData = await api("/api/mega-menu");
+          injectMegaMenuItems((pubData.menus || []).sort((a,b) => (a.order??0)-(b.order??0)));
+          await reloadAdminMenus();
+        } catch(e) {
+          msg.textContent = "Failed: " + e.message;
+          msg.style.color = "#de4f63";
+        } finally {
+          reseedMenuBtn.disabled = false;
+          setTimeout(() => { msg.textContent = ""; }, 4000);
+        }
+      });
+    }
 
     // Add new top-level menu form
     const addMenuForm = document.getElementById("addMenuForm");
