@@ -125,147 +125,172 @@ async function seedProducts() {
   if (count > 0) return;
   await Product.insertMany([
     {
-      name: "Indigo Handblock Bloom",
+      name: "Indigo Handblock Cotton",
+      sku: "IND-HB-001",
       category: "Indigo",
-      description: "Premium indigo print cotton for elegant silhouettes.",
-      price: 1899,
-      stock: 120,
+      subcategory: "Hand Block Prints",
+      productType: "Fabric",
+      description: "Premium natural indigo resist-print cotton from Rajasthan artisans. Deep navy base with classic geometric motifs.",
+      costPrice: 950, wholesalePrice: 1400, price: 1899, offerPrice: 1799, gst: 5,
+      stock: 120, minStockAlert: 20,
+      fabricType: "Cotton", material: "100% Cotton", weave: "Plain", printType: "Handblock",
+      gsm: 90, width: "44\"", lengthUnit: "Metre", colour: "Indigo Blue", pattern: "Geometric", occasion: "Ethnic", season: "All Season",
       imageUrl: "/assets/WhatsApp-Image-2026-06-24-at-2.26.13-PM.jpeg"
     },
     {
-      name: "Ajrakh Heritage Print",
+      name: "Ajrakh Heritage Cotton",
+      sku: "AJR-COT-001",
       category: "Ajrakh",
-      description: "Classic Ajrakh motifs crafted with rich earthy tones.",
-      price: 2499,
-      stock: 80,
+      subcategory: "Hand Block Prints",
+      productType: "Fabric",
+      description: "Authentic Ajrakh handblock print with natural dyes. Iconic geometric patterns in earthy rust and black tones.",
+      costPrice: 1200, wholesalePrice: 1800, price: 2499, offerPrice: 2299, gst: 5,
+      stock: 80, minStockAlert: 15,
+      fabricType: "Cotton", material: "100% Cotton", weave: "Plain", printType: "Handblock",
+      gsm: 95, width: "44\"", lengthUnit: "Metre", colour: "Rust & Black", pattern: "Geometric", occasion: "Ethnic", season: "All Season",
       imageUrl: "/assets/WhatsApp-Image-2026-06-24-at-2.24.13-PM-1.jpeg"
     },
     {
-      name: "Bagru Cotton Floral",
+      name: "Bagru Floral Print Cotton",
+      sku: "BAG-COT-001",
       category: "Bagru",
-      description: "Soft handblock floral bagru cotton for all-season wear.",
-      price: 1799,
-      stock: 95,
+      subcategory: "Hand Block Prints",
+      productType: "Fabric",
+      description: "Soft Bagru handblock floral cotton with earthy natural dyes. Perfect for kurtas and summer wear.",
+      costPrice: 850, wholesalePrice: 1250, price: 1799, offerPrice: 1699, gst: 5,
+      stock: 95, minStockAlert: 20,
+      fabricType: "Cotton", material: "100% Cotton", weave: "Plain", printType: "Handblock",
+      gsm: 85, width: "44\"", lengthUnit: "Metre", colour: "Earthy Tones", pattern: "Floral", occasion: "Casual", season: "Summer",
       imageUrl: "/assets/WhatsApp-Image-2026-06-24-at-2.24.38-PM.jpeg"
     }
   ]);
 }
 
 async function seedMegaMenu() {
-  const count = await MegaMenu.countDocuments();
-  if (count > 0) return;
+  // Always reset to keep categories clean and correct
+  await MegaMenu.deleteMany({});
   await MegaMenu.insertMany([
+    // ── 1. FABRICS ──────────────────────────────────────────
     {
       navLabel: "FABRICS",
       slug: "fabrics",
       order: 0,
+      isActive: true,
       columns: [
         {
-          heading: "TYPE",
+          heading: "HAND BLOCK PRINTS",
           order: 0,
           items: [
-            { label: "Georgette" }, { label: "Chanderi" }, { label: "Satin" },
-            { label: "Linen" }, { label: "Crepe" }, { label: "Cotton" },
-            { label: "Kota" }, { label: "Muslin" }, { label: "Organza" },
-            { label: "Pashmina" }, { label: "Rayon" }, { label: "Silk" },
-            { label: "Spun" }, { label: "Tweed" }
+            { label: "Ajrakh", highlight: true },
+            { label: "Cotton Ajrakh" },
+            { label: "Modal Silk Ajrakh" },
+            { label: "Indigo" },
+            { label: "Dabu" },
+            { label: "Bagru" },
+            { label: "Vanaspati" },
+            { label: "Rapid" },
+            { label: "Kalamkari" },
+            { label: "Bagh" },
+            { label: "Pigment Prints" }
           ]
         },
         {
-          heading: "PRINTED FABRIC",
+          heading: "HANDLOOM FABRICS",
           order: 1,
           items: [
-            { label: "Cotton" }, { label: "Rayon", highlight: true }, { label: "Pashmina" },
-            { label: "Satin" }, { label: "Spun" }, { label: "Georgette" },
-            { label: "Chiffon" }, { label: "Chinon", highlight: true }, { label: "Muslin" },
-            { label: "Chanderi" }, { label: "Organza" }, { label: "Linen", highlight: true },
-            { label: "Kota" }, { label: "Crepe" }, { label: "Velvet" },
-            { label: "Modal" }, { label: "Mashru Silk" }
+            { label: "Ikat", highlight: true },
+            { label: "Single Ikat" },
+            { label: "Double Ikat" },
+            { label: "SICO Ikat" },
+            { label: "Mercerised Ikat" },
+            { label: "Jamdhani Cotton" },
+            { label: "Handloom Cotton" }
           ]
         },
-        {
-          heading: "EMBROIDERED",
-          order: 2,
-          items: [
-            { label: "Silk", highlight: true }, { label: "Cotton" }, { label: "Linen", highlight: true },
-            { label: "Chiffon" }, { label: "Chinon" }, { label: "Georgette" },
-            { label: "Net" }, { label: "Organza" }, { label: "Rayon" },
-            { label: "Velvet" }, { label: "Kota" }
-          ]
-        },
-        {
-          heading: "DESIGN & PATTERN",
-          order: 3,
-          items: [
-            { label: "Position Printing" }, { label: "Designer Fabric" }, { label: "Baby Prints", highlight: true },
-            { label: "Floral" }, { label: "Animal", highlight: true }, { label: "Stripes" },
-            { label: "Checks" }, { label: "Polka" }, { label: "Palazzo" },
-            { label: "Bandhani" }, { label: "Cross Stitch" }, { label: "Cotswool" },
-            { label: "Kali" }, { label: "Hot Selling", highlight: true }, { label: "Mix & Match" },
-            { label: "Shaded" }, { label: "Cut Work" }, { label: "Pleated" }
-          ]
-        },
-        {
-          heading: "BY CRAFTS",
-          order: 4,
-          items: [
-            { label: "Pintex" }, { label: "Chikankari" }, { label: "Indigo" },
-            { label: "Banorsi / Brocade" }, { label: "Batik" }, { label: "Dyeable" },
-            { label: "Block Prints" }, { label: "Gota Patti" }, { label: "Ikkat" },
-            { label: "Kalamkari" }, { label: "Sequins" }, { label: "Mirror Work" },
-            { label: "Jacquard" }, { label: "Chantilly Net" }, { label: "Glitter" },
-            { label: "Mukoish" }, { label: "Imported Fabrics" }, { label: "Hakoba" }
-          ]
-        },
-        {
-          heading: "FABRICS SUITED FOR",
-          order: 5,
-          items: [
-            { label: "Tops & Kurtis" }, { label: "Lehengas", highlight: true },
-            { label: "Night Suit" }, { label: "Suits & Blazers" },
-            { label: "Kurtas / Sherwani Men" }, { label: "Gowns" },
-            { label: "Blouse", highlight: true }, { label: "Dupattas", highlight: true },
-            { label: "Sarees" }
-          ]
-        }
-      ]
-    },
-    {
-      navLabel: "PLAIN DYEABLES",
-      slug: "plain-dyeables",
-      order: 1,
-      columns: [
         {
           heading: "PLAIN FABRICS",
-          order: 0,
+          order: 2,
           items: [
-            { label: "Plain Cotton" }, { label: "Plain Georgette" }, { label: "Plain Chiffon" },
-            { label: "Plain Satin" }, { label: "Plain Crepe" }, { label: "Plain Rayon" },
-            { label: "Plain Linen" }, { label: "Plain Silk" }, { label: "Plain Muslin" },
-            { label: "Plain Chanderi" }, { label: "Plain Organza" }, { label: "Plain Kota" }
+            { label: "Cambric Cotton (60×60)" },
+            { label: "Cotton Slub" },
+            { label: "Cotton Flex (Khadi)" },
+            { label: "Mule Cotton" },
+            { label: "Cotton Rayon" },
+            { label: "Cotton Silk" },
+            { label: "Slub Silk" }
+          ]
+        },
+        {
+          heading: "SCREEN PRINTS",
+          order: 3,
+          items: [
+            { label: "Kantha Cotton", highlight: true }
           ]
         }
       ]
     },
+    // ── 2. DRESS MATERIALS ───────────────────────────────────
+    {
+      navLabel: "DRESS MATERIALS",
+      slug: "dress-materials",
+      order: 1,
+      isActive: true,
+      columns: [
+        {
+          heading: "SUIT COLLECTIONS",
+          order: 0,
+          items: [
+            { label: "Jaipuri Handblock Suit", highlight: true },
+            { label: "Kota Doria Suit" },
+            { label: "Modal Silk Suit" },
+            { label: "Cotton Linen Suit" },
+            { label: "Maheshwari Silk Suit" },
+            { label: "Cotton Print Suit" }
+          ]
+        }
+      ]
+    },
+    // ── 3. SAREES ─────────────────────────────────────────────
+    {
+      navLabel: "SAREES",
+      slug: "sarees",
+      order: 2,
+      isActive: true,
+      columns: [
+        {
+          heading: "SAREE COLLECTIONS",
+          order: 0,
+          items: [
+            { label: "Modal Silk Sarees", highlight: true },
+            { label: "Kota Doria Sarees" },
+            { label: "Dola Silk Sarees" },
+            { label: "Georgette Sarees" },
+            { label: "Maheshwari Sarees" },
+            { label: "Cotton Handblock Sarees" },
+            { label: "Chanderi Silk Sarees" },
+            { label: "Cotton Linen Sarees" },
+            { label: "Chiffon Sarees" }
+          ]
+        }
+      ]
+    },
+    // ── 4. DUPATTAS ───────────────────────────────────────────
     {
       navLabel: "DUPATTAS",
       slug: "dupattas",
-      order: 2,
+      order: 3,
+      isActive: true,
       columns: [
         {
-          heading: "BY FABRIC",
+          heading: "DUPATTA COLLECTIONS",
           order: 0,
           items: [
-            { label: "Cotton Dupattas" }, { label: "Silk Dupattas" }, { label: "Chiffon Dupattas" },
-            { label: "Georgette Dupattas" }, { label: "Net Dupattas" }, { label: "Chanderi Dupattas" }
-          ]
-        },
-        {
-          heading: "BY CRAFT",
-          order: 1,
-          items: [
-            { label: "Handblock Dupattas" }, { label: "Ajrakh Dupattas" }, { label: "Bandhani Dupattas" },
-            { label: "Embroidered Dupattas" }, { label: "Printed Dupattas" }
+            { label: "Ikkat Dupatta", highlight: true },
+            { label: "Banarasi Silk Dupatta" },
+            { label: "Kalamkari Dupatta" },
+            { label: "Ajrakh Modal Dupatta" },
+            { label: "Bandhani Dupatta" },
+            { label: "Orange Brush Print Dupatta" }
           ]
         }
       ]
@@ -333,17 +358,51 @@ app.get("/api/admin/products", requireAuth, async (req, res) => {
 });
 
 app.post("/api/admin/products", requireAuth, upload.single("image"), async (req, res) => {
-  if (!req.file) return fail(res, 400, "Product image is required");
+  const b = req.body;
   const payload = {
-    name: String(req.body.name || "").trim(),
-    category: String(req.body.category || "").trim(),
-    description: String(req.body.description || "").trim(),
-    price: money(req.body.price),
-    stock: money(req.body.stock),
-    imageUrl: getImageUrl(req.file)
+    name:        String(b.name || "").trim(),
+    sku:         String(b.sku || "").trim().toUpperCase(),
+    category:    String(b.category || "").trim(),
+    subcategory: String(b.subcategory || "").trim(),
+    brand:       String(b.brand || "Fabric Infinity").trim(),
+    productType: String(b.productType || "Fabric").trim(),
+    description: String(b.description || "").trim(),
+    // pricing
+    costPrice:      money(b.costPrice),
+    wholesalePrice: money(b.wholesalePrice),
+    price:          money(b.price),
+    offerPrice:     money(b.offerPrice),
+    gst:            Number(b.gst) || 5,
+    // inventory
+    stock:             money(b.stock),
+    minStockAlert:     money(b.minStockAlert) || 10,
+    warehouseLocation: String(b.warehouseLocation || "").trim(),
+    // fabric details
+    fabricType:  String(b.fabricType  || "").trim(),
+    material:    String(b.material    || "").trim(),
+    weave:       String(b.weave       || "").trim(),
+    printType:   String(b.printType   || "").trim(),
+    gsm:         Number(b.gsm) || 0,
+    width:       String(b.width       || "").trim(),
+    lengthUnit:  String(b.lengthUnit  || "Metre").trim(),
+    colour:      String(b.colour      || "").trim(),
+    pattern:     String(b.pattern     || "").trim(),
+    occasion:    String(b.occasion    || "").trim(),
+    season:      String(b.season      || "").trim(),
+    // images
+    imageUrl:     req.file ? getImageUrl(req.file) : String(b.imageUrl || "").trim(),
+    videoUrl:     String(b.videoUrl     || "").trim(),
+    zoomImageUrl: String(b.zoomImageUrl || "").trim(),
+    // seo
+    seo: {
+      slug:      String(b.seoSlug      || "").trim().toLowerCase(),
+      metaTitle: String(b.metaTitle    || "").trim(),
+      metaDesc:  String(b.metaDesc     || "").trim(),
+      keywords:  String(b.keywords     || "").trim()
+    }
   };
-  if (!payload.name || !payload.category || !payload.description || payload.price <= 0 || payload.stock < 0) {
-    return fail(res, 400, "Invalid product data");
+  if (!payload.name || !payload.category || payload.price <= 0) {
+    return fail(res, 400, "Name, category and retail price are required");
   }
   const product = await Product.create(payload);
   res.status(201).json({ message: "Product created", product });
@@ -352,16 +411,51 @@ app.post("/api/admin/products", requireAuth, upload.single("image"), async (req,
 app.put("/api/admin/products/:id", requireAuth, upload.single("image"), async (req, res) => {
   const product = await Product.findById(req.params.id);
   if (!product) return fail(res, 404, "Product not found");
-
-  if (req.body.name !== undefined) product.name = String(req.body.name).trim();
-  if (req.body.category !== undefined) product.category = String(req.body.category).trim();
-  if (req.body.description !== undefined) product.description = String(req.body.description).trim();
-  if (req.body.price !== undefined) product.price = money(req.body.price);
-  if (req.body.stock !== undefined) product.stock = money(req.body.stock);
-  if (req.body.isActive !== undefined) product.isActive = String(req.body.isActive) !== "false";
-  if (req.file) product.imageUrl = getImageUrl(req.file);
-  if (req.body.imageUrl) product.imageUrl = sanitizeImageUrl(req.body.imageUrl);
-
+  const b = req.body;
+  const str = (v, fb="") => v !== undefined ? String(v).trim() : fb;
+  // basic
+  if (b.name        !== undefined) product.name        = str(b.name);
+  if (b.sku         !== undefined) product.sku         = str(b.sku).toUpperCase();
+  if (b.category    !== undefined) product.category    = str(b.category);
+  if (b.subcategory !== undefined) product.subcategory = str(b.subcategory);
+  if (b.brand       !== undefined) product.brand       = str(b.brand);
+  if (b.productType !== undefined) product.productType = str(b.productType);
+  if (b.description !== undefined) product.description = str(b.description);
+  // pricing
+  if (b.costPrice      !== undefined) product.costPrice      = money(b.costPrice);
+  if (b.wholesalePrice !== undefined) product.wholesalePrice = money(b.wholesalePrice);
+  if (b.price          !== undefined) product.price          = money(b.price);
+  if (b.offerPrice     !== undefined) product.offerPrice     = money(b.offerPrice);
+  if (b.gst            !== undefined) product.gst            = Number(b.gst) || 5;
+  // inventory
+  if (b.stock             !== undefined) product.stock             = money(b.stock);
+  if (b.minStockAlert     !== undefined) product.minStockAlert     = money(b.minStockAlert);
+  if (b.warehouseLocation !== undefined) product.warehouseLocation = str(b.warehouseLocation);
+  if (b.isActive          !== undefined) product.isActive          = String(b.isActive) !== "false";
+  // fabric details
+  if (b.fabricType !== undefined) product.fabricType = str(b.fabricType);
+  if (b.material   !== undefined) product.material   = str(b.material);
+  if (b.weave      !== undefined) product.weave      = str(b.weave);
+  if (b.printType  !== undefined) product.printType  = str(b.printType);
+  if (b.gsm        !== undefined) product.gsm        = Number(b.gsm) || 0;
+  if (b.width      !== undefined) product.width      = str(b.width);
+  if (b.lengthUnit !== undefined) product.lengthUnit = str(b.lengthUnit);
+  if (b.colour     !== undefined) product.colour     = str(b.colour);
+  if (b.pattern    !== undefined) product.pattern    = str(b.pattern);
+  if (b.occasion   !== undefined) product.occasion   = str(b.occasion);
+  if (b.season     !== undefined) product.season     = str(b.season);
+  // images
+  if (req.file)       product.imageUrl     = getImageUrl(req.file);
+  if (b.imageUrl)     product.imageUrl     = sanitizeImageUrl(b.imageUrl);
+  if (b.videoUrl)     product.videoUrl     = str(b.videoUrl);
+  if (b.zoomImageUrl) product.zoomImageUrl = str(b.zoomImageUrl);
+  // seo
+  if (!product.seo) product.seo = {};
+  if (b.seoSlug    !== undefined) product.seo.slug      = str(b.seoSlug).toLowerCase();
+  if (b.metaTitle  !== undefined) product.seo.metaTitle = str(b.metaTitle);
+  if (b.metaDesc   !== undefined) product.seo.metaDesc  = str(b.metaDesc);
+  if (b.keywords   !== undefined) product.seo.keywords  = str(b.keywords);
+  product.markModified("seo");
   await product.save();
   res.json({ message: "Product updated", product });
 });

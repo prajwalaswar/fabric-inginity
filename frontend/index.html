@@ -1945,9 +1945,9 @@
               </div>
             </div>
 
-            <!-- Step 1: Image upload + AI detect -->
-            <div id="aiStep1" style="border:2px dashed #ccdaf8;border-radius:14px;padding:20px;text-align:center;margin-bottom:14px;transition:border-color .2s;cursor:pointer;position:relative;" id="aiDropZone">
-              <input name="image" id="productImageInput" type="file" accept="image/*" required
+            <!-- Image upload drop zone -->
+            <div id="aiStep1" style="border:2px dashed #ccdaf8;border-radius:14px;padding:20px;text-align:center;margin-bottom:14px;transition:border-color .2s;cursor:pointer;position:relative;">
+              <input name="image" id="productImageInput" type="file" accept="image/*"
                 style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2;"/>
               <div id="aiStep1Placeholder">
                 <div style="font-size:2.2rem;margin-bottom:6px;">📷</div>
@@ -1959,54 +1959,213 @@
                 <div style="text-align:left;">
                   <p id="aiDetectFileName" style="font-weight:700;color:#132038;margin-bottom:4px;font-size:.9rem;"></p>
                   <div id="aiDetectStatus" style="font-size:.84rem;font-weight:700;color:#5f7395;"></div>
-                  <button type="button" id="aiRedetectBtn" style="margin-top:8px;font-size:.78rem;padding:5px 12px;border:1px solid #ccdaf8;border-radius:8px;background:#f5f9ff;cursor:pointer;font-family:inherit;font-weight:700;color:#1464ce;display:none;">
-                    ↻ Re-run AI
-                  </button>
+                  <button type="button" id="aiRedetectBtn" style="margin-top:8px;font-size:.78rem;padding:5px 12px;border:1px solid #ccdaf8;border-radius:8px;background:#f5f9ff;cursor:pointer;font-family:inherit;font-weight:700;color:#1464ce;display:none;">↻ Re-run AI</button>
                 </div>
               </div>
             </div>
 
-            <!-- Step 2: Editable fields (shown after image picked) -->
+            <!-- All product fields — shown after image picked -->
             <form id="addProductForm" enctype="multipart/form-data">
               <div id="aiFieldsWrap" style="display:none;">
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:10px;">
-                  <div>
-                    <label class="field-lbl">Product Name *</label>
-                    <input name="name" id="pf_name" required placeholder="e.g. Indigo Handblock Cotton" class="field-inp"/>
-                  </div>
-                  <div>
-                    <label class="field-lbl">Category *</label>
-                    <input name="category" id="pf_category" required placeholder="e.g. Ajrakh" class="field-inp"/>
-                  </div>
-                  <div>
-                    <label class="field-lbl">Price (INR/m) *</label>
-                    <input name="price" id="pf_price" required type="number" min="1" placeholder="1899" class="field-inp"/>
-                  </div>
-                  <div>
-                    <label class="field-lbl">Stock (meters) *</label>
-                    <input name="stock" id="pf_stock" required type="number" min="0" placeholder="100" class="field-inp"/>
-                  </div>
-                  <div style="grid-column:1/-1">
-                    <label class="field-lbl">Description *</label>
-                    <textarea name="description" id="pf_desc" required rows="2" placeholder="Product description..." class="field-inp" style="resize:vertical;"></textarea>
+
+                <!-- ── BASIC INFORMATION ── -->
+                <div style="background:#f8fbff;border:1px solid #e0eaf8;border-radius:12px;padding:14px;margin-bottom:12px;">
+                  <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#3a5c9a;margin-bottom:10px;">📋 Basic Information</p>
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;">
+                    <div><label class="field-lbl">Product Name *</label><input name="name" id="pf_name" required placeholder="e.g. Indigo Handblock Cotton" class="field-inp"/></div>
+                    <div><label class="field-lbl">SKU</label><input name="sku" id="pf_sku" placeholder="Auto-generated if blank" class="field-inp"/></div>
+                    <div>
+                      <label class="field-lbl">Category *</label>
+                      <select name="category" id="pf_category" required class="field-inp">
+                        <option value="">— Select Category —</option>
+                        <optgroup label="Fabrics — Hand Block Prints">
+                          <option>Ajrakh</option><option>Cotton Ajrakh</option><option>Modal Silk Ajrakh</option>
+                          <option>Indigo</option><option>Dabu</option><option>Bagru</option>
+                          <option>Vanaspati</option><option>Rapid</option><option>Kalamkari</option>
+                          <option>Bagh</option><option>Pigment Prints</option>
+                        </optgroup>
+                        <optgroup label="Fabrics — Handloom">
+                          <option>Single Ikat</option><option>Double Ikat</option><option>SICO Ikat</option>
+                          <option>Mercerised Ikat</option><option>Jamdhani Cotton</option><option>Handloom Cotton</option>
+                        </optgroup>
+                        <optgroup label="Fabrics — Plain">
+                          <option>Cambric Cotton</option><option>Cotton Slub</option><option>Cotton Flex (Khadi)</option>
+                          <option>Mule Cotton</option><option>Cotton Rayon</option><option>Cotton Silk</option><option>Slub Silk</option>
+                        </optgroup>
+                        <optgroup label="Fabrics — Screen Prints">
+                          <option>Kantha Cotton</option>
+                        </optgroup>
+                        <optgroup label="Dress Materials">
+                          <option>Jaipuri Handblock Suit</option><option>Kota Doria Suit</option>
+                          <option>Modal Silk Suit</option><option>Cotton Linen Suit</option>
+                          <option>Maheshwari Silk Suit</option><option>Cotton Print Suit</option>
+                        </optgroup>
+                        <optgroup label="Sarees">
+                          <option>Modal Silk Sarees</option><option>Kota Doria Sarees</option>
+                          <option>Dola Silk Sarees</option><option>Georgette Sarees</option>
+                          <option>Maheshwari Sarees</option><option>Cotton Handblock Sarees</option>
+                          <option>Chanderi Silk Sarees</option><option>Cotton Linen Sarees</option><option>Chiffon Sarees</option>
+                        </optgroup>
+                        <optgroup label="Dupattas">
+                          <option>Ikkat Dupatta</option><option>Banarasi Silk Dupatta</option>
+                          <option>Kalamkari Dupatta</option><option>Ajrakh Modal Dupatta</option>
+                          <option>Bandhani Dupatta</option><option>Orange Brush Print Dupatta</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div><label class="field-lbl">Subcategory</label><input name="subcategory" id="pf_subcategory" placeholder="e.g. Hand Block Prints" class="field-inp"/></div>
+                    <div>
+                      <label class="field-lbl">Product Type</label>
+                      <select name="productType" id="pf_productType" class="field-inp">
+                        <option value="Fabric">Fabric</option>
+                        <option value="Saree">Saree</option>
+                        <option value="Dress Material">Dress Material</option>
+                        <option value="Dupatta">Dupatta</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                    <div><label class="field-lbl">Brand</label><input name="brand" id="pf_brand" value="Fabric Infinity" class="field-inp"/></div>
+                    <div style="grid-column:1/-1"><label class="field-lbl">Description</label><textarea name="description" id="pf_desc" rows="2" placeholder="Product description..." class="field-inp" style="resize:vertical;"></textarea></div>
                   </div>
                 </div>
-                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+
+                <!-- ── PRICING ── -->
+                <div style="background:#f8fbff;border:1px solid #e0eaf8;border-radius:12px;padding:14px;margin-bottom:12px;">
+                  <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#3a5c9a;margin-bottom:10px;">💰 Pricing</p>
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;">
+                    <div><label class="field-lbl">Cost Price (₹)</label><input name="costPrice" id="pf_costPrice" type="number" min="0" placeholder="850" class="field-inp"/></div>
+                    <div><label class="field-lbl">Wholesale Price (₹)</label><input name="wholesalePrice" id="pf_wholesalePrice" type="number" min="0" placeholder="1200" class="field-inp"/></div>
+                    <div><label class="field-lbl">Retail Price (₹) *</label><input name="price" id="pf_price" required type="number" min="1" placeholder="1899" class="field-inp"/></div>
+                    <div><label class="field-lbl">Offer Price (₹)</label><input name="offerPrice" id="pf_offerPrice" type="number" min="0" placeholder="1699" class="field-inp"/></div>
+                    <div>
+                      <label class="field-lbl">GST (%)</label>
+                      <select name="gst" id="pf_gst" class="field-inp">
+                        <option value="0">0%</option>
+                        <option value="5" selected>5%</option>
+                        <option value="12">12%</option>
+                        <option value="18">18%</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ── INVENTORY ── -->
+                <div style="background:#f8fbff;border:1px solid #e0eaf8;border-radius:12px;padding:14px;margin-bottom:12px;">
+                  <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#3a5c9a;margin-bottom:10px;">📦 Inventory</p>
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;">
+                    <div><label class="field-lbl">Stock (metres/pieces) *</label><input name="stock" id="pf_stock" required type="number" min="0" placeholder="100" class="field-inp"/></div>
+                    <div><label class="field-lbl">Min Stock Alert</label><input name="minStockAlert" id="pf_minStockAlert" type="number" min="0" placeholder="10" class="field-inp"/></div>
+                    <div><label class="field-lbl">Warehouse Location</label><input name="warehouseLocation" id="pf_warehouseLocation" placeholder="e.g. Rack A-3" class="field-inp"/></div>
+                  </div>
+                </div>
+
+                <!-- ── FABRIC DETAILS ── -->
+                <div style="background:#f8fbff;border:1px solid #e0eaf8;border-radius:12px;padding:14px;margin-bottom:12px;">
+                  <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#3a5c9a;margin-bottom:10px;">🧵 Fabric Details</p>
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;">
+                    <div><label class="field-lbl">Fabric Type</label><input name="fabricType" id="pf_fabricType" placeholder="e.g. Cotton" class="field-inp"/></div>
+                    <div><label class="field-lbl">Material</label><input name="material" id="pf_material" placeholder="e.g. 100% Cotton" class="field-inp"/></div>
+                    <div>
+                      <label class="field-lbl">Weave</label>
+                      <select name="weave" id="pf_weave" class="field-inp">
+                        <option value="">— Select —</option>
+                        <option>Plain</option><option>Twill</option><option>Satin</option>
+                        <option>Dobby</option><option>Jacquard</option><option>Handloom</option><option>Other</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="field-lbl">Print Type</label>
+                      <select name="printType" id="pf_printType" class="field-inp">
+                        <option value="">— Select —</option>
+                        <option>Handblock</option><option>Screen Print</option><option>Digital Print</option>
+                        <option>Natural Dye</option><option>Discharge Print</option><option>Plain / No Print</option>
+                      </select>
+                    </div>
+                    <div><label class="field-lbl">GSM</label><input name="gsm" id="pf_gsm" type="number" min="0" placeholder="90" class="field-inp"/></div>
+                    <div>
+                      <label class="field-lbl">Width</label>
+                      <select name="width" id="pf_width" class="field-inp">
+                        <option value="">— Select —</option>
+                        <option>44"</option><option>45"</option><option>52"</option>
+                        <option>54"</option><option>56"</option><option>58"</option><option>60"</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="field-lbl">Length Unit</label>
+                      <select name="lengthUnit" id="pf_lengthUnit" class="field-inp">
+                        <option value="Metre">Metre</option>
+                        <option value="Piece">Piece</option>
+                        <option value="Set">Set</option>
+                      </select>
+                    </div>
+                    <div><label class="field-lbl">Colour</label><input name="colour" id="pf_colour" placeholder="e.g. Indigo Blue" class="field-inp"/></div>
+                    <div>
+                      <label class="field-lbl">Pattern</label>
+                      <select name="pattern" id="pf_pattern" class="field-inp">
+                        <option value="">— Select —</option>
+                        <option>Floral</option><option>Geometric</option><option>Abstract</option>
+                        <option>Stripes</option><option>Checks</option><option>Paisley</option>
+                        <option>Solid / Plain</option><option>Bandhani</option><option>Other</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="field-lbl">Occasion</label>
+                      <select name="occasion" id="pf_occasion" class="field-inp">
+                        <option value="">— Select —</option>
+                        <option>Casual</option><option>Ethnic / Festive</option><option>Wedding</option>
+                        <option>Party</option><option>Daily Wear</option><option>All Occasion</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="field-lbl">Season</label>
+                      <select name="season" id="pf_season" class="field-inp">
+                        <option value="">— Select —</option>
+                        <option>All Season</option><option>Summer</option><option>Winter</option><option>Monsoon</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ── SEO ── -->
+                <div style="background:#f8fbff;border:1px solid #e0eaf8;border-radius:12px;padding:14px;margin-bottom:12px;">
+                  <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#3a5c9a;margin-bottom:10px;">🔍 SEO</p>
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;">
+                    <div><label class="field-lbl">URL Slug</label><input name="seoSlug" id="pf_seoSlug" placeholder="indigo-handblock-cotton" class="field-inp"/></div>
+                    <div><label class="field-lbl">Meta Title</label><input name="metaTitle" id="pf_metaTitle" placeholder="Max 70 chars" maxlength="70" class="field-inp"/></div>
+                    <div style="grid-column:1/-1"><label class="field-lbl">Meta Description</label><input name="metaDesc" id="pf_metaDesc" placeholder="Max 160 chars" maxlength="160" class="field-inp"/></div>
+                    <div style="grid-column:1/-1"><label class="field-lbl">Keywords</label><input name="keywords" id="pf_keywords" placeholder="indigo cotton, block print fabric, handblock" class="field-inp"/></div>
+                  </div>
+                </div>
+
+                <!-- Submit row -->
+                <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-top:4px;">
                   <button type="submit" class="btn primary" style="padding:10px 24px;">✓ Save Product</button>
                   <button type="button" id="resetProductFormBtn" class="btn" style="padding:10px 16px;">✕ Reset</button>
                   <span id="addProductMsg" style="font-size:.88rem;font-weight:700;"></span>
                 </div>
-              </div>
+
+              </div><!-- end aiFieldsWrap -->
             </form>
           </article>
+
           <article class="dash-card">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
               <h4>All Products</h4>
               <button class="btn" id="refreshProductsBtn" style="font-size:.82rem">↻ Refresh</button>
             </div>
             <div style="overflow:auto;">
-              <table style="width:100%;border-collapse:collapse;min-width:760px;font-size:.9rem;">
-                <thead><tr style="color:#2a4c81;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;"><th style="padding:8px;border-bottom:1px solid #e5eefb;text-align:left">Image</th><th style="padding:8px;border-bottom:1px solid #e5eefb;text-align:left">Name</th><th style="padding:8px;border-bottom:1px solid #e5eefb;text-align:left">Category</th><th style="padding:8px;border-bottom:1px solid #e5eefb;text-align:left">Price</th><th style="padding:8px;border-bottom:1px solid #e5eefb;text-align:left">Stock</th><th style="padding:8px;border-bottom:1px solid #e5eefb;text-align:left">Status</th><th style="padding:8px;border-bottom:1px solid #e5eefb;text-align:left">Actions</th></tr></thead>
+              <table style="width:100%;border-collapse:collapse;min-width:820px;font-size:.88rem;">
+                <thead><tr style="color:#2a4c81;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;">
+                  <th style="padding:8px;border-bottom:1px solid #e5eefb;text-align:left">Image</th>
+                  <th style="padding:8px;border-bottom:1px solid #e5eefb;text-align:left">Name / SKU</th>
+                  <th style="padding:8px;border-bottom:1px solid #e5eefb;text-align:left">Category</th>
+                  <th style="padding:8px;border-bottom:1px solid #e5eefb;text-align:left">Type</th>
+                  <th style="padding:8px;border-bottom:1px solid #e5eefb;text-align:left">Retail / Offer</th>
+                  <th style="padding:8px;border-bottom:1px solid #e5eefb;text-align:left">Stock</th>
+                  <th style="padding:8px;border-bottom:1px solid #e5eefb;text-align:left">Fabric / Width</th>
+                  <th style="padding:8px;border-bottom:1px solid #e5eefb;text-align:left">Status</th>
+                  <th style="padding:8px;border-bottom:1px solid #e5eefb;text-align:left">Actions</th>
+                </tr></thead>
                 <tbody id="productTableBody"></tbody>
               </table>
             </div>
@@ -2251,16 +2410,26 @@
 
     // ── Storefront Products ─────────────────────────────────────
     function productCard(p) {
-      // imageUrl is already a valid URL path — do NOT encodeURI (would double-encode %20 → %2520)
+      const displayPrice = (p.offerPrice && p.offerPrice < p.price) ? p.offerPrice : p.price;
+      const hasOffer     = p.offerPrice && p.offerPrice < p.price;
+      const badges = [p.fabricType, p.width, p.occasion].filter(Boolean);
       return `<article class="card">
-        <div class="card-media"><img src="${p.imageUrl}" alt="${p.name}" loading="lazy"/></div>
+        <div class="card-media" style="position:relative;">
+          <img src="${p.imageUrl}" alt="${p.name}" loading="lazy"/>
+          ${hasOffer ? `<span style="position:absolute;top:10px;left:10px;background:#de4f63;color:#fff;font-size:.72rem;font-weight:800;padding:3px 8px;border-radius:999px;">SALE</span>` : ""}
+          ${p.productType ? `<span style="position:absolute;top:10px;right:10px;background:rgba(255,255,255,.92);color:#0b2e67;font-size:.7rem;font-weight:800;padding:3px 8px;border-radius:999px;border:1px solid #d4e2f8;">${p.productType}</span>` : ""}
+        </div>
         <div class="card-body">
           <span class="tag">${p.category}</span>
           <h4 style="margin:6px 0 4px">${p.name}</h4>
-          <p class="muted" style="font-size:.84rem">${p.description}</p>
+          ${badges.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;">${badges.map(b=>`<span style="font-size:.7rem;background:#eef3ff;color:#3a5c9a;border-radius:999px;padding:2px 8px;font-weight:700;">${b}</span>`).join("")}</div>` : ""}
+          ${p.colour ? `<p style="font-size:.78rem;color:#5f7395;margin-bottom:4px;">🎨 ${p.colour}${p.pattern ? " · " + p.pattern : ""}</p>` : ""}
           <div class="price-row">
-            <strong>${inr(p.price)}<span style="font-size:.78rem;font-weight:500;color:#5f7395"> / meter</span></strong>
-            <button class="btn" data-cart-add="true" data-id="${p._id}" data-name="${p.name.replace(/\"/g, "&quot;")}" data-price="${String(p.price).replace(/\"/g, "&quot;")}" data-image="${p.imageUrl}" style="padding:6px 12px">Add to Cart</button>
+            <div>
+              <strong style="color:#0b2e67;">${inr(displayPrice)}<span style="font-size:.78rem;font-weight:500;color:#5f7395"> /${p.lengthUnit||"m"}</span></strong>
+              ${hasOffer ? `<span style="font-size:.78rem;text-decoration:line-through;color:#aab8cc;margin-left:6px;">${inr(p.price)}</span>` : ""}
+            </div>
+            <button class="btn" data-cart-add="true" data-id="${p._id}" data-name="${p.name.replace(/\"/g,"&quot;")}" data-price="${String(displayPrice).replace(/\"/g,"&quot;")}" data-image="${p.imageUrl}" style="padding:6px 12px">Add to Cart</button>
           </div>
         </div>
       </article>`;
@@ -2513,25 +2682,67 @@
     // ── Admin Products Table ─────────────────────────────────────
     function renderAdminProducts(products) {
       const tbody = $("#productTableBody"); if (!tbody) return;
-      tbody.innerHTML = products.map(p => `<tr>
+      tbody.innerHTML = products.map(p => {
+        const displayPrice = (p.offerPrice && p.offerPrice < p.price) ? p.offerPrice : p.price;
+        const stockWarn    = p.minStockAlert && p.stock <= p.minStockAlert;
+        return `<tr>
         <td style="padding:8px;border-bottom:1px solid #e5eefb"><img src="${p.imageUrl}" style="width:44px;height:44px;border-radius:8px;object-fit:cover"/></td>
-        <td style="padding:8px;border-bottom:1px solid #e5eefb"><input data-field="name" data-id="${p._id}" value="${p.name.replace(/"/g,"&quot;")}" style="width:140px;border:1px solid #d5e2f5;border-radius:7px;padding:5px 7px;font:inherit"/></td>
-        <td style="padding:8px;border-bottom:1px solid #e5eefb"><input data-field="category" data-id="${p._id}" value="${p.category.replace(/"/g,"&quot;")}" style="width:110px;border:1px solid #d5e2f5;border-radius:7px;padding:5px 7px;font:inherit"/></td>
-        <td style="padding:8px;border-bottom:1px solid #e5eefb"><input type="number" data-field="price" data-id="${p._id}" value="${p.price}" min="1" style="width:80px;border:1px solid #d5e2f5;border-radius:7px;padding:5px 7px;font:inherit"/></td>
-        <td style="padding:8px;border-bottom:1px solid #e5eefb"><input type="number" data-field="stock" data-id="${p._id}" value="${p.stock}" min="0" style="width:70px;border:1px solid #d5e2f5;border-radius:7px;padding:5px 7px;font:inherit"/></td>
-        <td style="padding:8px;border-bottom:1px solid #e5eefb"><span class="pill" style="color:${p.isActive?"#1a6e3e":"#8a3030"}">${p.isActive ? "Active" : "Inactive"}</span></td>
+        <td style="padding:8px;border-bottom:1px solid #e5eefb;min-width:160px;">
+          <input data-field="name" data-id="${p._id}" value="${p.name.replace(/"/g,"&quot;")}" style="width:100%;border:1px solid #d5e2f5;border-radius:7px;padding:5px 7px;font:inherit;margin-bottom:3px"/>
+          <span style="font-size:.72rem;color:#7a94bc;font-family:monospace;">${p.sku || "—"}</span>
+        </td>
+        <td style="padding:8px;border-bottom:1px solid #e5eefb">
+          <span style="font-size:.84rem;font-weight:700;color:#132038;">${p.category}</span>
+          ${p.subcategory ? `<br><span style="font-size:.72rem;color:#7a94bc;">${p.subcategory}</span>` : ""}
+        </td>
+        <td style="padding:8px;border-bottom:1px solid #e5eefb;font-size:.82rem;">
+          <span style="background:#eef3ff;color:#0b2e67;border-radius:999px;padding:2px 8px;font-weight:700;">${p.productType||"Fabric"}</span>
+        </td>
+        <td style="padding:8px;border-bottom:1px solid #e5eefb;white-space:nowrap;">
+          <strong style="color:#0b2e67;">${inr(displayPrice)}</strong>
+          ${(p.offerPrice && p.offerPrice < p.price) ? `<br><span style="font-size:.72rem;text-decoration:line-through;color:#aab8cc;">${inr(p.price)}</span>` : ""}
+        </td>
+        <td style="padding:8px;border-bottom:1px solid #e5eefb;">
+          <input type="number" data-field="stock" data-id="${p._id}" value="${p.stock}" min="0" style="width:70px;border:1px solid ${stockWarn?"#f5c6c6":"#d5e2f5"};border-radius:7px;padding:5px 7px;font:inherit;color:${stockWarn?"#c0392b":"inherit"}"/>
+          ${stockWarn ? `<br><span style="font-size:.7rem;color:#c0392b;font-weight:700;">⚠ Low</span>` : ""}
+        </td>
+        <td style="padding:8px;border-bottom:1px solid #e5eefb;font-size:.8rem;white-space:nowrap;">
+          ${p.fabricType ? p.fabricType : "—"}
+          ${p.width ? `<br><span style="color:#7a94bc;">${p.width}</span>` : ""}
+          ${p.gsm ? `<br><span style="color:#7a94bc;">${p.gsm} GSM</span>` : ""}
+        </td>
+        <td style="padding:8px;border-bottom:1px solid #e5eefb">
+          <span class="pill" style="color:${p.isActive?"#1a6e3e":"#8a3030"}">${p.isActive ? "Active" : "Inactive"}</span>
+        </td>
         <td style="padding:8px;border-bottom:1px solid #e5eefb;white-space:nowrap">
           <button class="btn" data-save="${p._id}" style="font-size:.8rem;padding:5px 10px;margin-right:4px">Save</button>
+          <button class="btn" data-toggle="${p._id}" data-active="${p.isActive}" style="font-size:.78rem;padding:5px 10px;margin-right:4px">${p.isActive?"Hide":"Show"}</button>
           <button class="btn" data-delete="${p._id}" style="font-size:.8rem;padding:5px 10px;color:#c0392b;border-color:#f5c6c6">Delete</button>
         </td>
-      </tr>`).join("");
+      </tr>`;
+      }).join("");
       $$("[data-save]").forEach(b => b.addEventListener("click", async () => {
         const id = b.dataset.save;
         const g = f => document.querySelector(`[data-field="${f}"][data-id="${id}"]`)?.value;
-        try { await api(`/api/admin/products/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: g("name"), category: g("category"), price: Number(g("price")), stock: Number(g("stock")) }) }); b.textContent = "✓ Saved"; setTimeout(() => { b.textContent = "Save"; }, 1500); } catch(e) { alert(e.message); }
+        try {
+          await api(`/api/admin/products/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: g("name"), stock: Number(g("stock")) })
+          });
+          b.textContent = "✓"; setTimeout(() => { b.textContent = "Save"; }, 1500);
+        } catch(e) { alert(e.message); }
+      }));
+      $$("[data-toggle]").forEach(b => b.addEventListener("click", async () => {
+        const id = b.dataset.toggle;
+        const newActive = b.dataset.active === "true" ? false : true;
+        try {
+          await api(`/api/admin/products/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ isActive: newActive })
+          });
+          await loadDashboardData();
+        } catch(e) { alert(e.message); }
       }));
       $$("[data-delete]").forEach(b => b.addEventListener("click", async () => {
-        if (!confirm("Delete this product?")) return;
+        if (!confirm("Delete this product permanently?")) return;
         try { await api(`/api/admin/products/${b.dataset.delete}`, { method: "DELETE" }); b.closest("tr").remove(); } catch(e) { alert(e.message); }
       }));
     }
@@ -3215,25 +3426,35 @@
       }
 
       function fillFields(s) {
-        const fields = ["name","category","price","stock"];
-        fields.forEach(k => {
-          const el = document.getElementById("pf_" + k);
-          if (el && s[k] !== undefined) {
-            el.value = s[k];
-            el.classList.add("ai-filled");
-          }
+        // Map AI suggestion keys to form field IDs
+        const map = {
+          name: "pf_name", category: "pf_category", price: "pf_price",
+          stock: "pf_stock", fabricType: "pf_fabricType", material: "pf_material",
+          colour: "pf_colour", pattern: "pf_pattern", occasion: "pf_occasion",
+          season: "pf_season", width: "pf_width", printType: "pf_printType",
+          productType: "pf_productType", gsm: "pf_gsm"
+        };
+        Object.entries(map).forEach(([k, id]) => {
+          const el = document.getElementById(id);
+          if (el && s[k] !== undefined) { el.value = s[k]; el.classList.add("ai-filled"); }
         });
         const desc = document.getElementById("pf_desc");
         if (desc && s.description) { desc.value = s.description; desc.classList.add("ai-filled"); }
+        // Auto-generate SEO slug from name
+        const slug = document.getElementById("pf_seoSlug");
+        if (slug && s.name) slug.value = s.name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
         if (fieldsWrap) fieldsWrap.style.display = "block";
         if (redetectBtn) redetectBtn.style.display = "inline-block";
       }
 
       function clearFillMarks() {
-        ["pf_name","pf_category","pf_price","pf_stock","pf_desc"].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.classList.remove("ai-filled");
-        });
+        ["pf_name","pf_sku","pf_category","pf_subcategory","pf_productType","pf_brand",
+         "pf_desc","pf_price","pf_costPrice","pf_wholesalePrice","pf_offerPrice","pf_gst",
+         "pf_stock","pf_minStockAlert","pf_warehouseLocation",
+         "pf_fabricType","pf_material","pf_weave","pf_printType","pf_gsm","pf_width",
+         "pf_lengthUnit","pf_colour","pf_pattern","pf_occasion","pf_season",
+         "pf_seoSlug","pf_metaTitle","pf_metaDesc","pf_keywords"
+        ].forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove("ai-filled"); });
       }
 
       async function runAiDetect(file) {
@@ -3313,21 +3534,53 @@
 
       if (resetBtn) resetBtn.addEventListener("click", resetForm);
 
-      // Submit
+      // Submit — send all fields
       if (addProductForm) {
         addProductForm.addEventListener("submit", async (e) => {
           e.preventDefault();
           if (!lastFile) { alert("Please select a product image first."); return; }
           const msg = document.getElementById("addProductMsg");
           msg.textContent = "Uploading…"; msg.style.color = "#5f7395";
+          const g = id => document.getElementById(id)?.value?.trim() || "";
+          const gn = id => document.getElementById(id)?.value || "";
           try {
             const fd = new FormData();
-            fd.append("image", lastFile);
-            fd.append("name",        document.getElementById("pf_name")?.value.trim() || "");
-            fd.append("category",    document.getElementById("pf_category")?.value.trim() || "");
-            fd.append("price",       document.getElementById("pf_price")?.value || "");
-            fd.append("stock",       document.getElementById("pf_stock")?.value || "");
-            fd.append("description", document.getElementById("pf_desc")?.value.trim() || "");
+            fd.append("image",            lastFile);
+            // basic
+            fd.append("name",             g("pf_name"));
+            fd.append("sku",              g("pf_sku"));
+            fd.append("category",         g("pf_category"));
+            fd.append("subcategory",      g("pf_subcategory"));
+            fd.append("productType",      g("pf_productType"));
+            fd.append("brand",            g("pf_brand") || "Fabric Infinity");
+            fd.append("description",      g("pf_desc"));
+            // pricing
+            fd.append("price",            gn("pf_price"));
+            fd.append("costPrice",        gn("pf_costPrice"));
+            fd.append("wholesalePrice",   gn("pf_wholesalePrice"));
+            fd.append("offerPrice",       gn("pf_offerPrice"));
+            fd.append("gst",              gn("pf_gst") || "5");
+            // inventory
+            fd.append("stock",            gn("pf_stock"));
+            fd.append("minStockAlert",    gn("pf_minStockAlert") || "10");
+            fd.append("warehouseLocation",g("pf_warehouseLocation"));
+            // fabric
+            fd.append("fabricType",  g("pf_fabricType"));
+            fd.append("material",    g("pf_material"));
+            fd.append("weave",       g("pf_weave"));
+            fd.append("printType",   g("pf_printType"));
+            fd.append("gsm",         gn("pf_gsm") || "0");
+            fd.append("width",       g("pf_width"));
+            fd.append("lengthUnit",  g("pf_lengthUnit") || "Metre");
+            fd.append("colour",      g("pf_colour"));
+            fd.append("pattern",     g("pf_pattern"));
+            fd.append("occasion",    g("pf_occasion"));
+            fd.append("season",      g("pf_season"));
+            // seo
+            fd.append("seoSlug",   g("pf_seoSlug"));
+            fd.append("metaTitle", g("pf_metaTitle"));
+            fd.append("metaDesc",  g("pf_metaDesc"));
+            fd.append("keywords",  g("pf_keywords"));
             await api("/api/admin/products", { method: "POST", body: fd });
             msg.textContent = "✓ Product added!"; msg.style.color = "#1fa97a";
             setTimeout(resetForm, 1200);
