@@ -807,24 +807,109 @@
 
     /* ── 1140px: hide desktop nav, enable mobile menu ── */
     @media (max-width: 1140px) {
-      /* nav drawer */
-      nav { display: none; position: fixed; left: 0; right: 0; top: 0; bottom: 0; background: #fff; border-top: none; padding: 72px 16px 16px; overflow-y: auto; z-index: 199; }
+      /* nav drawer — full screen overlay */
+      nav {
+        display: none;
+        position: fixed;
+        left: 0; right: 0; top: 0; bottom: 0;
+        background: #fff;
+        padding: 70px 0 20px;
+        overflow-y: auto;
+        z-index: 199;
+        border-top: none;
+      }
       nav.open { display: block; }
-      nav ul { flex-direction: column; gap: 2px; }
-      nav > ul > li > a { font-size: 1rem; padding: 12px 10px; border-radius: 10px; }
+      nav ul { flex-direction: column; gap: 0; padding: 0 16px; }
+      nav > ul > li { border-bottom: 1px solid #edf2fc; }
+      nav > ul > li:last-child { border-bottom: none; }
+      nav > ul > li > a {
+        font-size: 1rem;
+        padding: 14px 10px;
+        border-radius: 0;
+        font-weight: 700;
+        color: #132038;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      nav > ul > li > a:hover { background: #f5f8ff; border-radius: 10px; }
 
-      /* mega panel inside mobile nav */
-      .mega-panel { position: static !important; transform: none !important; min-width: 0 !important; max-width: 100% !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; padding: 0 0 0 12px !important; margin-top: 4px !important; animation: none !important; display: none !important; flex-direction: column !important; }
+      /* mega panel inside mobile nav — accordion style */
+      .mega-panel {
+        position: static !important;
+        transform: none !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        border: none !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        margin: 0 0 8px 0 !important;
+        animation: none !important;
+        display: none !important;
+        flex-direction: column !important;
+        background: #f8fbff !important;
+        border-radius: 10px !important;
+        overflow: hidden !important;
+      }
       nav > ul > li.mega-open .mega-panel { display: flex !important; }
-      .mega-col { flex: none !important; width: 100% !important; border-right: none !important; border-bottom: 1px solid #edf2fc !important; padding: 8px 0 !important; }
+      .mega-col {
+        flex: none !important;
+        width: 100% !important;
+        border-right: none !important;
+        border-bottom: 1px solid #e4edfc !important;
+        padding: 12px 14px !important;
+      }
       .mega-col:last-child { border-bottom: none !important; }
-      .mega-col ul { flex-direction: row !important; flex-wrap: wrap !important; gap: 4px !important; }
-      .mega-col ul li a { padding: 5px 10px !important; background: #f5f8ff !important; border-radius: 999px !important; font-size: .82rem !important; }
+      .mega-col-head { font-size: 9px !important; margin-bottom: 8px !important; }
+      .mega-col ul {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .mega-col ul li a {
+        display: inline-block !important;
+        padding: 5px 12px !important;
+        background: #fff !important;
+        border: 1px solid #d4e2f8 !important;
+        border-radius: 999px !important;
+        font-size: .8rem !important;
+        color: #2c456e !important;
+        font-weight: 600 !important;
+      }
+      .mega-col ul li a:hover { background: #eef4ff !important; }
+      .mega-col ul li a.mega-highlight {
+        background: #ddeaff !important;
+        color: #1a5bc4 !important;
+        border-color: #9dc0f5 !important;
+        font-weight: 700 !important;
+      }
+
+      /* mobile close overlay button */
+      .nav-close-btn {
+        display: flex !important;
+        position: fixed;
+        top: 14px; right: 14px;
+        width: 40px; height: 40px;
+        border-radius: 50%;
+        background: #f0f5ff;
+        border: 1px solid #d4e2f8;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 200;
+        font-size: 1.2rem;
+        color: #132038;
+      }
+
       .menu-toggle { display: inline-flex !important; }
 
       /* hero stacks */
       .hero-grid { grid-template-columns: 1fr !important; }
-      .hero-slider { min-height: 320px !important; max-height: 55vw !important; border-radius: 18px !important; }
+      .hero-slider { min-height: 280px !important; max-height: 55vw !important; border-radius: 18px !important; }
       .split { grid-template-columns: 1fr !important; }
       .hero-copy h1 { font-size: clamp(2rem, 7vw, 3.4rem) !important; }
 
@@ -942,9 +1027,10 @@
           <span>FABRIC INFINITY</span>
         </a>
         <nav id="mainNav">
+          <!-- Close button (mobile only) -->
+          <button class="nav-close-btn" id="navCloseBtn" aria-label="Close menu" style="display:none;">✕</button>
           <ul id="megaNavList">
-            <!-- Static anchor links always present -->
-            <li><a href="#home">Home</a></li>
+            <li><a href="#home" id="navHomeLink">Home</a></li>
             <!-- Dynamic mega-menu items injected here by JS -->
             <li><a href="#new">New Arrivals</a></li>
             <li><a href="#wholesale">Wholesale</a></li>
@@ -1823,16 +1909,12 @@
           <a href="#" data-tab="tabOrders">Orders <span class="pill" id="ordersCountBadge">0</span></a>
           <a href="#" data-tab="tabProducts">Products</a>
           <a href="#" data-tab="tabCategories">Categories</a>
+          <a href="#" data-tab="tabShipping">Shipping</a>
           <a href="#" data-tab="tabOverview">Inventory</a>
           <a href="#" data-tab="tabOverview">Customers</a>
           <a href="#" data-tab="tabOverview">Wholesale</a>
-          <a href="#" data-tab="tabOverview">Coupons</a>
-          <a href="#" data-tab="tabOverview">Marketing</a>
-          <a href="#" data-tab="tabOverview">Reviews</a>
           <a href="#" data-tab="tabOverview">Reports</a>
-          <a href="#" data-tab="tabOverview">Finance</a>
-          <a href="#" data-tab="tabOverview">Website CMS</a>
-          <a href="#" data-tab="tabOverview">Settings</a>
+          <a href="#" data-tab="tabSettings">⚙ Settings</a>
         </nav>
         <div class="dash-profile">
           <strong>Fabric Infinity</strong>
@@ -2232,6 +2314,123 @@
           </article>
         </div><!-- end tabCategories -->
 
+        <!-- ═══════════════════════════════════════
+             SETTINGS TAB
+        ═══════════════════════════════════════ -->
+        <div id="tabSettings" style="display:none;">
+
+          <!-- Groq AI Key -->
+          <article class="dash-card" style="margin-bottom:14px;">
+            <h4 style="margin-bottom:4px;">🤖 Groq AI Key</h4>
+            <p style="color:#5f7395;font-size:.86rem;margin-bottom:14px;">Used for AI product auto-fill and chat widget. Get a free key at <a href="https://console.groq.com" target="_blank" style="color:#1464ce;font-weight:700;">console.groq.com</a></p>
+            <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
+              <div style="flex:1;min-width:200px;">
+                <label class="field-lbl">API Key</label>
+                <input id="st_groqKey" type="password" placeholder="gsk_••••••••••••••••••••••" class="field-inp" autocomplete="off"/>
+                <p id="st_groqStatus" style="font-size:.78rem;margin-top:4px;color:#5f7395;"></p>
+              </div>
+              <button class="btn primary" id="st_saveGroq" style="padding:9px 20px;white-space:nowrap;">Save Key</button>
+              <button class="btn" id="st_testGroq" style="padding:9px 16px;white-space:nowrap;">Test</button>
+            </div>
+          </article>
+
+          <!-- Shiprocket Credentials -->
+          <article class="dash-card" style="margin-bottom:14px;">
+            <h4 style="margin-bottom:4px;">📦 Shiprocket Credentials</h4>
+            <p style="color:#5f7395;font-size:.86rem;margin-bottom:14px;">Sign up free at <a href="https://app.shiprocket.in/register" target="_blank" style="color:#1464ce;font-weight:700;">shiprocket.in</a> → use your account email & password below.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:10px;">
+              <div>
+                <label class="field-lbl">Shiprocket Email</label>
+                <input id="st_srEmail" type="email" placeholder="you@email.com" class="field-inp"/>
+              </div>
+              <div>
+                <label class="field-lbl">Shiprocket Password</label>
+                <input id="st_srPass" type="password" placeholder="••••••••" class="field-inp" autocomplete="new-password"/>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+              <button class="btn primary" id="st_saveSR" style="padding:9px 20px;">Save Shiprocket Creds</button>
+              <span id="st_srMsg" style="font-size:.86rem;font-weight:700;"></span>
+            </div>
+          </article>
+
+          <!-- Shop Info -->
+          <article class="dash-card" style="margin-bottom:14px;">
+            <h4 style="margin-bottom:14px;">🏪 Shop Information</h4>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;">
+              <div><label class="field-lbl">Shop Name</label><input id="st_shopName" class="field-inp" placeholder="Fabric Infinity"/></div>
+              <div><label class="field-lbl">Phone</label><input id="st_shopPhone" class="field-inp" placeholder="+91 XXXXX XXXXX"/></div>
+              <div><label class="field-lbl">Email</label><input id="st_shopEmail" type="email" class="field-inp" placeholder="shop@email.com"/></div>
+              <div style="grid-column:1/-1"><label class="field-lbl">Address</label><input id="st_shopAddress" class="field-inp" placeholder="Shop address"/></div>
+              <div style="grid-column:1/-1"><label class="field-lbl">Announcement Bar Text</label><input id="st_announcement" class="field-inp" placeholder="Blue Craft Collection Live | Free Shipping Above INR 2,499"/></div>
+            </div>
+            <div style="margin-top:12px;display:flex;gap:10px;align-items:center;">
+              <button class="btn primary" id="st_saveShop" style="padding:9px 20px;">Save Shop Info</button>
+              <span id="st_shopMsg" style="font-size:.86rem;font-weight:700;"></span>
+            </div>
+          </article>
+
+        </div><!-- end tabSettings -->
+
+        <!-- ═══════════════════════════════════════
+             SHIPPING TAB
+        ═══════════════════════════════════════ -->
+        <div id="tabShipping" style="display:none;">
+
+          <article class="dash-card" style="margin-bottom:14px;">
+            <h4 style="margin-bottom:6px;">📦 Shiprocket Shipment Manager</h4>
+            <p style="color:#5f7395;font-size:.86rem;margin-bottom:14px;">Select a pending order to create a shipment, or track an existing AWB.</p>
+
+            <!-- Create shipment -->
+            <div style="background:#f8fbff;border:1px solid #e0eaf8;border-radius:12px;padding:14px;margin-bottom:14px;">
+              <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#3a5c9a;margin-bottom:10px;">Create Shipment</p>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:10px;">
+                <div>
+                  <label class="field-lbl">Select Order</label>
+                  <select id="sh_orderSelect" class="field-inp">
+                    <option value="">— Choose an order —</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="field-lbl">Pickup Pincode</label>
+                  <input id="sh_pickupPin" value="411021" class="field-inp" placeholder="411021"/>
+                </div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                <button class="btn primary" id="sh_createBtn" style="padding:9px 20px;">🚀 Create Shipment</button>
+                <span id="sh_createMsg" style="font-size:.86rem;font-weight:700;"></span>
+              </div>
+            </div>
+
+            <!-- Track shipment -->
+            <div style="background:#f8fbff;border:1px solid #e0eaf8;border-radius:12px;padding:14px;margin-bottom:14px;">
+              <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#3a5c9a;margin-bottom:10px;">Track by AWB</p>
+              <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
+                <div style="flex:1;min-width:180px;">
+                  <label class="field-lbl">AWB Number</label>
+                  <input id="sh_awbInput" class="field-inp" placeholder="e.g. 123456789012"/>
+                </div>
+                <button class="btn" id="sh_trackBtn" style="padding:9px 16px;">Track</button>
+              </div>
+              <div id="sh_trackResult" style="margin-top:12px;font-size:.88rem;display:none;background:#fff;border:1px solid #d4e2f8;border-radius:10px;padding:12px;"></div>
+            </div>
+
+            <!-- Serviceability check -->
+            <div style="background:#f8fbff;border:1px solid #e0eaf8;border-radius:12px;padding:14px;">
+              <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#3a5c9a;margin-bottom:10px;">Check Delivery Rates</p>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:10px;">
+                <div><label class="field-lbl">Pickup PIN</label><input id="sh_rateFrom" value="411021" class="field-inp"/></div>
+                <div><label class="field-lbl">Delivery PIN</label><input id="sh_rateTo" class="field-inp" placeholder="400001"/></div>
+                <div><label class="field-lbl">Weight (kg)</label><input id="sh_rateWeight" type="number" value="0.5" min="0.1" step="0.1" class="field-inp"/></div>
+                <div style="display:flex;align-items:flex-end;"><label style="display:flex;align-items:center;gap:6px;font-weight:700;font-size:.84rem;cursor:pointer;"><input type="checkbox" id="sh_rateCOD"/> COD</label></div>
+              </div>
+              <button class="btn" id="sh_rateBtn" style="padding:8px 16px;">Check Rates</button>
+              <div id="sh_rateResult" style="margin-top:12px;display:none;"></div>
+            </div>
+          </article>
+
+        </div><!-- end tabShipping -->
+
       </section>
     </div>
   </div>
@@ -2610,11 +2809,15 @@
     }
 
     // ── Dashboard Tabs ──────────────────────────────────────────
-    const TABS = ["tabOverview", "tabProducts", "tabOrders", "tabCategories"];
+    const TABS = ["tabOverview", "tabProducts", "tabOrders", "tabCategories", "tabSettings", "tabShipping"];
     function switchTab(tabId) {
       TABS.forEach(t => { const el = $("#" + t); if (el) el.style.display = t === tabId ? "block" : "none"; });
       $$(".dash-nav a").forEach(a => a.classList.toggle("active", a.dataset.tab === tabId));
-      const titles = { tabOverview: "Dashboard", tabProducts: "Products", tabOrders: "Orders", tabCategories: "Categories" };
+      const titles = {
+        tabOverview: "Dashboard", tabProducts: "Products",
+        tabOrders: "Orders", tabCategories: "Categories",
+        tabSettings: "Settings", tabShipping: "Shipping"
+      };
       const h = $("#dashTabTitle"); if (h && titles[tabId]) h.textContent = titles[tabId];
     }
 
@@ -2894,9 +3097,38 @@
       entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add("show"); });
     }, { threshold: 0.14 });
     document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    // ── Mobile nav toggle ──────────────────────────────────────
     const menuToggle = document.getElementById("menuToggle");
     const nav = document.getElementById("mainNav");
-    menuToggle.addEventListener("click", () => nav.classList.toggle("open"));
+    const navCloseBtn = document.getElementById("navCloseBtn");
+
+    function openMobileNav() {
+      nav.classList.add("open");
+      menuToggle.setAttribute("aria-expanded", "true");
+      if (navCloseBtn) navCloseBtn.style.display = "flex";
+      document.body.style.overflow = "hidden";
+    }
+    function closeMobileNav() {
+      nav.classList.remove("open");
+      menuToggle.setAttribute("aria-expanded", "false");
+      if (navCloseBtn) navCloseBtn.style.display = "none";
+      document.body.style.overflow = "";
+    }
+
+    menuToggle.addEventListener("click", () => {
+      nav.classList.contains("open") ? closeMobileNav() : openMobileNav();
+    });
+    if (navCloseBtn) navCloseBtn.addEventListener("click", closeMobileNav);
+
+    // Close nav when clicking a non-dropdown link on mobile
+    nav.addEventListener("click", (e) => {
+      const link = e.target.closest("a");
+      if (!link) return;
+      const hasMegaId = link.dataset.megaid;
+      if (!hasMegaId && window.innerWidth <= 1140) {
+        setTimeout(closeMobileNav, 180);
+      }
+    });
     nav.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => nav.classList.remove("open")));
 
     function renderMiniList(targetId, rows, lowStock = false) {
@@ -3396,6 +3628,8 @@
       e.preventDefault();
       switchTab(a.dataset.tab);
       if (a.dataset.tab === "tabCategories") loadAdminMenusTab();
+      if (a.dataset.tab === "tabSettings")   loadSettingsTab();
+      if (a.dataset.tab === "tabShipping")   loadShippingTab();
     }));
 
     // ── AI Product Upload Form ───────────────────────────────────
@@ -3864,6 +4098,162 @@
         setTimeout(() => { openWidget(); sessionStorage.setItem("fi_chat_seen", "1"); }, 4500);
       }
     })();
+
+    // ── Settings Tab ─────────────────────────────────────────────
+    async function loadSettingsTab() {
+      try {
+        const s = await api("/api/admin/settings");
+        if (document.getElementById("st_groqKey") && s.groqApiKeySet)
+          document.getElementById("st_groqStatus").textContent = "✓ Key is set (masked for security)";
+        if (document.getElementById("st_srEmail"))
+          document.getElementById("st_srEmail").value = s.shiprocketEmail || "";
+        if (s.shiprocketPasswordSet && document.getElementById("st_srPass"))
+          document.getElementById("st_srPass").placeholder = "••••••••••• (set)";
+        const fields = { st_shopName: s.shopName, st_shopPhone: s.shopPhone,
+          st_shopEmail: s.shopEmail, st_shopAddress: s.shopAddress, st_announcement: s.announcement };
+        Object.entries(fields).forEach(([id, val]) => { const el = document.getElementById(id); if (el && val) el.value = val; });
+      } catch(e) { console.error("loadSettings:", e); }
+    }
+
+    // Save Groq key
+    document.getElementById("st_saveGroq")?.addEventListener("click", async () => {
+      const key = document.getElementById("st_groqKey")?.value.trim();
+      const msg = document.getElementById("st_groqStatus");
+      if (!key) { msg.textContent = "Paste your Groq API key first"; msg.style.color = "#de4f63"; return; }
+      try {
+        await api("/api/admin/settings", { method: "PUT", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ groqApiKey: key }) });
+        document.getElementById("st_groqKey").value = "";
+        msg.textContent = "✓ Groq key saved!"; msg.style.color = "#1fa97a";
+      } catch(e) { msg.textContent = e.message; msg.style.color = "#de4f63"; }
+    });
+
+    // Test Groq key
+    document.getElementById("st_testGroq")?.addEventListener("click", async () => {
+      const msg = document.getElementById("st_groqStatus");
+      msg.textContent = "Testing…"; msg.style.color = "#5f7395";
+      try {
+        const r = await api("/api/chat", { method: "POST", headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({ messages: [{ role: "user", content: "Say: Groq is working!" }] }) });
+        msg.textContent = "✓ Groq working: " + (r.reply || "OK"); msg.style.color = "#1fa97a";
+      } catch(e) { msg.textContent = "✗ " + e.message; msg.style.color = "#de4f63"; }
+    });
+
+    // Save Shiprocket
+    document.getElementById("st_saveSR")?.addEventListener("click", async () => {
+      const email = document.getElementById("st_srEmail")?.value.trim();
+      const pass  = document.getElementById("st_srPass")?.value.trim();
+      const msg   = document.getElementById("st_srMsg");
+      if (!email) { msg.textContent = "Enter Shiprocket email"; msg.style.color = "#de4f63"; return; }
+      msg.textContent = "Saving…"; msg.style.color = "#5f7395";
+      try {
+        const payload = { shiprocketEmail: email };
+        if (pass) payload.shiprocketPassword = pass;
+        await api("/api/admin/settings", { method: "PUT", headers: {"Content-Type":"application/json"}, body: JSON.stringify(payload) });
+        document.getElementById("st_srPass").value = "";
+        msg.textContent = "✓ Shiprocket credentials saved!"; msg.style.color = "#1fa97a";
+        setTimeout(() => { msg.textContent = ""; }, 3000);
+      } catch(e) { msg.textContent = e.message; msg.style.color = "#de4f63"; }
+    });
+
+    // Save shop info
+    document.getElementById("st_saveShop")?.addEventListener("click", async () => {
+      const msg = document.getElementById("st_shopMsg");
+      const payload = {
+        shopName:     document.getElementById("st_shopName")?.value.trim(),
+        shopPhone:    document.getElementById("st_shopPhone")?.value.trim(),
+        shopEmail:    document.getElementById("st_shopEmail")?.value.trim(),
+        shopAddress:  document.getElementById("st_shopAddress")?.value.trim(),
+        announcement: document.getElementById("st_announcement")?.value.trim()
+      };
+      try {
+        await api("/api/admin/settings", { method: "PUT", headers: {"Content-Type":"application/json"}, body: JSON.stringify(payload) });
+        msg.textContent = "✓ Saved!"; msg.style.color = "#1fa97a";
+        // Update announcement bar live
+        if (payload.announcement) {
+          const bar = document.querySelector(".announcement");
+          if (bar) bar.textContent = payload.announcement;
+        }
+        setTimeout(() => { msg.textContent = ""; }, 2500);
+      } catch(e) { msg.textContent = e.message; msg.style.color = "#de4f63"; }
+    });
+
+    // ── Shipping Tab ─────────────────────────────────────────────
+    async function loadShippingTab() {
+      // Populate order select with pending/processing orders
+      try {
+        const data = await api("/api/admin/orders");
+        const sel  = document.getElementById("sh_orderSelect");
+        if (!sel) return;
+        const pending = (data.orders || []).filter(o => ["NEW","PROCESSING","PACKED"].includes(o.orderStatus));
+        sel.innerHTML = `<option value="">— Choose an order —</option>` +
+          pending.map(o => `<option value="${o._id}">${o.orderNo} — ${o.shippingAddress?.fullName || ""} (${o.orderStatus})</option>`).join("");
+      } catch(e) { console.error("loadShipping:", e); }
+    }
+
+    // Create shipment
+    document.getElementById("sh_createBtn")?.addEventListener("click", async () => {
+      const orderId = document.getElementById("sh_orderSelect")?.value;
+      const pin     = document.getElementById("sh_pickupPin")?.value.trim() || "411021";
+      const msg     = document.getElementById("sh_createMsg");
+      if (!orderId) { msg.textContent = "Select an order first"; msg.style.color = "#de4f63"; return; }
+      msg.textContent = "Creating shipment…"; msg.style.color = "#5f7395";
+      try {
+        const r = await api(`/api/admin/shipping/create/${orderId}`, {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({ pickupPincode: pin })
+        });
+        msg.textContent = `✓ Shipment created! AWB: ${r.awb || "—"}`; msg.style.color = "#1fa97a";
+        loadShippingTab();
+      } catch(e) { msg.textContent = "✗ " + e.message; msg.style.color = "#de4f63"; }
+    });
+
+    // Track shipment
+    document.getElementById("sh_trackBtn")?.addEventListener("click", async () => {
+      const awb = document.getElementById("sh_awbInput")?.value.trim();
+      const res = document.getElementById("sh_trackResult");
+      if (!awb) { res.style.display = "block"; res.textContent = "Enter AWB number"; return; }
+      res.style.display = "block"; res.textContent = "Tracking…";
+      try {
+        const data = await api(`/api/shipping/track/${awb}`);
+        const info = data.tracking_data || data;
+        const status = info.shipment_track?.[0]?.current_status || info.current_status || JSON.stringify(info);
+        const location = info.shipment_track?.[0]?.location || "";
+        res.innerHTML = `<strong style="color:#0b2e67;">Status:</strong> ${status}<br>
+          ${location ? `<strong style="color:#0b2e67;">Location:</strong> ${location}` : ""}
+          <details style="margin-top:8px;"><summary style="cursor:pointer;font-size:.8rem;color:#5f7395;">Raw response</summary>
+          <pre style="font-size:.72rem;overflow:auto;max-height:200px;">${JSON.stringify(data, null, 2)}</pre></details>`;
+      } catch(e) { res.textContent = "✗ " + e.message; }
+    });
+
+    // Check rates
+    document.getElementById("sh_rateBtn")?.addEventListener("click", async () => {
+      const fromPin = document.getElementById("sh_rateFrom")?.value.trim();
+      const toPin   = document.getElementById("sh_rateTo")?.value.trim();
+      const weight  = document.getElementById("sh_rateWeight")?.value || "0.5";
+      const cod     = document.getElementById("sh_rateCOD")?.checked;
+      const res     = document.getElementById("sh_rateResult");
+      if (!toPin) { res.style.display = "block"; res.textContent = "Enter delivery pincode"; return; }
+      res.style.display = "block"; res.textContent = "Checking rates…";
+      try {
+        const data = await api("/api/shipping/rates", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({ pickupPincode: fromPin, deliveryPincode: toPin, weight, cod })
+        });
+        const couriers = data.data?.available_courier_companies || [];
+        if (!couriers.length) { res.textContent = "No couriers available for this route"; return; }
+        res.innerHTML = `<div style="display:grid;gap:8px;">` +
+          couriers.slice(0, 6).map(c => `
+            <div style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #d4e2f8;border-radius:9px;padding:8px 12px;">
+              <div>
+                <strong style="font-size:.88rem;color:#0b2e67;">${c.courier_name}</strong>
+                <span style="font-size:.78rem;color:#5f7395;margin-left:8px;">${c.estimated_delivery_days} days</span>
+              </div>
+              <strong style="color:#1464ce;">₹${c.rate}</strong>
+            </div>`).join("") + `</div>`;
+      } catch(e) { res.textContent = "✗ " + e.message; }
+    });
 
   </script>
 </body>

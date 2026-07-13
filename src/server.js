@@ -17,7 +17,8 @@ const Product = require("./models/Product");
 const Order = require("./models/Order");
 const { signToken, requireAuth } = require("./middleware/auth");
 const { createShipmentForOrder } = require("./services/shipping");
-const MegaMenu = require("./models/Category");
+const MegaMenu  = require("./models/Category");
+const Settings  = require("./models/Settings");
 
 // ── Cloudinary or local disk storage ────────────────────────
 const cloudinary = cloudinaryModule.v2;
@@ -105,6 +106,14 @@ function getImageUrl(file) {
   if (!file) return "";
   if (cloudinaryEnabled && file.path) return file.path;
   return `/uploads/${encodeURIComponent(file.filename)}`;
+}
+
+// ── Dynamic Groq key: DB overrides env ───────────────────────
+async function getGroqKey() {
+  try {
+    const s = await Settings.getSingleton();
+    return (s.groqApiKey && s.groqApiKey.trim()) ? s.groqApiKey.trim() : config.groqApiKey;
+  } catch (_) { return config.groqApiKey; }
 }
 
 async function seedOwner() {
@@ -315,6 +324,147 @@ app.get("/api/health", (req, res) => {
     razorpayEnabled,
     now: new Date().toISOString()
   });
+});
+
+// ── Settings (Groq key, Shiprocket, shop info) ────────────────
+app.get("/api/admin/settings", requireAuth, async (req, res) => {
+  const s = await Settings.getSingleton();
+  res.json({
+    groqApiKey:            s.groqApiKey ? s.groqApiKey.slice(0, 8) + "••••••••••••••" : "",
+    groqApiKeySet:         !!(s.groqApiKey && s.groqApiKey.trim()),
+    shiprocketEmail:       s.shiprocketEmail || "",
+    shiprocketPasswordSet: !!(s.shiprocketPassword && s.shiprocketPassword.trim()),
+    shopName:    s.shopName    || config.shop.name,
+    shopPhone:   s.shopPhone   || config.shop.phone,
+    shopEmail:   s.shopEmail   || config.shop.email,
+    shopAddress: s.shopAddress || config.shop.address,
+    announcement: s.announcement || ""
+  });
+});
+
+app.put("/api/admin/settings", requireAuth, async (req, res) => {
+  const s = await Settings.getSingleton();
+  const b = req.body || {};
+  if (b.groqApiKey && b.groqApiKey.trim() && !b.groqApiKey.includes("•"))
+    s.groqApiKey = b.groqApiKey.trim();
+  if (b.shiprocketEmail    !== undefined) s.shiprocketEmail    = b.shiprocketEmail.trim();
+  if (b.shiprocketPassword && b.shiprocketPassword.trim() && !b.shiprocketPassword.includes("•")) {
+    s.shiprocketPassword = b.shiprocketPassword.trim();
+    s.shiprocketToken    = ""; s.shiprocketTokenAt = null;
+  }
+  if (b.shopName    !== undefined) s.shopName    = b.shopName.trim();
+  if (b.shopPhone   !== undefined) s.shopPhone   = b.shopPhone.trim();
+  if (b.shopEmail   !== undefined) s.shopEmail   = b.shopEmail.trim();
+  if (b.shopAddress !== undefined) s.shopAddress = b.shopAddress.trim();
+  if (b.announcement!== undefined) s.announcement= b.announcement.trim();
+  await s.save();
+  res.json({ message: "Settings saved" });
+});
+
+// ── Shiprocket Integration ────────────────────────────────────
+async function getShiprocketToken() {
+  const s = await Settings.getSingleton();
+  const tokenAge = s.shiprocketTokenAt
+    ? (Date.now() - new Date(s.shiprocketTokenAt).getTime()) : Infinity;
+  if (s.shiprocketToken && tokenAge < 23 * 3600000) return s.shiprocketToken;
+  if (!s.shiprocketEmail || !s.shiprocketPassword)
+    throw new Error("Shiprocket credentials not set. Go to Dashboard → Settings.");
+  const resp = await fetch("https://apiv2.shiprocket.in/v1/external/auth/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: s.shiprocketEmail, password: s.shiprocketPassword })
+  });
+  if (!resp.ok) throw new Error("Shiprocket login failed: " + resp.status);
+  const data = await resp.json();
+  if (!data.token) throw new Error("Shiprocket did not return a token");
+  s.shiprocketToken = data.token; s.shiprocketTokenAt = new Date();
+  await s.save();
+  return data.token;
+}
+
+app.post("/api/shipping/rates", async (req, res) => {
+  const { pickupPincode, deliveryPincode, weight, cod } = req.body || {};
+  if (!pickupPincode || !deliveryPincode) return fail(res, 400, "pickupPincode and deliveryPincode required");
+  try {
+    const token = await getShiprocketToken();
+    const params = new URLSearchParams({
+      pickup_postcode: String(pickupPincode),
+      delivery_postcode: String(deliveryPincode),
+      weight: String(weight || 0.5),
+      cod: cod ? "1" : "0"
+    });
+    const r = await fetch(`https://apiv2.shiprocket.in/v1/external/courier/serviceability/?${params}`,
+      { headers: { "Authorization": `Bearer ${token}` } });
+    res.json(await r.json());
+  } catch (e) { fail(res, 502, e.message); }
+});
+
+app.post("/api/admin/shipping/create/:orderId", requireAuth, async (req, res) => {
+  const order = await Order.findById(req.params.orderId);
+  if (!order) return fail(res, 404, "Order not found");
+  try {
+    const token = await getShiprocketToken();
+    const payload = {
+      order_id: order.orderNo,
+      order_date: new Date(order.createdAt).toISOString().slice(0, 10),
+      pickup_location: "Primary",
+      billing_customer_name: order.shippingAddress.fullName,
+      billing_last_name: "",
+      billing_address:   order.shippingAddress.addressLine1,
+      billing_address_2: order.shippingAddress.addressLine2 || "",
+      billing_city:      order.shippingAddress.city,
+      billing_pincode:   order.shippingAddress.pincode,
+      billing_state:     order.shippingAddress.state,
+      billing_country:   "India",
+      billing_email:     order.shippingAddress.email,
+      billing_phone:     order.shippingAddress.phone.replace(/\D/g,"").slice(-10),
+      shipping_is_billing: true,
+      order_items: order.items.map(i => ({
+        name: i.name, sku: i.productId?.toString() || "SKU",
+        units: i.quantity, selling_price: i.unitPrice,
+        discount: 0, tax: 5, hsn: 5208
+      })),
+      payment_method: order.paymentMethod === "COD" ? "COD" : "Prepaid",
+      sub_total: order.subtotal,
+      length: 20, breadth: 15, height: 5,
+      weight: Math.max(0.5, order.items.reduce((s, i) => s + i.quantity * 0.2, 0))
+    };
+    const r = await fetch("https://apiv2.shiprocket.in/v1/external/orders/create/adhoc", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+      body: JSON.stringify(payload)
+    });
+    const data = await r.json();
+    if (!r.ok) return fail(res, r.status, data?.message || "Shiprocket error");
+    order.shippingProvider = "SHIPROCKET";
+    order.shippingStatus   = "CREATED";
+    order.shippingRaw      = data;
+    await order.save();
+    res.json({ message: "Shipment created", shiprocketOrderId: data.order_id, awb: data.awb_code });
+  } catch (e) { fail(res, 502, e.message); }
+});
+
+app.get("/api/shipping/track/:awb", async (req, res) => {
+  try {
+    const token = await getShiprocketToken();
+    const r = await fetch(`https://apiv2.shiprocket.in/v1/external/courier/track/awb/${req.params.awb}`,
+      { headers: { "Authorization": `Bearer ${token}` } });
+    res.json(await r.json());
+  } catch (e) { fail(res, 502, e.message); }
+});
+
+app.post("/api/admin/shipping/cancel", requireAuth, async (req, res) => {
+  const { awbs } = req.body || {};
+  if (!awbs?.length) return fail(res, 400, "awbs array required");
+  try {
+    const token = await getShiprocketToken();
+    const r = await fetch("https://apiv2.shiprocket.in/v1/external/orders/cancel", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+      body: JSON.stringify({ awbs })
+    });
+    res.json(await r.json());
+  } catch (e) { fail(res, 502, e.message); }
 });
 
 // ── Force reset owner password (emergency use) ─────────────
@@ -673,20 +823,13 @@ app.get("/api/shop/meta", (req, res) => {
 });
 
 // ── AI Product Auto-Detect (Groq) ────────────────────────────
-// Accepts a base64 image + optional filename and returns
-// suggested name, category, description, price, stock.
 app.post("/api/admin/ai-product-detect", requireAuth, upload.single("image"), async (req, res) => {
-  if (!config.groqApiKey) {
-    return fail(res, 503, "GROQ_API_KEY is not configured.");
-  }
+  const groqKey = await getGroqKey();
+  if (!groqKey) return fail(res, 503, "GROQ_API_KEY is not configured. Set it in Dashboard → Settings.");
 
-  // Build image context: if a file was uploaded, use its path; else expect base64 in body
   let imageContext = "";
-  if (req.file) {
-    imageContext = `The owner just uploaded an image file named "${req.file.originalname}" (${req.file.mimetype}).`;
-  } else if (req.body.imageName) {
-    imageContext = `The owner is uploading an image file named "${req.body.imageName}".`;
-  }
+  if (req.file) imageContext = `The owner just uploaded an image file named "${req.file.originalname}" (${req.file.mimetype}).`;
+  else if (req.body.imageName) imageContext = `The owner is uploading an image file named "${req.body.imageName}".`;
 
   const userHint = req.body.hint ? `Owner hint: "${req.body.hint}".` : "";
 
@@ -708,7 +851,7 @@ Respond ONLY with valid JSON. No markdown, no explanation.`;
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${config.groqApiKey}`
+        "Authorization": `Bearer ${groqKey}`
       },
       body: JSON.stringify({
         model: "llama-3.3-70b-versatile",
@@ -749,14 +892,14 @@ Respond ONLY with valid JSON. No markdown, no explanation.`;
 
 // ── AI Chat (Groq proxy) ─────────────────────────────────────
 app.post("/api/chat", async (req, res) => {
-  if (!config.groqApiKey) {
-    return fail(res, 503, "AI chat is not configured yet. Please set GROQ_API_KEY.");
+  const groqKey = await getGroqKey();
+  if (!groqKey) {
+    return fail(res, 503, "AI chat is not configured. Set Groq API key in Dashboard → Settings.");
   }
 
   const messages = Array.isArray(req.body.messages) ? req.body.messages : [];
   if (!messages.length) return fail(res, 400, "messages array is required");
 
-  // System prompt — fabric store assistant
   const systemPrompt = {
     role: "system",
     content: `You are a helpful customer support assistant for ${config.shop.name}, a premium Indian fabric store. ` +
@@ -767,7 +910,6 @@ app.post("/api/chat", async (req, res) => {
       `Never make up order details. Keep replies under 120 words unless a detailed explanation is genuinely needed.`
   };
 
-  // Keep only the last 10 messages to stay within token limits
   const trimmed = messages.slice(-10);
 
   try {
@@ -775,7 +917,7 @@ app.post("/api/chat", async (req, res) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${config.groqApiKey}`
+        "Authorization": `Bearer ${groqKey}`
       },
       body: JSON.stringify({
         model: "llama-3.3-70b-versatile",
