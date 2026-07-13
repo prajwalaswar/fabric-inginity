@@ -801,35 +801,97 @@
     .bottom-bar article:last-child { border-right: 0; }
     .bottom-bar strong { display: block; font-size: 1.42rem; margin-top: 4px; }
 
+    /* ═══════════════════════════════════════════
+       RESPONSIVE BREAKPOINTS — clean single source
+    ═══════════════════════════════════════════ */
+
+    /* ── 1140px: hide desktop nav, enable mobile menu ── */
     @media (max-width: 1140px) {
-      nav { display: none; position: fixed; left: 0; right: 0; top: 78px; bottom: 0; background: #fff; border-top: 1px solid #d6e2f6; padding: 16px; overflow-y: auto; z-index: 199; }
+      /* nav drawer */
+      nav { display: none; position: fixed; left: 0; right: 0; top: 0; bottom: 0; background: #fff; border-top: none; padding: 72px 16px 16px; overflow-y: auto; z-index: 199; }
       nav.open { display: block; }
       nav ul { flex-direction: column; gap: 2px; }
       nav > ul > li > a { font-size: 1rem; padding: 12px 10px; border-radius: 10px; }
-      .mega-panel { position: static; transform: none; min-width: 0; max-width: 100%; border: none; box-shadow: none; border-radius: 0; padding: 0 0 0 16px; margin-top: 4px; animation: none; display: none; flex-direction: column; }
-      nav > ul > li.mega-open .mega-panel { display: flex; }
-      .mega-col { flex: none; width: 100%; border-right: none; border-bottom: 1px solid #edf2fc; padding: 10px 0; }
-      .mega-col:last-child { border-bottom: none; }
-      .mega-col ul { flex-direction: row; flex-wrap: wrap; gap: 4px; }
-      .mega-col ul li a { padding: 5px 10px; background: #f5f8ff; border-radius: 999px; font-size: .82rem; }
-      .menu-toggle { display: inline-flex; }
-      .hero-grid, .split { grid-template-columns: 1fr; }
-      .hero-slider { min-height: 420px; }
-      .grid-4 { grid-template-columns: repeat(2, 1fr); }
-      .grid-3 { grid-template-columns: repeat(2, 1fr); }
-      .reviews { grid-template-columns: 1fr; }
-      .insta-grid { grid-template-columns: repeat(3, 1fr); }
-      .newsletter { grid-template-columns: 1fr; }
-      .foot-grid { grid-template-columns: repeat(2, 1fr); }
-      .dashboard { grid-template-columns: 1fr; }
-      .dash-side { position: sticky; top: 0; z-index: 4; }
-      .dash-main { padding: 12px; }
-      .dash-top { grid-template-columns: 1fr; }
-      .metric-grid { grid-template-columns: repeat(2, 1fr); }
-      .dash-grid, .dash-grid-2 { grid-template-columns: 1fr; }
-      .bottom-bar { grid-template-columns: 1fr 1fr; }
+
+      /* mega panel inside mobile nav */
+      .mega-panel { position: static !important; transform: none !important; min-width: 0 !important; max-width: 100% !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; padding: 0 0 0 12px !important; margin-top: 4px !important; animation: none !important; display: none !important; flex-direction: column !important; }
+      nav > ul > li.mega-open .mega-panel { display: flex !important; }
+      .mega-col { flex: none !important; width: 100% !important; border-right: none !important; border-bottom: 1px solid #edf2fc !important; padding: 8px 0 !important; }
+      .mega-col:last-child { border-bottom: none !important; }
+      .mega-col ul { flex-direction: row !important; flex-wrap: wrap !important; gap: 4px !important; }
+      .mega-col ul li a { padding: 5px 10px !important; background: #f5f8ff !important; border-radius: 999px !important; font-size: .82rem !important; }
+      .menu-toggle { display: inline-flex !important; }
+
+      /* hero stacks */
+      .hero-grid { grid-template-columns: 1fr !important; }
+      .hero-slider { min-height: 320px !important; max-height: 55vw !important; border-radius: 18px !important; }
+      .split { grid-template-columns: 1fr !important; }
+      .hero-copy h1 { font-size: clamp(2rem, 7vw, 3.4rem) !important; }
+
+      /* product grids */
+      .grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+      .grid-3 { grid-template-columns: repeat(2, 1fr) !important; }
+      .reviews { grid-template-columns: 1fr !important; }
+      .insta-grid { grid-template-columns: repeat(3, 1fr) !important; }
+      .newsletter { grid-template-columns: 1fr !important; }
+      .foot-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+      /* dashboard */
+      .dashboard { grid-template-columns: 1fr !important; }
+      .dash-side { position: sticky; top: 0; z-index: 4; min-height: unset; }
+      .dash-main { padding: 12px !important; }
+      .dash-top { grid-template-columns: 1fr !important; }
+      .metric-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .dash-grid, .dash-grid-2 { grid-template-columns: 1fr !important; }
+      .bottom-bar { grid-template-columns: 1fr 1fr !important; }
     }
-    /* ── Product form shared field styles ── */
+
+    /* ── 760px: compact layout ── */
+    @media (max-width: 760px) {
+      .container   { width: calc(100% - 24px); }
+      .section     { padding: 40px 0; }
+      .hero-stats  { grid-template-columns: repeat(3, 1fr) !important; }
+      .grid-4      { grid-template-columns: repeat(2, 1fr) !important; }
+      .grid-3      { grid-template-columns: repeat(2, 1fr) !important; }
+      .insta-grid  { grid-template-columns: repeat(2, 1fr) !important; }
+      .foot-grid   { grid-template-columns: 1fr !important; }
+      .metric-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .bottom-bar  { grid-template-columns: 1fr !important; }
+      .split       { grid-template-columns: 1fr !important; }
+      .section-head{ flex-direction: column; align-items: flex-start; gap: 10px; }
+      .nav-wrap    { min-height: 62px; }
+      .brand > span:not(:first-child) { display: none; }
+      .hero-copy h1{ font-size: clamp(1.8rem, 7vw, 2.8rem) !important; }
+      .hero-slider { min-height: 260px !important; }
+
+      /* floating buttons */
+      #chatWidget  { width: calc(100vw - 24px) !important; right: 12px !important; bottom: 82px !important; }
+      #chatLauncher{ right: 12px !important; bottom: 16px !important; width: 50px !important; height: 50px !important; }
+      #locationBtn { right: 12px !important; bottom: 74px !important; }
+
+      /* owner modal */
+      .owner-card  { padding: 24px 18px !important; width: calc(100vw - 32px) !important; max-width: 100% !important; }
+    }
+
+    /* ── 480px: single column ── */
+    @media (max-width: 480px) {
+      .grid-4, .grid-3 { grid-template-columns: 1fr !important; }
+      .hero-stats  { grid-template-columns: 1fr 1fr !important; }
+      .hero-copy h1{ font-size: clamp(1.6rem, 8vw, 2.2rem) !important; }
+      .hero-slider { min-height: 220px !important; }
+      .metric-grid { grid-template-columns: 1fr 1fr !important; }
+      .cw-tab      { font-size: .66rem; padding: 9px 3px 8px; }
+      .mega-col-head { font-size: 9px; }
+
+      /* announcement bar smaller */
+      .announcement { font-size: 10px; padding: 7px; }
+
+      /* cards full width */
+      .card { font-size: .86rem; }
+
+      /* checkout modal full screen */
+      #checkoutModal > div { padding: 14px !important; }
+    }
     .field-lbl {
       display: block;
       font-size: 11px;
@@ -867,66 +929,6 @@
     #aiStep1:hover { border-color: #1464ce; }
     #aiStep1.drag-over { border-color: #1464ce; background: #f0f5ff; }
 
-    /* ── Mobile: full-width fixes ── */
-    @media (max-width: 1140px) {
-      /* mega menu mobile already handled — keep panel columns stacked */
-      .mega-panel { flex-direction: column !important; }
-      .mega-col   { min-width: 0 !important; width: 100% !important; }
-    }
-
-    @media (max-width: 900px) {
-      .metric-grid { grid-template-columns: repeat(3, 1fr) !important; }
-      .dash-grid   { grid-template-columns: 1fr !important; }
-      .dash-grid-2 { grid-template-columns: 1fr !important; }
-      .dash-top    { grid-template-columns: 1fr !important; }
-    }
-
-    @media (max-width: 760px) {
-      .container   { width: min(var(--max), calc(100% - 24px)); }
-      .section     { padding: 48px 0; }
-
-      /* grid cols */
-      .hero-stats, .grid-4, .grid-3 { grid-template-columns: repeat(2, 1fr); }
-      .insta-grid  { grid-template-columns: repeat(2, 1fr); }
-      .foot-grid   { grid-template-columns: 1fr; }
-      .metric-grid { grid-template-columns: repeat(2, 1fr) !important; }
-      .bottom-bar  { grid-template-columns: 1fr; }
-      .split       { grid-template-columns: 1fr; }
-
-      /* dashboard */
-      .dashboard   { grid-template-columns: 1fr; }
-      .dash-side   { position: sticky; top: 0; z-index: 4; min-height: unset; }
-      .dash-main   { padding: 12px; }
-      .dash-top    { grid-template-columns: 1fr !important; }
-      .dash-grid   { grid-template-columns: 1fr !important; }
-      .dash-grid-2 { grid-template-columns: 1fr !important; }
-      .dash-actions{ flex-wrap: wrap; }
-
-      /* hero */
-      .hero-grid   { grid-template-columns: 1fr; }
-      .hero-copy h1{ font-size: 2.8rem; }
-      .hero-slider { min-height: 320px; }
-
-      /* nav */
-      .nav-wrap    { min-height: 62px; }
-      .brand span  { display: none; }
-
-      /* product cards */
-      .grid-4 .card, .grid-3 .card { font-size: .88rem; }
-
-      /* chat widget */
-      #chatWidget  { width: calc(100vw - 24px) !important; right: 12px !important; bottom: 86px !important; }
-      #chatLauncher{ right: 12px !important; bottom: 16px !important; width: 52px !important; height: 52px !important; }
-      #locationBtn { right: 12px !important; bottom: 78px !important; }
-    }
-
-    @media (max-width: 480px) {
-      .grid-4, .grid-3 { grid-template-columns: 1fr; }
-      .hero-copy h1 { font-size: 2.2rem; }
-      .section-head { flex-direction: column; align-items: flex-start; gap: 10px; }
-      .metric-grid  { grid-template-columns: 1fr 1fr !important; }
-      .cw-tab       { font-size: .68rem; padding: 10px 4px 8px; }
-    }
   </style>
 </head>
 <body>
@@ -1796,7 +1798,7 @@
       <h3>Owner Dashboard Login</h3>
       <p>Sign in with your owner credentials</p>
       <div class="owner-field" style="margin-bottom:8px;">
-        <input id="ownerEmail" type="email" placeholder="owner@fabricinfinity.com" style="width:100%;border-radius:13px;border:1px solid #bfd5f5;background:#fff;padding:12px 14px;font:inherit;" />
+        <input id="ownerEmail" type="email" placeholder="fabricinfinity.in@gmail.com" style="width:100%;border-radius:13px;border:1px solid #bfd5f5;background:#fff;padding:12px 14px;font:inherit;" />
       </div>
       <div class="owner-field">
         <input id="ownerPassword" type="password" placeholder="Enter password" />

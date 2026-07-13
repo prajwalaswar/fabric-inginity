@@ -11,8 +11,8 @@ module.exports = {
   mongoUri: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/fabric_infinity",
   jwtSecret: process.env.JWT_SECRET || "change_me_now",
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "12h",
-  adminEmail: process.env.ADMIN_EMAIL || "owner@fabricinfinity.com",
-  adminPassword: process.env.ADMIN_PASSWORD || "fabric-Infinity**787",
+  adminEmail: process.env.ADMIN_EMAIL || "fabricinfinity.in@gmail.com",
+  adminPassword: process.env.ADMIN_PASSWORD || "FabricOwner@2026",
   razorpayKeyId: process.env.RAZORPAY_KEY_ID || "",
   razorpayKeySecret: process.env.RAZORPAY_KEY_SECRET || "",
   shop: {

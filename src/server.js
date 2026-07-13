@@ -109,15 +109,24 @@ function getImageUrl(file) {
 
 async function seedOwner() {
   const email = config.adminEmail.toLowerCase();
-  const existing = await User.findOne({ email });
-  if (existing) return;
   const passwordHash = await bcrypt.hash(config.adminPassword, 12);
-  await User.create({
-    name: "Fabric Infinity Owner",
-    email,
-    passwordHash,
-    role: "owner"
-  });
+
+  // Delete any stale owner accounts with old emails, then upsert correct one
+  await User.deleteMany({ role: "owner", email: { $ne: email } });
+
+  const existing = await User.findOne({ email });
+  if (existing) {
+    // Always sync password in case env changed
+    existing.passwordHash = passwordHash;
+    await existing.save();
+  } else {
+    await User.create({
+      name: "Fabric Infinity Owner",
+      email,
+      passwordHash,
+      role: "owner"
+    });
+  }
 }
 
 async function seedProducts() {
@@ -306,6 +315,20 @@ app.get("/api/health", (req, res) => {
     razorpayEnabled,
     now: new Date().toISOString()
   });
+});
+
+// ── Force reset owner password (emergency use) ─────────────
+app.post("/api/admin/reset-owner", async (req, res) => {
+  const { secret } = req.body || {};
+  // Simple guard — requires the JWT secret as confirmation token
+  if (!secret || secret !== config.jwtSecret) return fail(res, 403, "Forbidden");
+  try {
+    const email = config.adminEmail.toLowerCase();
+    const passwordHash = await bcrypt.hash(config.adminPassword, 12);
+    await User.deleteMany({ role: "owner" });
+    await User.create({ name: "Fabric Infinity Owner", email, passwordHash, role: "owner" });
+    res.json({ message: "Owner reset", email });
+  } catch(e) { fail(res, 500, e.message); }
 });
 
 // ── Force re-seed categories (admin only, safe to call multiple times) ──
