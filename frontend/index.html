@@ -594,8 +594,9 @@
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 16px;
       z-index: 120;
+      overflow-y: auto;
     }
     .owner-modal.open { display: flex; }
     .owner-card {
@@ -605,6 +606,8 @@
       background: linear-gradient(150deg, #f9fcff, #e6f0ff);
       box-shadow: 0 30px 100px rgba(3, 24, 58, .32);
       padding: 26px;
+      max-height: 90vh;
+      overflow-y: auto;
     }
     .owner-logo {
       width: 78px;
@@ -649,6 +652,7 @@
       flex-direction: column;
       gap: 16px;
       border-right: 1px solid rgba(180, 204, 244, .2);
+      position: relative;
     }
     .dash-brand {
       display: flex;
@@ -921,14 +925,58 @@
       .newsletter { grid-template-columns: 1fr !important; }
       .foot-grid { grid-template-columns: repeat(2, 1fr) !important; }
 
-      /* dashboard */
+      /* ─── DASHBOARD — mobile slide-in sidebar ─── */
+      /* Keep the grid layout but hide sidebar off-screen */
       .dashboard { grid-template-columns: 1fr !important; }
-      .dash-side { position: sticky; top: 0; z-index: 4; min-height: unset; }
-      .dash-main { padding: 12px !important; }
-      .dash-top { grid-template-columns: 1fr !important; }
+      .dash-side {
+        position: fixed !important;
+        left: -280px !important;
+        top: 0 !important;
+        bottom: 0 !important;
+        width: 260px !important;
+        z-index: 250 !important;
+        min-height: 100vh !important;
+        transition: left .28s ease !important;
+        box-shadow: none !important;
+        overflow-y: auto !important;
+      }
+      .dash-side.mob-open {
+        left: 0 !important;
+        box-shadow: 4px 0 32px rgba(4,21,58,.4) !important;
+      }
+      .dash-side-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(4,21,58,.5);
+        z-index: 249;
+        backdrop-filter: blur(2px);
+      }
+      .dash-side-overlay.mob-open { display: block; }
+      .dash-menu-btn {
+        display: flex !important;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255,255,255,.08);
+        border: 1px solid rgba(173,198,243,.3);
+        border-radius: 10px;
+        color: #d7e5ff;
+        padding: 8px 12px;
+        cursor: pointer;
+        font-family: "Manrope",sans-serif;
+        font-size: .84rem;
+        font-weight: 700;
+      }
+      .dash-menu-btn svg { width: 18px; height: 18px; }
+      .dash-main { padding: 10px !important; }
+      .dash-top { grid-template-columns: auto 1fr !important; gap: 8px !important; }
+      .dash-search { display: none !important; }
       .metric-grid { grid-template-columns: repeat(2, 1fr) !important; }
       .dash-grid, .dash-grid-2 { grid-template-columns: 1fr !important; }
       .bottom-bar { grid-template-columns: 1fr 1fr !important; }
+      .chart-svg { height: 160px !important; }
+      .dash-title h2 { font-size: 1.5rem !important; }
+      .donut { width: 130px !important; }
     }
 
     /* ── 760px: compact layout ── */
@@ -1898,13 +1946,17 @@
   </div>
 
   <div class="dashboard-wrap" id="ownerDashboard">
+    <!-- Mobile sidebar overlay -->
+    <div class="dash-side-overlay" id="dashSideOverlay"></div>
     <div class="dashboard">
-      <aside class="dash-side">
+      <aside class="dash-side" id="dashSide">
+        <!-- Mobile close button inside sidebar -->
+        <button id="dashSideClose" style="display:none;position:absolute;top:12px;right:12px;background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;align-items:center;justify-content:center;">✕</button>
         <div class="dash-brand">
           <img src="assets/codex-clipboard-ba1642ba-86e7-4917-8383-f749aa153b92.jpg" alt="Fabric Infinity logo" />
           <strong>FABRIC INFINITY</strong>
         </div>
-        <nav class="dash-nav">
+        <nav class="dash-nav" id="dashNav">
           <a class="active" href="#" data-tab="tabOverview">Dashboard</a>
           <a href="#" data-tab="tabOrders">Orders <span class="pill" id="ordersCountBadge">0</span></a>
           <a href="#" data-tab="tabProducts">Products</a>
@@ -1924,6 +1976,11 @@
 
       <section class="dash-main">
         <div class="dash-top">
+          <!-- Mobile menu button — shown only on mobile -->
+          <button class="dash-menu-btn" id="dashMenuBtn" style="display:none;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            Menu
+          </button>
           <div class="dash-title">
             <h2 id="dashTabTitle">Dashboard</h2>
             <p>Welcome back, Fabric Infinity</p>
@@ -3623,8 +3680,50 @@
     const visitStoreBtn = document.getElementById("visitStoreBtn");
     if (visitStoreBtn) visitStoreBtn.addEventListener("click", () => { const d = document.getElementById("ownerDashboard"); if (d) d.classList.remove("open"); document.body.style.overflow = ""; });
 
-    // Dashboard tabs
-    $$(".dash-nav a[data-tab]").forEach(a => a.addEventListener("click", (e) => {
+    // ── Dashboard Mobile Sidebar ────────────────────────────────
+    (function initDashMobileSidebar() {
+      const menuBtn   = document.getElementById("dashMenuBtn");
+      const side      = document.getElementById("dashSide");
+      const overlay   = document.getElementById("dashSideOverlay");
+      const closeBtn  = document.getElementById("dashSideClose");
+      if (!menuBtn || !side) return;
+
+      function isMobile() { return window.innerWidth <= 1140; }
+
+      function openSidebar() {
+        side.classList.add("mob-open");
+        overlay.classList.add("mob-open");
+        document.body.style.overflow = "hidden";
+      }
+      function closeSidebar() {
+        side.classList.remove("mob-open");
+        overlay.classList.remove("mob-open");
+        document.body.style.overflow = "";
+      }
+
+      function applyMobileState() {
+        if (isMobile()) {
+          menuBtn.style.display = "flex";
+          if (closeBtn) closeBtn.style.display = "flex";
+        } else {
+          menuBtn.style.display = "none";
+          if (closeBtn) closeBtn.style.display = "none";
+          closeSidebar();
+        }
+      }
+
+      menuBtn.addEventListener("click", openSidebar);
+      if (overlay) overlay.addEventListener("click", closeSidebar);
+      if (closeBtn) closeBtn.addEventListener("click", closeSidebar);
+
+      // Close sidebar when a nav tab is clicked on mobile
+      document.getElementById("dashNav")?.querySelectorAll("a[data-tab]").forEach(a => {
+        a.addEventListener("click", () => { if (isMobile()) setTimeout(closeSidebar, 200); });
+      });
+
+      applyMobileState();
+      window.addEventListener("resize", applyMobileState);
+    })();
       e.preventDefault();
       switchTab(a.dataset.tab);
       if (a.dataset.tab === "tabCategories") loadAdminMenusTab();
