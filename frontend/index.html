@@ -817,28 +817,30 @@
         position: fixed;
         left: 0; right: 0; top: 0; bottom: 0;
         background: #fff;
-        padding: 70px 0 20px;
+        padding: 70px 16px 20px;
         overflow-y: auto;
         z-index: 199;
         border-top: none;
       }
       nav.open { display: block; }
-      nav ul { flex-direction: column; gap: 0; padding: 0 16px; }
+      nav ul { flex-direction: column; gap: 0; padding: 0; }
       nav > ul > li { border-bottom: 1px solid #edf2fc; }
       nav > ul > li:last-child { border-bottom: none; }
       nav > ul > li > a {
-        font-size: 1rem;
-        padding: 14px 10px;
+        font-size: 1.05rem;
+        padding: 16px 10px;
         border-radius: 0;
-        font-weight: 700;
+        font-weight: 800;
         color: #132038;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        transition: background .18s;
       }
-      nav > ul > li > a:hover { background: #f5f8ff; border-radius: 10px; }
+      nav > ul > li > a:hover { background: #f5f8ff; }
+      nav > ul > li.mega-open > a { background: #eef4ff; color: #0b2e67; }
 
-      /* mega panel inside mobile nav — accordion style */
+      /* mega panel inside mobile nav — accordion style with better spacing */
       .mega-panel {
         position: static !important;
         transform: none !important;
@@ -848,48 +850,68 @@
         box-shadow: none !important;
         border-radius: 0 !important;
         padding: 0 !important;
-        margin: 0 0 8px 0 !important;
+        margin: 0 0 4px 0 !important;
         animation: none !important;
         display: none !important;
         flex-direction: column !important;
-        background: #f8fbff !important;
-        border-radius: 10px !important;
-        overflow: hidden !important;
+        background: transparent !important;
+        overflow: visible !important;
       }
       nav > ul > li.mega-open .mega-panel { display: flex !important; }
+
+      /* Each column gets proper spacing and clear heading */
       .mega-col {
         flex: none !important;
         width: 100% !important;
         border-right: none !important;
-        border-bottom: 1px solid #e4edfc !important;
-        padding: 12px 14px !important;
+        border-bottom: none !important;
+        padding: 16px 10px 12px !important;
+        background: #f8fbff !important;
+        border-left: 3px solid #1464ce !important;
+        margin-bottom: 10px !important;
+        border-radius: 0 8px 8px 0 !important;
       }
-      .mega-col:last-child { border-bottom: none !important; }
-      .mega-col-head { font-size: 9px !important; margin-bottom: 8px !important; }
+      .mega-col:last-child { margin-bottom: 4px !important; }
+
+      /* Column headings more prominent on mobile */
+      .mega-col-head {
+        font-size: 10px !important;
+        margin-bottom: 12px !important;
+        padding-bottom: 8px !important;
+        border-bottom: 2px solid #d4e2f8 !important;
+        letter-spacing: .16em !important;
+      }
+
+      /* Items in chips/tags style — easy to tap */
       .mega-col ul {
         flex-direction: row !important;
         flex-wrap: wrap !important;
-        gap: 6px !important;
+        gap: 8px !important;
         list-style: none !important;
         padding: 0 !important;
         margin: 0 !important;
       }
       .mega-col ul li a {
         display: inline-block !important;
-        padding: 5px 12px !important;
+        padding: 8px 14px !important;
         background: #fff !important;
         border: 1px solid #d4e2f8 !important;
         border-radius: 999px !important;
-        font-size: .8rem !important;
+        font-size: .86rem !important;
         color: #2c456e !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
+        transition: all .15s !important;
+        box-shadow: 0 1px 3px rgba(10,32,82,.06) !important;
       }
-      .mega-col ul li a:hover { background: #eef4ff !important; }
+      .mega-col ul li a:active {
+        transform: scale(0.97) !important;
+        box-shadow: 0 1px 2px rgba(10,32,82,.08) !important;
+      }
       .mega-col ul li a.mega-highlight {
-        background: #ddeaff !important;
+        background: linear-gradient(135deg, #ddeaff, #e8f2ff) !important;
         color: #1a5bc4 !important;
         border-color: #9dc0f5 !important;
-        font-weight: 700 !important;
+        font-weight: 800 !important;
       }
 
       /* mobile close overlay button */
@@ -897,7 +919,7 @@
         display: flex !important;
         position: fixed;
         top: 14px; right: 14px;
-        width: 40px; height: 40px;
+        width: 42px; height: 42px;
         border-radius: 50%;
         background: #f0f5ff;
         border: 1px solid #d4e2f8;
@@ -905,8 +927,10 @@
         justify-content: center;
         cursor: pointer;
         z-index: 200;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         color: #132038;
+        font-weight: 300;
+        box-shadow: 0 2px 8px rgba(10,32,82,.12);
       }
 
       .menu-toggle { display: inline-flex !important; }
@@ -992,10 +1016,17 @@
       .bottom-bar  { grid-template-columns: 1fr !important; }
       .split       { grid-template-columns: 1fr !important; }
       .section-head{ flex-direction: column; align-items: flex-start; gap: 10px; }
-      .nav-wrap    { min-height: 62px; }
-      .actions { gap: 6px; }
-      .nav-icon-btn { width: 38px; height: 38px; flex: 0 0 38px; }
-      .brand > span:not(:first-child) { display: none; }
+      .nav-wrap    { min-height: 58px; padding: 0 4px; }
+      .actions { gap: 2px; }
+      .nav-icon-btn { width: 36px; height: 36px; flex: 0 0 36px; }
+      /* Keep brand name visible on mobile — clear and readable */
+      .brand > span {
+        font-size: .82rem !important;
+        letter-spacing: .06em !important;
+        font-weight: 800 !important;
+      }
+      .brand img { width: 30px !important; height: 30px !important; }
+      .brand { gap: 7px !important; }
       .hero-copy h1{ font-size: clamp(1.8rem, 7vw, 2.8rem) !important; }
       .hero-slider { min-height: 260px !important; }
 
@@ -1164,11 +1195,12 @@
             <span class="cart-badge" id="cartCount" data-count="0">0</span>
           </button>
 
-          <!-- Mobile menu toggle -->
-          <button class="nav-icon-btn menu-toggle" id="menuToggle" aria-label="Open menu">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <!-- Mobile menu toggle — shows category nav -->
+          <button class="menu-toggle" id="menuToggle" aria-label="Open menu" style="display:none;align-items:center;gap:5px;background:var(--brand);color:#fff;border:none;border-radius:8px;padding:7px 11px;cursor:pointer;font-family:'Manrope',sans-serif;font-size:.78rem;font-weight:800;flex-shrink:0;">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
               <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
             </svg>
+            Menu
           </button>
         </div>
       </div>
