@@ -3177,16 +3177,18 @@
     });
     if (navCloseBtn) navCloseBtn.addEventListener("click", closeMobileNav);
 
-    // Close nav when clicking a non-dropdown link on mobile
+    // Close nav when clicking any link on mobile
     nav.addEventListener("click", (e) => {
       const link = e.target.closest("a");
-      if (!link) return;
+      if (!link || window.innerWidth > 1140) return;
       const hasMegaId = link.dataset.megaid;
-      if (!hasMegaId && window.innerWidth <= 1140) {
-        setTimeout(closeMobileNav, 180);
+      if (hasMegaId) {
+        // It's a top-level dropdown trigger — toggle accordion, don't close nav
+        return;
       }
+      // It's a category chip or static link — close nav after brief delay
+      setTimeout(closeMobileNav, 220);
     });
-    nav.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => nav.classList.remove("open")));
 
     function renderMiniList(targetId, rows, lowStock = false) {
       const target = document.getElementById(targetId);
@@ -3262,21 +3264,31 @@
       // Remove previously injected dynamic items
       $$(".mega-nav-item").forEach(el => el.remove());
 
-      // Insert after the first <li> (Home)
-      const homeItem = list.querySelector("li:first-child");
+      // Find the anchor point (Home li) — insert AFTER it in correct order
+      // by appending to the list but BEFORE the static links (New Arrivals etc)
+      const staticLinks = list.querySelectorAll("li:not(.mega-nav-item)");
+      // Insert point: after Home (first li), before "New Arrivals" (second static li)
+      const insertBefore = staticLinks[1] || null; // "New Arrivals" li
+
       menus.forEach(menu => {
         const li = document.createElement("li");
         li.className = "mega-nav-item";
         const hasColumns = menu.columns && menu.columns.length > 0;
         li.innerHTML = `
-          <a href="#shop" data-megaid="${menu._id}">
-            ${menu.navLabel}
+          <a href="#shop" data-megaid="${menu._id}" style="justify-content:space-between;">
+            <span>${menu.navLabel}</span>
             <span class="nav-arrow">▾</span>
           </a>
           <div class="mega-panel${hasColumns && menu.columns.length <= 2 ? ' mega-small' : ''}" id="mega-${menu._id}">
             ${buildMegaPanelHTML(menu)}
           </div>`;
-        homeItem.after(li);
+
+        // Insert in correct order before the static "New Arrivals" link
+        if (insertBefore) {
+          list.insertBefore(li, insertBefore);
+        } else {
+          list.appendChild(li);
+        }
 
         // Toggle open on click (touch-friendly + desktop)
         const trigger = li.querySelector("a[data-megaid]");
@@ -3347,13 +3359,12 @@
       // Show skeleton immediately
       const list = $("#megaNavList");
       if (list) {
-        const homeItem = list.querySelector("li:first-child");
+        const insertBefore = list.querySelectorAll("li:not(.mega-nav-item)")[1] || null;
         const skeletonLi = document.createElement("li");
         skeletonLi.id = "megaNavSkeleton";
         skeletonLi.className = "mega-nav-item";
         skeletonLi.innerHTML = `<a href="#shop">FABRICS <span class="nav-arrow">▾</span></a><div class="mega-panel" style="display:flex">${buildMegaSkeletonHTML()}</div>`;
-        homeItem.after(skeletonLi);
-        // show skeleton briefly
+        if (insertBefore) list.insertBefore(skeletonLi, insertBefore); else list.appendChild(skeletonLi);
         setTimeout(() => { const sk = $("#megaNavSkeleton"); if (sk) sk.remove(); }, 1200);
       }
       try {
