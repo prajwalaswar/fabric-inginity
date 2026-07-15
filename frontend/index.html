@@ -392,7 +392,21 @@
     .account-menu-item.danger { color: #c0392b; }
     .account-menu-item.danger:hover { background: #fff1f0; }
 
-    .menu-toggle { display: none; }
+    .menu-toggle {
+      display: none;
+      align-items: center;
+      gap: 5px;
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 7px 11px;
+      cursor: pointer;
+      font-family: 'Manrope', sans-serif;
+      font-size: .78rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
 
     .hero-grid {
       display: grid;
@@ -1196,7 +1210,7 @@
           </button>
 
           <!-- Mobile menu toggle — shows category nav -->
-          <button class="menu-toggle" id="menuToggle" aria-label="Open menu" style="display:none;align-items:center;gap:5px;background:var(--brand);color:#fff;border:none;border-radius:8px;padding:7px 11px;cursor:pointer;font-family:'Manrope',sans-serif;font-size:.78rem;font-weight:800;flex-shrink:0;">
+          <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
               <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
             </svg>
