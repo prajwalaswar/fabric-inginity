@@ -3,14 +3,14 @@
   "builds": [
     {
       "src": "src/server.js",
-      "use": "@vercel/node",
-      "config": {
-        "maxLambdaSize": "50mb",
-        "includeFiles": ["frontend/**", "backend/**"]
-      }
+      "use": "@vercel/node"
     }
   ],
   "routes": [
+    {
+      "src": "/assets/(.*)",
+      "dest": "/frontend/assets/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "src/server.js"
