@@ -3208,40 +3208,69 @@
     }, { threshold: 0.14 });
     document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
     // ── Mobile nav toggle ──────────────────────────────────────
-    const menuToggle = document.getElementById("menuToggle");
-    const nav = document.getElementById("mainNav");
-    const navCloseBtn = document.getElementById("navCloseBtn");
-
-    function openMobileNav() {
-      nav.classList.add("open");
-      menuToggle.setAttribute("aria-expanded", "true");
-      if (navCloseBtn) navCloseBtn.style.display = "flex";
-      document.body.style.overflow = "hidden";
-    }
-    function closeMobileNav() {
-      nav.classList.remove("open");
-      menuToggle.setAttribute("aria-expanded", "false");
-      if (navCloseBtn) navCloseBtn.style.display = "none";
-      document.body.style.overflow = "";
-    }
-
-    menuToggle.addEventListener("click", () => {
-      nav.classList.contains("open") ? closeMobileNav() : openMobileNav();
-    });
-    if (navCloseBtn) navCloseBtn.addEventListener("click", closeMobileNav);
-
-    // Close nav when clicking any link on mobile
-    nav.addEventListener("click", (e) => {
-      const link = e.target.closest("a");
-      if (!link || window.innerWidth > 1140) return;
-      const hasMegaId = link.dataset.megaid;
-      if (hasMegaId) {
-        // It's a top-level dropdown trigger — toggle accordion, don't close nav
+    function initMobileNav() {
+      const menuToggle = document.getElementById("menuToggle");
+      const nav = document.getElementById("mainNav");
+      const navCloseBtn = document.getElementById("navCloseBtn");
+      
+      if (!menuToggle || !nav) {
+        console.error("Mobile nav elements not found");
         return;
       }
-      // It's a category chip or static link — close nav after brief delay
-      setTimeout(closeMobileNav, 220);
-    });
+
+      function openMobileNav() {
+        nav.classList.add("open");
+        menuToggle.setAttribute("aria-expanded", "true");
+        if (navCloseBtn) navCloseBtn.style.display = "flex";
+        document.body.style.overflow = "hidden";
+      }
+      
+      function closeMobileNav() {
+        nav.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        if (navCloseBtn) navCloseBtn.style.display = "none";
+        document.body.style.overflow = "";
+      }
+
+      menuToggle.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log("Menu toggle clicked, nav open:", nav.classList.contains("open"));
+        if (nav.classList.contains("open")) {
+          closeMobileNav();
+        } else {
+          openMobileNav();
+        }
+      });
+      
+      if (navCloseBtn) {
+        navCloseBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          closeMobileNav();
+        });
+      }
+
+      // Close nav when clicking any link on mobile
+      nav.addEventListener("click", (e) => {
+        const link = e.target.closest("a");
+        if (!link || window.innerWidth > 1140) return;
+        const hasMegaId = link.dataset.megaid;
+        if (hasMegaId) {
+          // It's a top-level dropdown trigger — toggle accordion, don't close nav
+          return;
+        }
+        // It's a category chip or static link — close nav after brief delay
+        setTimeout(closeMobileNav, 220);
+      });
+      
+      console.log("Mobile nav initialized");
+    }
+    
+    // Initialize mobile nav after DOM loads
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initMobileNav);
+    } else {
+      initMobileNav();
+    }
 
     function renderMiniList(targetId, rows, lowStock = false) {
       const target = document.getElementById(targetId);
