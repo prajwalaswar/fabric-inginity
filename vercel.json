@@ -1,15 +1,27 @@
 {
   "version": 2,
+  "outputDirectory": ".",
   "builds": [
     {
+      "src": "frontend/assets/**",
+      "use": "@vercel/static"
+    },
+    {
       "src": "src/server.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["frontend/index.html", "backend/uploads/.gitkeep"]
+      }
     }
   ],
   "routes": [
     {
       "src": "/assets/(.*)",
       "dest": "/frontend/assets/$1"
+    },
+    {
+      "src": "/uploads/(.*)",
+      "dest": "src/server.js"
     },
     {
       "src": "/(.*)",
