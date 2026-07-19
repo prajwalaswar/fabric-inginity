@@ -825,7 +825,7 @@
 
     /* ── 1140px: hide desktop nav, enable mobile menu ── */
     @media (max-width: 1140px) {
-      /* nav drawer — full screen overlay */
+      /* nav drawer — full screen overlay with better z-index */
       nav {
         display: none;
         position: fixed;
@@ -833,10 +833,10 @@
         background: #fff;
         padding: 70px 16px 20px;
         overflow-y: auto;
-        z-index: 199;
+        z-index: 9999; /* Increased z-index to be above everything */
         border-top: none;
       }
-      nav.open { display: block; }
+      nav.open { display: block !important; }
       nav ul { flex-direction: column; gap: 0; padding: 0; }
       nav > ul > li { border-bottom: 1px solid #edf2fc; }
       nav > ul > li:last-child { border-bottom: none; }
@@ -940,7 +940,7 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        z-index: 200;
+        z-index: 10000; /* Above nav overlay */
         font-size: 1.3rem;
         color: #132038;
         font-weight: 300;
@@ -3167,10 +3167,19 @@
       image: productImages[i],
       text: "New this week"
     }));
+    // Four new banner photos for hero slideshow
+    const newBannerImages = [
+      "https://i.postimg.cc/d1KmTsFV/Festive-Vibes-Banner.jpg",
+      "https://i.postimg.cc/X7M7f5Yq/Elevate-Every-Creation-Banner.jpg",
+      "https://i.postimg.cc/j2bmh3T6/Every-Dupatta-Tells-a-Story-Banner.jpg",
+      "https://i.postimg.cc/mDZkjJjS/Softness-with-Perfection-Banner.jpg"
+    ];
+
     const heroSlides = [
-      { img: productImages[15], title: "Ajrakh Heritage Collection", text: "Earthy classics with timeless motifs and premium drape." },
-      { img: productImages[21], title: "Indigo Handblock Stories", text: "Deep indigo palettes handcrafted for modern styling." },
-      { img: productImages[33], title: "Black & White Essentials", text: "Minimal monochrome prints for elegant everyday dressing." }
+      { img: newBannerImages[0], title: "Festive Vibes", text: "The Beauty of Indian Weaves — Embrace tradition with handcrafted elegance." },
+      { img: newBannerImages[1], title: "Elevate Every Creation", text: "Premium Fabrics That Bring Your Designs to Life." },
+      { img: newBannerImages[2], title: "Every Dupatta Tells a Story", text: "Inspired by Heritage. Designed for Today." },
+      { img: newBannerImages[3], title: "Softness with Perfection", text: "Luxurious textures for timeless style." }
     ];
 
     function mkCard(item, mode = "product") {
@@ -3214,7 +3223,7 @@
       slideEls.forEach((el, idx) => el.classList.toggle("active", idx === slideIndex));
       slideTitle.textContent = heroSlides[slideIndex].title;
       slideText.textContent = heroSlides[slideIndex].text;
-    }, 4300);
+    }, 2000); // Changed from 4300ms to 2000ms (2 seconds) for faster slideshow
 
     document.getElementById("instaGrid").innerHTML = productImages.slice(0, 12).map((src) => `<figure><img src="${encodeURI(src)}" alt="Fabric Infinity Instagram" loading="lazy"></figure>`).join("");
     const observer = new IntersectionObserver((entries) => {
@@ -3237,6 +3246,7 @@
         menuToggle.setAttribute("aria-expanded", "true");
         if (navCloseBtn) navCloseBtn.style.display = "flex";
         document.body.style.overflow = "hidden";
+        console.log("Mobile nav opened");
       }
       
       function closeMobileNav() {
@@ -3244,10 +3254,14 @@
         menuToggle.setAttribute("aria-expanded", "false");
         if (navCloseBtn) navCloseBtn.style.display = "none";
         document.body.style.overflow = "";
+        // Also close any open mega panels when closing mobile nav
+        $$(".mega-nav-item").forEach(x => x.classList.remove("mega-open"));
+        console.log("Mobile nav closed");
       }
 
       menuToggle.addEventListener("click", (e) => {
         e.preventDefault();
+        e.stopPropagation();
         console.log("Menu toggle clicked, nav open:", nav.classList.contains("open"));
         if (nav.classList.contains("open")) {
           closeMobileNav();
@@ -3259,11 +3273,12 @@
       if (navCloseBtn) {
         navCloseBtn.addEventListener("click", (e) => {
           e.preventDefault();
+          e.stopPropagation();
           closeMobileNav();
         });
       }
 
-      // Close nav when clicking any link on mobile
+      // Close nav when clicking any link on mobile (except mega menu triggers)
       nav.addEventListener("click", (e) => {
         const link = e.target.closest("a");
         if (!link || window.innerWidth > 1140) return;
@@ -3276,7 +3291,24 @@
         setTimeout(closeMobileNav, 220);
       });
       
-      console.log("Mobile nav initialized");
+      // Close on outside click (only on mobile)
+      document.addEventListener("click", (e) => {
+        if (window.innerWidth <= 1140 && 
+            nav.classList.contains("open") &&
+            !nav.contains(e.target) &&
+            !menuToggle.contains(e.target)) {
+          closeMobileNav();
+        }
+      });
+
+      // Close on escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && nav.classList.contains("open")) {
+          closeMobileNav();
+        }
+      });
+      
+      console.log("Mobile nav initialized successfully");
     }
     
     // Initialize mobile nav after DOM loads
@@ -3285,6 +3317,19 @@
     } else {
       initMobileNav();
     }
+
+    // Re-initialize on window resize to handle orientation changes
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const nav = document.getElementById("mainNav");
+        if (window.innerWidth > 1140 && nav?.classList.contains("open")) {
+          nav.classList.remove("open");
+          document.body.style.overflow = "";
+        }
+      }, 250);
+    });
 
     function renderMiniList(targetId, rows, lowStock = false) {
       const target = document.getElementById(targetId);
