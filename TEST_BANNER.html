@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Banner Test - Fabric Infinity</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; overflow-x: hidden; }
+    
+    .hero-slider {
+      width: 100vw;
+      height: 70vh;
+      position: relative;
+      overflow: hidden;
+      background: #f0f0f0;
+    }
+    
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1s ease;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .slide.active { opacity: 1; }
+    
+    .overlay-copy {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #fff;
+      z-index: 3;
+      max-width: 90%;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+    }
+    
+    .overlay-copy h3 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    
+    .overlay-copy p {
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      font-weight: 500;
+    }
+    
+    @media (max-width: 768px) {
+      .hero-slider { height: 50vh; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero-slider" id="heroSlider">
+  <!-- Slides will be added by JavaScript -->
+</div>
+
+<div style="padding: 40px; text-align: center;">
+  <h2>🎉 Banner Slideshow Test</h2>
+  <p style="margin: 20px 0;">Your 4 banners should be rotating every 2 seconds above.</p>
+  <p style="color: #666;">If images don't show, check that you've renamed and copied them to <code>frontend/assets/</code></p>
+  
+  <div style="margin-top: 30px; padding: 20px; background: #f9f9f9; border-radius: 10px; max-width: 600px; margin: 30px auto;">
+    <h3>📋 Required Files:</h3>
+    <ul style="text-align: left; margin-top: 15px; line-height: 1.8;">
+      <li>✅ banner-1-festive-vibes.jpg</li>
+      <li>✅ banner-2-elevate-creation.jpg</li>
+      <li>✅ banner-3-dupatta-story.jpg</li>
+      <li>✅ banner-4-softness-perfection.jpg</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  const heroSlides = [
+    { img: "assets/banner-1-festive-vibes.jpg", title: "Festive Vibes", text: "The Beauty of Indian Weaves" },
+    { img: "assets/banner-2-elevate-creation.jpg", title: "Elevate Every Creation", text: "Premium Fabrics That Bring Your Designs to Life" },
+    { img: "assets/banner-3-dupatta-story.jpg", title: "Every Dupatta Tells a Story", text: "Inspired by Heritage. Designed for Today" },
+    { img: "assets/banner-4-softness-perfection.jpg", title: "Softness with Perfection", text: "Luxurious textures for timeless style" }
+  ];
+
+  const sliderWrap = document.getElementById("heroSlider");
+  
+  heroSlides.forEach((s, i) => {
+    const div = document.createElement("div");
+    div.className = `slide ${i === 0 ? "active" : ""}`;
+    div.style.backgroundImage = `url('${s.img}')`;
+    
+    const overlay = document.createElement("div");
+    overlay.className = "overlay-copy";
+    overlay.innerHTML = `<h3>${s.title}</h3><p>${s.text}</p>`;
+    div.appendChild(overlay);
+    
+    sliderWrap.appendChild(div);
+  });
+  
+  let slideIndex = 0;
+  const slideEls = [...sliderWrap.querySelectorAll(".slide")];
+  
+  setInterval(() => {
+    slideIndex = (slideIndex + 1) % heroSlides.length;
+    slideEls.forEach((el, idx) => el.classList.toggle("active", idx === slideIndex));
+  }, 2000); // 2 seconds
+  
+  console.log('✅ Slideshow initialized - Rotating every 2 seconds');
+</script>
+
+</body>
+</html>

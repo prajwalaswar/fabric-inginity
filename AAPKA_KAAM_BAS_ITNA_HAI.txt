@@ -1,0 +1,52 @@
+═══════════════════════════════════════════════════════════════════
+            ✅ CODE READY HAI! BAS YEH 4 IMAGES SAVE KARO
+═══════════════════════════════════════════════════════════════════
+
+Aapke 4 photos ko yeh exact names deke save karna hai:
+
+📁 Location: c:\Users\DELL\Downloads\full-stack-updated\frontend\assets\
+
+────────────────────────────────────────────────────────────────────
+
+1️⃣  banner-1-festive-vibes.jpg
+    (Purple/patterned dress wali - "Festive Vibes" banner)
+
+2️⃣  banner-2-elevate-creation.jpg
+    (Blue fabric rolls wali - "Elevate Every Creation" banner)
+
+3️⃣  banner-3-dupatta-story.jpg
+    (Colorful dupattas on rod wali - "Every Dupatta Tells a Story")
+
+4️⃣  banner-4-softness-perfection.jpg
+    (Blue floral dress wali - "Softness with Perfection")
+
+────────────────────────────────────────────────────────────────────
+
+✅ CODE MEIN ALREADY SET HAI:
+   • 2 second slideshow ✓
+   • Mobile menu fixed ✓
+   • Full screen banners ✓
+   • Auto-rotate ✓
+
+────────────────────────────────────────────────────────────────────
+
+🚀 STEPS:
+
+1. Apni 4 images ko upar wale names dein
+
+2. Sabko copy karo yaha:
+   c:\Users\DELL\Downloads\full-stack-updated\frontend\assets\
+
+3. Browser mein kholo:
+   c:\Users\DELL\Downloads\full-stack-updated\frontend\index.html
+
+4. DONE! Banners har 2 second mein change honge! 🎉
+
+────────────────────────────────────────────────────────────────────
+
+❓ Agar images nahi dikhi?
+   • F12 dabao browser mein
+   • Console check karo - koi error?
+   • File names exactly match karte hain?
+   
+═══════════════════════════════════════════════════════════════════

@@ -1,0 +1,28 @@
+════════════════════════════════════════════════════════════
+  SIMPLE STEPS - APNE 4 BANNER IMAGES KO RENAME KAREIN
+════════════════════════════════════════════════════════════
+
+Aapne jo 4 images share ki hain, unko yeh names dein:
+
+1. banner-1-festive-vibes.jpg
+   (Purple/patterned dress wali image)
+
+2. banner-2-elevate-creation.jpg  
+   (Blue fabrics wali image)
+
+3. banner-3-dupatta-story.jpg
+   (Colorful dupattas wali image)
+
+4. banner-4-softness-perfection.jpg
+   (Blue floral dress wali image)
+
+────────────────────────────────────────────────────────────
+
+STEP 1: Apni 4 images ko yeh exact names dein
+
+STEP 2: Sabko copy karein yaha:
+        c:\Users\DELL\Downloads\full-stack-updated\frontend\assets\
+
+STEP 3: Bas! Open karo browser mein - website taiyar hai!
+
+════════════════════════════════════════════════════════════

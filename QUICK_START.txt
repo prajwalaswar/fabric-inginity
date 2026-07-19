@@ -1,0 +1,41 @@
+═══════════════════════════════════════════════════════════════
+  FABRIC INFINITY - BANNER SLIDESHOW SETUP (2 Seconds)
+═══════════════════════════════════════════════════════════════
+
+✅ COMPLETED:
+  • 2-second auto slideshow configured
+  • Mobile menu z-index fixed (9999/10000)
+  • 4 banner slides structure ready
+  • Responsive design working
+
+⏳ YOUR TASK: Upload 4 Banner Images
+
+RECOMMENDED: Use ImgBB.com (Free, Fast)
+
+1. Visit: https://imgbb.com/
+2. Upload your 4 images (drag & drop)
+3. Copy "Direct link" for each (right-click image → Copy image address)
+4. Edit: frontend/index.html (line ~3171)
+5. Replace URLs in newBannerImages array
+
+EXAMPLE:
+const newBannerImages = [
+  "https://i.ibb.co/ABC123/banner1.jpg",  // Your ImgBB link 1
+  "https://i.ibb.co/DEF456/banner2.jpg",  // Your ImgBB link 2
+  "https://i.ibb.co/GHI789/banner3.jpg",  // Your ImgBB link 3
+  "https://i.ibb.co/JKL012/banner4.jpg"   // Your ImgBB link 4
+];
+
+TESTING:
+• Open frontend/index.html in browser
+• Banners should auto-rotate every 2 seconds
+• Mobile menu should work properly
+
+DEPLOY:
+git add .
+git commit -m "Add banner slideshow"
+git push origin main
+
+═══════════════════════════════════════════════════════════════
+Questions? Read SETUP_COMPLETE.md for detailed guide
+═══════════════════════════════════════════════════════════════

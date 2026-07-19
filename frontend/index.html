@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -104,7 +104,7 @@
       object-fit: cover;
     }
 
-    /* ── Main nav ── */
+    /* â”€â”€ Main nav â”€â”€ */
     nav ul { margin: 0; padding: 0; list-style: none; display: flex; gap: 4px; align-items: center; }
     nav > ul > li { position: relative; }
     nav > ul > li > a {
@@ -129,7 +129,7 @@
     }
     nav > ul > li.mega-open .nav-arrow { transform: rotate(180deg); }
 
-    /* ── Mega panel ── */
+    /* â”€â”€ Mega panel â”€â”€ */
     .mega-panel {
       position: absolute;
       top: calc(100% + 8px);
@@ -209,7 +209,7 @@
     .mega-skeleton-line.head { height: 8px; width: 60%; margin-bottom: 4px; background-color: #c5d8f5; }
     @keyframes shimmer { to { background-position: -200% 0; } }
 
-    /* ── Icon action bar ── */
+    /* â”€â”€ Icon action bar â”€â”€ */
     .actions {
       display: flex;
       align-items: center;
@@ -409,19 +409,12 @@
     }
 
     .hero-grid {
-      display: grid;
-      grid-template-columns: 1.03fr .97fr;
-      gap: 20px;
-      padding: 46px 0 10px;
+      display: block;
+      padding: 0;
+      margin: 0;
     }
     .hero-copy {
-      background: linear-gradient(160deg, #f8fbff, #e5efff);
-      border: 1px solid #d2e0f7;
-      border-radius: var(--radius-xl);
-      padding: clamp(24px, 3vw, 48px);
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
+      display: none;
     }
     .hero-copy::after {
       content: "";
@@ -451,33 +444,55 @@
     .hero-stats strong { font-size: 1.18rem; display: block; color: var(--brand); }
     .hero-stats span { font-size: .84rem; color: var(--muted); }
     .hero-slider {
-      border-radius: var(--radius-xl);
+      border-radius: 0;
       overflow: hidden;
-      min-height: 600px;
+      min-height: 70vh;
+      height: 70vh;
       position: relative;
-      box-shadow: var(--shadow);
+      box-shadow: none;
       background: #d8e6fb;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
     }
     .slide {
       position: absolute;
       inset: 0;
       opacity: 0;
-      transition: opacity .8s ease, transform 5s ease;
-      transform: scale(1.04);
+      transition: opacity 1s ease;
       background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
+    }
+    .slide.active { opacity: 1; }
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      border-radius: calc(var(--radius-xl) - 8px);
+      box-shadow: 0 14px 36px rgba(10, 32, 82, .16);
+      background: rgba(255,255,255,.72);
     }
     .slide.active { opacity: 1; transform: scale(1); }
     .overlay-copy {
       position: absolute;
-      left: 20px;
-      right: 20px;
-      bottom: 20px;
-      background: linear-gradient(180deg, rgba(7,26,63,0), rgba(7,26,63,.76));
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
       color: #fff;
-      border-radius: 14px;
-      padding: 34px 18px 16px;
       z-index: 3;
+      max-width: 90%;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+    }
+    .overlay-copy h3 {
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    .overlay-copy p {
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      font-weight: 500;
     }
     .section-head {
       display: flex;
@@ -819,13 +834,13 @@
     .bottom-bar article:last-child { border-right: 0; }
     .bottom-bar strong { display: block; font-size: 1.42rem; margin-top: 4px; }
 
-    /* ═══════════════════════════════════════════
-       RESPONSIVE BREAKPOINTS — clean single source
-    ═══════════════════════════════════════════ */
+    /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+       RESPONSIVE BREAKPOINTS â€” clean single source
+    â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
-    /* ── 1140px: hide desktop nav, enable mobile menu ── */
+    /* â”€â”€ 1140px: hide desktop nav, enable mobile menu â”€â”€ */
     @media (max-width: 1140px) {
-      /* nav drawer — full screen overlay with better z-index */
+      /* nav drawer â€” full screen overlay with better z-index */
       nav {
         display: none;
         position: fixed;
@@ -854,7 +869,7 @@
       nav > ul > li > a:hover { background: #f5f8ff; }
       nav > ul > li.mega-open > a { background: #eef4ff; color: #0b2e67; }
 
-      /* mega panel inside mobile nav — accordion style with better spacing */
+      /* mega panel inside mobile nav â€” accordion style with better spacing */
       .mega-panel {
         position: static !important;
         transform: none !important;
@@ -896,7 +911,7 @@
         letter-spacing: .16em !important;
       }
 
-      /* Items in chips/tags style — easy to tap */
+      /* Items in chips/tags style â€” easy to tap */
       .mega-col ul {
         flex-direction: row !important;
         flex-wrap: wrap !important;
@@ -950,10 +965,12 @@
       .menu-toggle { display: inline-flex !important; }
 
       /* hero stacks */
-      .hero-grid { grid-template-columns: 1fr !important; }
-      .hero-slider { min-height: 280px !important; max-height: 55vw !important; border-radius: 18px !important; }
+      .hero-grid { display: block !important; padding: 0 !important; margin: 0 !important; }
+      .hero-slider { min-height: 50vh !important; height: 50vh !important; border-radius: 0 !important; }
       .split { grid-template-columns: 1fr !important; }
       .hero-copy h1 { font-size: clamp(2rem, 7vw, 3.4rem) !important; }
+      .overlay-copy h3 { font-size: clamp(1.8rem, 4vw, 2.5rem) !important; }
+      .overlay-copy p { font-size: clamp(0.9rem, 2vw, 1.2rem) !important; }
 
       /* product grids */
       .grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
@@ -963,7 +980,7 @@
       .newsletter { grid-template-columns: 1fr !important; }
       .foot-grid { grid-template-columns: repeat(2, 1fr) !important; }
 
-      /* ─── DASHBOARD — mobile slide-in sidebar ─── */
+      /* â”€â”€â”€ DASHBOARD â€” mobile slide-in sidebar â”€â”€â”€ */
       /* Keep the grid layout but hide sidebar off-screen */
       .dashboard { grid-template-columns: 1fr !important; }
       .dash-side {
@@ -1017,7 +1034,7 @@
       .donut { width: 130px !important; }
     }
 
-    /* ── 760px: compact layout ── */
+    /* â”€â”€ 760px: compact layout â”€â”€ */
     @media (max-width: 760px) {
       .container   { width: calc(100% - 24px); }
       .section     { padding: 40px 0; }
@@ -1033,7 +1050,7 @@
       .nav-wrap    { min-height: 58px; padding: 0 4px; }
       .actions { gap: 2px; }
       .nav-icon-btn { width: 36px; height: 36px; flex: 0 0 36px; }
-      /* Keep brand name visible on mobile — clear and readable */
+      /* Keep brand name visible on mobile â€” clear and readable */
       .brand > span {
         font-size: .82rem !important;
         letter-spacing: .06em !important;
@@ -1042,7 +1059,7 @@
       .brand img { width: 30px !important; height: 30px !important; }
       .brand { gap: 7px !important; }
       .hero-copy h1{ font-size: clamp(1.8rem, 7vw, 2.8rem) !important; }
-      .hero-slider { min-height: 260px !important; }
+      .hero-slider { min-height: 360px !important; }
 
       /* floating buttons */
       #chatWidget  { width: calc(100vw - 24px) !important; right: 12px !important; bottom: 82px !important; }
@@ -1062,12 +1079,12 @@
       .recent-item strong, .mini-row strong { overflow-wrap: anywhere; }
     }
 
-    /* ── 480px: single column ── */
+    /* â”€â”€ 480px: single column â”€â”€ */
     @media (max-width: 480px) {
       .grid-4, .grid-3 { grid-template-columns: 1fr !important; }
       .hero-stats  { grid-template-columns: 1fr 1fr !important; }
       .hero-copy h1{ font-size: clamp(1.6rem, 8vw, 2.2rem) !important; }
-      .hero-slider { min-height: 220px !important; }
+      .hero-slider { min-height: 320px !important; }
       .metric-grid { grid-template-columns: 1fr 1fr !important; }
       .metric { padding: 10px; min-width: 0; }
       .metric .m-value { font-size: 1.15rem; overflow-wrap: anywhere; }
@@ -1112,11 +1129,11 @@
       background: #f0fff8;
     }
 
-    /* ── AI toggle ── */
+    /* â”€â”€ AI toggle â”€â”€ */
     #aiToggleTrack.on { background: linear-gradient(130deg,#0d3a84,#1464ce); }
     #aiToggleTrack.on #aiToggleThumb { transform: translateX(16px); }
 
-    /* ── Drop zone hover ── */
+    /* â”€â”€ Drop zone hover â”€â”€ */
     #aiStep1:hover { border-color: #1464ce; }
     #aiStep1.drag-over { border-color: #1464ce; background: #f0f5ff; }
 
@@ -1134,7 +1151,7 @@
         </a>
         <nav id="mainNav">
           <!-- Close button (mobile only) -->
-          <button class="nav-close-btn" id="navCloseBtn" aria-label="Close menu" style="display:none;">✕</button>
+          <button class="nav-close-btn" id="navCloseBtn" aria-label="Close menu" style="display:none;">âœ•</button>
           <ul id="megaNavList">
             <li><a href="#home" id="navHomeLink">Home</a></li>
             <!-- Dynamic mega-menu items injected here by JS -->
@@ -1157,7 +1174,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
                 </svg>
-                <input id="searchInput" type="text" placeholder="Search fabrics, categories…" autocomplete="off" />
+                <input id="searchInput" type="text" placeholder="Search fabrics, categoriesâ€¦" autocomplete="off" />
               </div>
               <div class="search-results" id="searchResults"></div>
             </div>
@@ -1170,12 +1187,12 @@
                 <circle cx="12" cy="8" r="4"/>
                 <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
               </svg>
-              <!-- gold star badge — matches the screenshot accent -->
-              <span style="position:absolute;top:2px;right:2px;font-size:9px;color:#f59e0b;pointer-events:none;">★</span>
+              <!-- gold star badge â€” matches the screenshot accent -->
+              <span style="position:absolute;top:2px;right:2px;font-size:9px;color:#f59e0b;pointer-events:none;">â˜…</span>
             </button>
             <div class="account-flyout" id="accountFlyout">
               <div class="account-flyout-head">
-                <div class="av">👤</div>
+                <div class="av">ðŸ‘¤</div>
                 <div>
                   <strong>My Account</strong>
                   <span>Fabric Infinity</span>
@@ -1209,7 +1226,7 @@
             <span class="cart-badge" id="cartCount" data-count="0">0</span>
           </button>
 
-          <!-- Mobile menu toggle — shows category nav -->
+          <!-- Mobile menu toggle â€” shows category nav -->
           <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
               <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
@@ -1238,10 +1255,7 @@
             </div>
           </article>
           <article class="hero-slider reveal" id="heroSlider">
-            <div class="overlay-copy">
-              <h3 id="slideTitle">Ajrakh Heritage</h3>
-              <p id="slideText">Earthy classics with timeless motifs and premium drape.</p>
-            </div>
+            <!-- Slides will be injected by JavaScript -->
           </article>
         </div>
       </section>
@@ -1385,9 +1399,9 @@
         <div class="foot-grid">
           <div>
             <h4>Fabric Infinity</h4>
-            <p style="color:#b3c8ea;line-height:1.65;margin-bottom:12px;">Premium handcrafted fabrics — Ajrakh, Bagru, Indigo &amp; artisan prints, sold by the meter.</p>
-            <p style="color:#b3c8ea;font-size:.88rem;margin-bottom:4px;">📞 <a href="tel:+918530361444" style="color:#b3c8ea;">+91 85303 61444</a></p>
-            <p style="color:#b3c8ea;font-size:.88rem;margin-bottom:14px;">✉️ <a href="mailto:fabricinfinity.in@gmail.com" style="color:#b3c8ea;">fabricinfinity.in@gmail.com</a></p>
+            <p style="color:#b3c8ea;line-height:1.65;margin-bottom:12px;">Premium handcrafted fabrics â€” Ajrakh, Bagru, Indigo &amp; artisan prints, sold by the meter.</p>
+            <p style="color:#b3c8ea;font-size:.88rem;margin-bottom:4px;">ðŸ“ž <a href="tel:+918530361444" style="color:#b3c8ea;">+91 85303 61444</a></p>
+            <p style="color:#b3c8ea;font-size:.88rem;margin-bottom:14px;">âœ‰ï¸ <a href="mailto:fabricinfinity.in@gmail.com" style="color:#b3c8ea;">fabricinfinity.in@gmail.com</a></p>
             <!-- Social icons -->
             <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
               <!-- WhatsApp -->
@@ -1466,16 +1480,16 @@
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#b3c8ea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
           <div style="flex:1;min-width:0;">
             <p style="color:#d7e5ff;font-weight:700;font-size:.92rem;margin-bottom:2px;">Visit Us</p>
-            <p style="color:#b3c8ea;font-size:.84rem;">Shop No.02, Fabric Infinity, Baner–Pashan Link Rd, opp. Orange County Phase II, Pashan, Pune – 411021</p>
+            <p style="color:#b3c8ea;font-size:.84rem;">Shop No.02, Fabric Infinity, Banerâ€“Pashan Link Rd, opp. Orange County Phase II, Pashan, Pune â€“ 411021</p>
           </div>
           <a href="https://maps.app.goo.gl/xh2i6FJPNQxqx1dd9?g_st=aw" target="_blank" rel="noopener"
              style="background:linear-gradient(130deg,#0d3a84,#1464ce);color:#fff;border-radius:999px;padding:9px 18px;font-size:.84rem;font-weight:800;white-space:nowrap;text-decoration:none;flex-shrink:0;transition:opacity .18s;"
              onmouseenter="this.style.opacity='.85'" onmouseleave="this.style.opacity='1'">
-            Open in Maps ↗
+            Open in Maps â†—
           </a>
         </div>
         <div class="copy" style="margin-top:16px;">
-          <span>© 2026 Fabric Infinity. All rights reserved.</span>
+          <span>Â© 2026 Fabric Infinity. All rights reserved.</span>
           <div style="display:flex;gap:14px;flex-wrap:wrap;">
             <a href="https://www.instagram.com/fabricinfinity.in?igsh=M2x1eXUzYnUxZml1" target="_blank" rel="noopener" style="color:#b3c8ea;font-size:.82rem;">Instagram</a>
             <a href="https://www.facebook.com/share/1Cx9eWfdLg/?mibextid=wwXIfr" target="_blank" rel="noopener" style="color:#b3c8ea;font-size:.82rem;">Facebook</a>
@@ -1486,11 +1500,11 @@
     </footer>
   </div>
 
-  <!-- ═══════════════════════════════════════════════
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
        FLOATING CHAT WIDGET
-       ═══════════════════════════════════════════════ -->
+       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
   <style>
-    /* ── Launcher bubble ── */
+    /* â”€â”€ Launcher bubble â”€â”€ */
     #chatLauncher {
       position: fixed;
       bottom: 28px;
@@ -1514,7 +1528,7 @@
     #chatLauncher.widget-open .icon-open  { display: none; }
     #chatLauncher.widget-open .icon-close { display: block; }
 
-    /* ── Ping badge ── */
+    /* â”€â”€ Ping badge â”€â”€ */
     #chatLauncher::after {
       content: "";
       position: absolute;
@@ -1531,7 +1545,7 @@
       50%       { transform: scale(1.35); opacity: .6; }
     }
 
-    /* ── Widget panel ── */
+    /* â”€â”€ Widget panel â”€â”€ */
     #chatWidget {
       position: fixed;
       bottom: 98px;
@@ -1798,8 +1812,8 @@
      href="https://maps.app.goo.gl/xh2i6FJPNQxqx1dd9?g_st=aw"
      target="_blank"
      rel="noopener"
-     aria-label="Visit our store — open in Google Maps"
-     title="Visit us — Fabric Infinity, Pune"
+     aria-label="Visit our store â€” open in Google Maps"
+     title="Visit us â€” Fabric Infinity, Pune"
      style="
        position:fixed;
        bottom:100px;
@@ -1844,13 +1858,13 @@
   <div id="chatWidget" role="dialog" aria-label="Chat with Fabric Infinity">
     <!-- Header -->
     <div class="cw-header">
-      <h3>Hi there 👋</h3>
+      <h3>Hi there ðŸ‘‹</h3>
       <p>We are here. Happy to help!</p>
       <div class="cw-agent">
-        <div class="cw-avatar">🧑‍💼</div>
+        <div class="cw-avatar">ðŸ§‘â€ðŸ’¼</div>
         <div class="cw-agent-info">
           <strong>Fabric Infinity</strong>
-          <span>Sales &amp; Support · Online now</span>
+          <span>Sales &amp; Support Â· Online now</span>
         </div>
       </div>
     </div>
@@ -1907,7 +1921,7 @@
       <!-- AI Chat panel -->
       <div class="cw-panel" id="cw-ai" role="tabpanel">
         <div class="cw-ai-messages" id="cwAiMessages">
-          <div class="cw-bubble bot">Hi! I'm the Fabric Infinity assistant 🧵 Ask me anything about our fabrics, pricing, care instructions, or orders.</div>
+          <div class="cw-bubble bot">Hi! I'm the Fabric Infinity assistant ðŸ§µ Ask me anything about our fabrics, pricing, care instructions, or orders.</div>
         </div>
         <div class="cw-ai-input-row">
           <input class="cw-ai-input" id="cwAiInput" type="text" placeholder="Type your question..." maxlength="400" />
@@ -1925,7 +1939,7 @@
   <div id="cartDrawer" style="position:fixed;right:-440px;top:0;bottom:0;width:min(440px,100%);background:#fff;z-index:150;transition:right .3s ease;box-shadow:-14px 0 40px rgba(7,24,53,.22);display:flex;flex-direction:column;">
     <div style="display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid #d9e6fb;">
       <h4 style="font-size:1.4rem;margin:0">Your Cart</h4>
-      <button class="btn" id="closeCartBtn">✕ Close</button>
+      <button class="btn" id="closeCartBtn">âœ• Close</button>
     </div>
     <div id="cartItemsWrap" style="padding:14px;overflow:auto;flex:1"></div>
     <div style="border-top:1px solid #d9e6fb;padding:14px;display:grid;gap:8px;">
@@ -1942,7 +1956,7 @@
     <div style="width:min(600px,100%);max-height:92vh;overflow:auto;background:linear-gradient(150deg,#f9fcff,#e6f0ff);border:1px solid #bdd4f8;border-radius:20px;padding:24px;box-shadow:0 30px 80px rgba(3,18,50,.3);">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
         <h3 style="font-size:1.9rem;margin:0">Checkout</h3>
-        <button class="btn" id="closeCheckoutBtn">✕</button>
+        <button class="btn" id="closeCheckoutBtn">âœ•</button>
       </div>
       <div id="checkoutOrderSummary" style="background:#fff;border:1px solid #d5e2f5;border-radius:12px;padding:12px;margin-bottom:14px;font-size:.9rem;"></div>
       <form id="checkoutForm" style="display:grid;gap:10px;">
@@ -1962,7 +1976,7 @@
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" id="paymentMethodCards">
             <label id="pmCardCOD" style="cursor:pointer;border:2px solid #1d4fa7;border-radius:13px;padding:14px 12px;background:linear-gradient(135deg,#e8f2ff,#f3f8ff);display:flex;align-items:center;gap:10px;transition:.2s ease;">
               <input type="radio" name="paymentMethod" value="COD" checked style="display:none"/>
-              <span style="font-size:1.5rem">🏠</span>
+              <span style="font-size:1.5rem">ðŸ </span>
               <div>
                 <div style="font-weight:800;font-size:.9rem;color:#0b2e67">Cash on Delivery</div>
                 <div style="font-size:.78rem;color:#5f7395;margin-top:2px">Pay when delivered</div>
@@ -1970,7 +1984,7 @@
             </label>
             <label id="pmCardRazorpay" style="cursor:pointer;border:2px solid #d5e2f5;border-radius:13px;padding:14px 12px;background:#fff;display:flex;align-items:center;gap:10px;transition:.2s ease;">
               <input type="radio" name="paymentMethod" value="RAZORPAY" style="display:none"/>
-              <span style="font-size:1.5rem">💳</span>
+              <span style="font-size:1.5rem">ðŸ’³</span>
               <div>
                 <div style="font-weight:800;font-size:.9rem;color:#0b2e67">Pay Online</div>
                 <div style="font-size:.78rem;color:#5f7395;margin-top:2px">UPI, Cards, Net Banking</div>
@@ -2010,7 +2024,7 @@
     <div class="dashboard">
       <aside class="dash-side" id="dashSide">
         <!-- Mobile close button inside sidebar -->
-        <button id="dashSideClose" style="display:none;position:absolute;top:12px;right:12px;background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;align-items:center;justify-content:center;">✕</button>
+        <button id="dashSideClose" style="display:none;position:absolute;top:12px;right:12px;background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;align-items:center;justify-content:center;">âœ•</button>
         <div class="dash-brand">
           <img src="assets/codex-clipboard-ba1642ba-86e7-4917-8383-f749aa153b92.jpg" alt="Fabric Infinity logo" />
           <strong>FABRIC INFINITY</strong>
@@ -2025,7 +2039,7 @@
           <a href="#" data-tab="tabOverview">Customers</a>
           <a href="#" data-tab="tabOverview">Wholesale</a>
           <a href="#" data-tab="tabOverview">Reports</a>
-          <a href="#" data-tab="tabSettings">⚙ Settings</a>
+          <a href="#" data-tab="tabSettings">âš™ Settings</a>
         </nav>
         <div class="dash-profile">
           <strong>Fabric Infinity</strong>
@@ -2035,7 +2049,7 @@
 
       <section class="dash-main">
         <div class="dash-top">
-          <!-- Mobile menu button — shown only on mobile -->
+          <!-- Mobile menu button â€” shown only on mobile -->
           <button class="dash-menu-btn" id="dashMenuBtn" style="display:none;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
             Menu
@@ -2138,7 +2152,7 @@
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
               <h4 style="margin:0;">Add New Product</h4>
               <div style="display:flex;align-items:center;gap:8px;">
-                <span style="font-size:.78rem;color:#5f7395;font-weight:600;">✨ AI Auto-Fill</span>
+                <span style="font-size:.78rem;color:#5f7395;font-weight:600;">âœ¨ AI Auto-Fill</span>
                 <div style="width:36px;height:20px;border-radius:999px;background:#e8f0fb;position:relative;cursor:pointer;transition:background .2s;" id="aiToggleTrack">
                   <div style="position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:transform .2s;" id="aiToggleThumb"></div>
                 </div>
@@ -2150,49 +2164,49 @@
               <input name="image" id="productImageInput" type="file" accept="image/*"
                 style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2;"/>
               <div id="aiStep1Placeholder">
-                <div style="font-size:2.2rem;margin-bottom:6px;">📷</div>
+                <div style="font-size:2.2rem;margin-bottom:6px;">ðŸ“·</div>
                 <p style="font-weight:700;color:#2c456e;margin-bottom:4px;">Click or drag photo here</p>
-                <p style="font-size:.82rem;color:#7a94bc;">JPG, PNG, WEBP · max 5 MB · AI will auto-fill all fields</p>
+                <p style="font-size:.82rem;color:#7a94bc;">JPG, PNG, WEBP Â· max 5 MB Â· AI will auto-fill all fields</p>
               </div>
               <div id="aiStep1Preview" style="display:none;align-items:center;gap:16px;justify-content:center;flex-wrap:wrap;">
                 <img id="productImagePreview" src="" alt="" style="width:90px;height:90px;border-radius:12px;object-fit:cover;border:2px solid #d5e2f5;flex-shrink:0;"/>
                 <div style="text-align:left;">
                   <p id="aiDetectFileName" style="font-weight:700;color:#132038;margin-bottom:4px;font-size:.9rem;"></p>
                   <div id="aiDetectStatus" style="font-size:.84rem;font-weight:700;color:#5f7395;"></div>
-                  <button type="button" id="aiRedetectBtn" style="margin-top:8px;font-size:.78rem;padding:5px 12px;border:1px solid #ccdaf8;border-radius:8px;background:#f5f9ff;cursor:pointer;font-family:inherit;font-weight:700;color:#1464ce;display:none;">↻ Re-run AI</button>
+                  <button type="button" id="aiRedetectBtn" style="margin-top:8px;font-size:.78rem;padding:5px 12px;border:1px solid #ccdaf8;border-radius:8px;background:#f5f9ff;cursor:pointer;font-family:inherit;font-weight:700;color:#1464ce;display:none;">â†» Re-run AI</button>
                 </div>
               </div>
             </div>
 
-            <!-- All product fields — shown after image picked -->
+            <!-- All product fields â€” shown after image picked -->
             <form id="addProductForm" enctype="multipart/form-data">
               <div id="aiFieldsWrap" style="display:none;">
 
-                <!-- ── BASIC INFORMATION ── -->
+                <!-- â”€â”€ BASIC INFORMATION â”€â”€ -->
                 <div style="background:#f8fbff;border:1px solid #e0eaf8;border-radius:12px;padding:14px;margin-bottom:12px;">
-                  <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#3a5c9a;margin-bottom:10px;">📋 Basic Information</p>
+                  <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#3a5c9a;margin-bottom:10px;">ðŸ“‹ Basic Information</p>
                   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;">
                     <div><label class="field-lbl">Product Name *</label><input name="name" id="pf_name" required placeholder="e.g. Indigo Handblock Cotton" class="field-inp"/></div>
                     <div><label class="field-lbl">SKU</label><input name="sku" id="pf_sku" placeholder="Auto-generated if blank" class="field-inp"/></div>
                     <div>
                       <label class="field-lbl">Category *</label>
                       <select name="category" id="pf_category" required class="field-inp">
-                        <option value="">— Select Category —</option>
-                        <optgroup label="Fabrics — Hand Block Prints">
+                        <option value="">â€” Select Category â€”</option>
+                        <optgroup label="Fabrics â€” Hand Block Prints">
                           <option>Ajrakh</option><option>Cotton Ajrakh</option><option>Modal Silk Ajrakh</option>
                           <option>Indigo</option><option>Dabu</option><option>Bagru</option>
                           <option>Vanaspati</option><option>Rapid</option><option>Kalamkari</option>
                           <option>Bagh</option><option>Pigment Prints</option>
                         </optgroup>
-                        <optgroup label="Fabrics — Handloom">
+                        <optgroup label="Fabrics â€” Handloom">
                           <option>Single Ikat</option><option>Double Ikat</option><option>SICO Ikat</option>
                           <option>Mercerised Ikat</option><option>Jamdhani Cotton</option><option>Handloom Cotton</option>
                         </optgroup>
-                        <optgroup label="Fabrics — Plain">
+                        <optgroup label="Fabrics â€” Plain">
                           <option>Cambric Cotton</option><option>Cotton Slub</option><option>Cotton Flex (Khadi)</option>
                           <option>Mule Cotton</option><option>Cotton Rayon</option><option>Cotton Silk</option><option>Slub Silk</option>
                         </optgroup>
-                        <optgroup label="Fabrics — Screen Prints">
+                        <optgroup label="Fabrics â€” Screen Prints">
                           <option>Kantha Cotton</option>
                         </optgroup>
                         <optgroup label="Dress Materials">
@@ -2229,14 +2243,14 @@
                   </div>
                 </div>
 
-                <!-- ── PRICING ── -->
+                <!-- â”€â”€ PRICING â”€â”€ -->
                 <div style="background:#f8fbff;border:1px solid #e0eaf8;border-radius:12px;padding:14px;margin-bottom:12px;">
-                  <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#3a5c9a;margin-bottom:10px;">💰 Pricing</p>
+                  <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#3a5c9a;margin-bottom:10px;">ðŸ’° Pricing</p>
                   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;">
-                    <div><label class="field-lbl">Cost Price (₹)</label><input name="costPrice" id="pf_costPrice" type="number" min="0" placeholder="850" class="field-inp"/></div>
-                    <div><label class="field-lbl">Wholesale Price (₹)</label><input name="wholesalePrice" id="pf_wholesalePrice" type="number" min="0" placeholder="1200" class="field-inp"/></div>
-                    <div><label class="field-lbl">Retail Price (₹) *</label><input name="price" id="pf_price" required type="number" min="1" placeholder="1899" class="field-inp"/></div>
-                    <div><label class="field-lbl">Offer Price (₹)</label><input name="offerPrice" id="pf_offerPrice" type="number" min="0" placeholder="1699" class="field-inp"/></div>
+                    <div><label class="field-lbl">Cost Price (â‚¹)</label><input name="costPrice" id="pf_costPrice" type="number" min="0" placeholder="850" class="field-inp"/></div>
+                    <div><label class="field-lbl">Wholesale Price (â‚¹)</label><input name="wholesalePrice" id="pf_wholesalePrice" type="number" min="0" placeholder="1200" class="field-inp"/></div>
+                    <div><label class="field-lbl">Retail Price (â‚¹) *</label><input name="price" id="pf_price" required type="number" min="1" placeholder="1899" class="field-inp"/></div>
+                    <div><label class="field-lbl">Offer Price (â‚¹)</label><input name="offerPrice" id="pf_offerPrice" type="number" min="0" placeholder="1699" class="field-inp"/></div>
                     <div>
                       <label class="field-lbl">GST (%)</label>
                       <select name="gst" id="pf_gst" class="field-inp">
@@ -2249,9 +2263,9 @@
                   </div>
                 </div>
 
-                <!-- ── INVENTORY ── -->
+                <!-- â”€â”€ INVENTORY â”€â”€ -->
                 <div style="background:#f8fbff;border:1px solid #e0eaf8;border-radius:12px;padding:14px;margin-bottom:12px;">
-                  <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#3a5c9a;margin-bottom:10px;">📦 Inventory</p>
+                  <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#3a5c9a;margin-bottom:10px;">ðŸ“¦ Inventory</p>
                   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;">
                     <div><label class="field-lbl">Stock (metres/pieces) *</label><input name="stock" id="pf_stock" required type="number" min="0" placeholder="100" class="field-inp"/></div>
                     <div><label class="field-lbl">Min Stock Alert</label><input name="minStockAlert" id="pf_minStockAlert" type="number" min="0" placeholder="10" class="field-inp"/></div>
@@ -2259,16 +2273,16 @@
                   </div>
                 </div>
 
-                <!-- ── FABRIC DETAILS ── -->
+                <!-- â”€â”€ FABRIC DETAILS â”€â”€ -->
                 <div style="background:#f8fbff;border:1px solid #e0eaf8;border-radius:12px;padding:14px;margin-bottom:12px;">
-                  <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#3a5c9a;margin-bottom:10px;">🧵 Fabric Details</p>
+                  <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#3a5c9a;margin-bottom:10px;">ðŸ§µ Fabric Details</p>
                   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;">
                     <div><label class="field-lbl">Fabric Type</label><input name="fabricType" id="pf_fabricType" placeholder="e.g. Cotton" class="field-inp"/></div>
                     <div><label class="field-lbl">Material</label><input name="material" id="pf_material" placeholder="e.g. 100% Cotton" class="field-inp"/></div>
                     <div>
                       <label class="field-lbl">Weave</label>
                       <select name="weave" id="pf_weave" class="field-inp">
-                        <option value="">— Select —</option>
+                        <option value="">â€” Select â€”</option>
                         <option>Plain</option><option>Twill</option><option>Satin</option>
                         <option>Dobby</option><option>Jacquard</option><option>Handloom</option><option>Other</option>
                       </select>
@@ -2276,7 +2290,7 @@
                     <div>
                       <label class="field-lbl">Print Type</label>
                       <select name="printType" id="pf_printType" class="field-inp">
-                        <option value="">— Select —</option>
+                        <option value="">â€” Select â€”</option>
                         <option>Handblock</option><option>Screen Print</option><option>Digital Print</option>
                         <option>Natural Dye</option><option>Discharge Print</option><option>Plain / No Print</option>
                       </select>
@@ -2285,7 +2299,7 @@
                     <div>
                       <label class="field-lbl">Width</label>
                       <select name="width" id="pf_width" class="field-inp">
-                        <option value="">— Select —</option>
+                        <option value="">â€” Select â€”</option>
                         <option>44"</option><option>45"</option><option>52"</option>
                         <option>54"</option><option>56"</option><option>58"</option><option>60"</option>
                       </select>
@@ -2302,7 +2316,7 @@
                     <div>
                       <label class="field-lbl">Pattern</label>
                       <select name="pattern" id="pf_pattern" class="field-inp">
-                        <option value="">— Select —</option>
+                        <option value="">â€” Select â€”</option>
                         <option>Floral</option><option>Geometric</option><option>Abstract</option>
                         <option>Stripes</option><option>Checks</option><option>Paisley</option>
                         <option>Solid / Plain</option><option>Bandhani</option><option>Other</option>
@@ -2311,7 +2325,7 @@
                     <div>
                       <label class="field-lbl">Occasion</label>
                       <select name="occasion" id="pf_occasion" class="field-inp">
-                        <option value="">— Select —</option>
+                        <option value="">â€” Select â€”</option>
                         <option>Casual</option><option>Ethnic / Festive</option><option>Wedding</option>
                         <option>Party</option><option>Daily Wear</option><option>All Occasion</option>
                       </select>
@@ -2319,16 +2333,16 @@
                     <div>
                       <label class="field-lbl">Season</label>
                       <select name="season" id="pf_season" class="field-inp">
-                        <option value="">— Select —</option>
+                        <option value="">â€” Select â€”</option>
                         <option>All Season</option><option>Summer</option><option>Winter</option><option>Monsoon</option>
                       </select>
                     </div>
                   </div>
                 </div>
 
-                <!-- ── SEO ── -->
+                <!-- â”€â”€ SEO â”€â”€ -->
                 <div style="background:#f8fbff;border:1px solid #e0eaf8;border-radius:12px;padding:14px;margin-bottom:12px;">
-                  <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#3a5c9a;margin-bottom:10px;">🔍 SEO</p>
+                  <p style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#3a5c9a;margin-bottom:10px;">ðŸ” SEO</p>
                   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;">
                     <div><label class="field-lbl">URL Slug</label><input name="seoSlug" id="pf_seoSlug" placeholder="indigo-handblock-cotton" class="field-inp"/></div>
                     <div><label class="field-lbl">Meta Title</label><input name="metaTitle" id="pf_metaTitle" placeholder="Max 70 chars" maxlength="70" class="field-inp"/></div>
@@ -2339,8 +2353,8 @@
 
                 <!-- Submit row -->
                 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding-top:4px;">
-                  <button type="submit" class="btn primary" style="padding:10px 24px;">✓ Save Product</button>
-                  <button type="button" id="resetProductFormBtn" class="btn" style="padding:10px 16px;">✕ Reset</button>
+                  <button type="submit" class="btn primary" style="padding:10px 24px;">âœ“ Save Product</button>
+                  <button type="button" id="resetProductFormBtn" class="btn" style="padding:10px 16px;">âœ• Reset</button>
                   <span id="addProductMsg" style="font-size:.88rem;font-weight:700;"></span>
                 </div>
 
@@ -2351,7 +2365,7 @@
           <article class="dash-card">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
               <h4>All Products</h4>
-              <button class="btn" id="refreshProductsBtn" style="font-size:.82rem">↻ Refresh</button>
+              <button class="btn" id="refreshProductsBtn" style="font-size:.82rem">â†» Refresh</button>
             </div>
             <div style="overflow:auto;">
               <table style="width:100%;border-collapse:collapse;min-width:820px;font-size:.88rem;">
@@ -2377,7 +2391,7 @@
           <article class="dash-card">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
               <h4>All Orders</h4>
-              <button class="btn" id="refreshOrdersBtn" style="font-size:.82rem">↻ Refresh</button>
+              <button class="btn" id="refreshOrdersBtn" style="font-size:.82rem">â†» Refresh</button>
             </div>
             <div style="overflow:auto;">
               <table style="width:100%;border-collapse:collapse;min-width:900px;font-size:.88rem;">
@@ -2405,7 +2419,7 @@
 
           <!-- New top-level menu form -->
           <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
-            <button class="btn primary" id="reseedMenuBtn" style="font-size:.82rem;padding:7px 16px;">↻ Reset Categories to Default</button>
+            <button class="btn primary" id="reseedMenuBtn" style="font-size:.82rem;padding:7px 16px;">â†» Reset Categories to Default</button>
             <span id="reseedMsg" style="font-size:.84rem;font-weight:700;"></span>
           </div>
           <form id="addMenuForm" style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #e8f0fb;">
@@ -2430,19 +2444,19 @@
           </article>
         </div><!-- end tabCategories -->
 
-        <!-- ═══════════════════════════════════════
+        <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
              SETTINGS TAB
-        ═══════════════════════════════════════ -->
+        â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
         <div id="tabSettings" style="display:none;">
 
           <!-- Groq AI Key -->
           <article class="dash-card" style="margin-bottom:14px;">
-            <h4 style="margin-bottom:4px;">🤖 Groq AI Key</h4>
+            <h4 style="margin-bottom:4px;">ðŸ¤– Groq AI Key</h4>
             <p style="color:#5f7395;font-size:.86rem;margin-bottom:14px;">Used for AI product auto-fill and chat widget. Get a free key at <a href="https://console.groq.com" target="_blank" style="color:#1464ce;font-weight:700;">console.groq.com</a></p>
             <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
               <div style="flex:1;min-width:200px;">
                 <label class="field-lbl">API Key</label>
-                <input id="st_groqKey" type="password" placeholder="gsk_••••••••••••••••••••••" class="field-inp" autocomplete="off"/>
+                <input id="st_groqKey" type="password" placeholder="gsk_â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" class="field-inp" autocomplete="off"/>
                 <p id="st_groqStatus" style="font-size:.78rem;margin-top:4px;color:#5f7395;"></p>
               </div>
               <button class="btn primary" id="st_saveGroq" style="padding:9px 20px;white-space:nowrap;">Save Key</button>
@@ -2452,8 +2466,8 @@
 
           <!-- Shiprocket Credentials -->
           <article class="dash-card" style="margin-bottom:14px;">
-            <h4 style="margin-bottom:4px;">📦 Shiprocket Credentials</h4>
-            <p style="color:#5f7395;font-size:.86rem;margin-bottom:14px;">Sign up free at <a href="https://app.shiprocket.in/register" target="_blank" style="color:#1464ce;font-weight:700;">shiprocket.in</a> → use your account email & password below.</p>
+            <h4 style="margin-bottom:4px;">ðŸ“¦ Shiprocket Credentials</h4>
+            <p style="color:#5f7395;font-size:.86rem;margin-bottom:14px;">Sign up free at <a href="https://app.shiprocket.in/register" target="_blank" style="color:#1464ce;font-weight:700;">shiprocket.in</a> â†’ use your account email & password below.</p>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:10px;">
               <div>
                 <label class="field-lbl">Shiprocket Email</label>
@@ -2461,7 +2475,7 @@
               </div>
               <div>
                 <label class="field-lbl">Shiprocket Password</label>
-                <input id="st_srPass" type="password" placeholder="••••••••" class="field-inp" autocomplete="new-password"/>
+                <input id="st_srPass" type="password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" class="field-inp" autocomplete="new-password"/>
               </div>
             </div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
@@ -2472,7 +2486,7 @@
 
           <!-- Shop Info -->
           <article class="dash-card" style="margin-bottom:14px;">
-            <h4 style="margin-bottom:14px;">🏪 Shop Information</h4>
+            <h4 style="margin-bottom:14px;">ðŸª Shop Information</h4>
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;">
               <div><label class="field-lbl">Shop Name</label><input id="st_shopName" class="field-inp" placeholder="Fabric Infinity"/></div>
               <div><label class="field-lbl">Phone</label><input id="st_shopPhone" class="field-inp" placeholder="+91 XXXXX XXXXX"/></div>
@@ -2488,13 +2502,13 @@
 
         </div><!-- end tabSettings -->
 
-        <!-- ═══════════════════════════════════════
+        <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
              SHIPPING TAB
-        ═══════════════════════════════════════ -->
+        â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
         <div id="tabShipping" style="display:none;">
 
           <article class="dash-card" style="margin-bottom:14px;">
-            <h4 style="margin-bottom:6px;">📦 Shiprocket Shipment Manager</h4>
+            <h4 style="margin-bottom:6px;">ðŸ“¦ Shiprocket Shipment Manager</h4>
             <p style="color:#5f7395;font-size:.86rem;margin-bottom:14px;">Select a pending order to create a shipment, or track an existing AWB.</p>
 
             <!-- Create shipment -->
@@ -2504,7 +2518,7 @@
                 <div>
                   <label class="field-lbl">Select Order</label>
                   <select id="sh_orderSelect" class="field-inp">
-                    <option value="">— Choose an order —</option>
+                    <option value="">â€” Choose an order â€”</option>
                   </select>
                 </div>
                 <div>
@@ -2513,7 +2527,7 @@
                 </div>
               </div>
               <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-                <button class="btn primary" id="sh_createBtn" style="padding:9px 20px;">🚀 Create Shipment</button>
+                <button class="btn primary" id="sh_createBtn" style="padding:9px 20px;">ðŸš€ Create Shipment</button>
                 <span id="sh_createMsg" style="font-size:.86rem;font-weight:700;"></span>
               </div>
             </div>
@@ -2552,7 +2566,7 @@
   </div>
 
   <script>
-    // Global error catcher — shows a visible error instead of blank page
+    // Global error catcher â€” shows a visible error instead of blank page
     window.onerror = function(msg, src, line, col, err) {
       document.body.innerHTML = '<div style="font-family:monospace;padding:32px;color:#c0392b;font-size:14px;"><h2>JS Error</h2><p>' + msg + '</p><p>Line ' + line + ':' + col + '</p><pre>' + (err && err.stack ? err.stack : '') + '</pre></div>';
     };
@@ -2560,7 +2574,7 @@
       console.error('Unhandled Promise rejection:', e.reason);
     });
 
-    // ── State ───────────────────────────────────────────────────
+    // â”€â”€ State â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const _state = {
       token: localStorage.getItem("fi_token") || "",
       cart: JSON.parse(localStorage.getItem("fi_cart") || "[]"),
@@ -2649,7 +2663,7 @@
       return data;
     }
 
-    // ── Cart ────────────────────────────────────────────────────
+    // â”€â”€ Cart â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function cartTotals() {
       const sub = _state.cart.reduce((s, i) => s + getUnitPrice(i) * i.quantity, 0);
       const ship = sub === 0 || sub >= 2499 ? 0 : 99;
@@ -2679,14 +2693,14 @@
           <img src="${item.imageUrl}" alt="${item.name}" style="width:60px;height:60px;border-radius:8px;object-fit:cover"/>
           <div>
             <strong style="font-size:.9rem">${item.name}</strong><br>
-            <span style="color:#5f7395;font-size:.84rem">${inr(getUnitPrice(item))} × ${item.quantity} m = <strong style="color:#132038">${inr(getUnitPrice(item) * item.quantity)}</strong></span><br>
+            <span style="color:#5f7395;font-size:.84rem">${inr(getUnitPrice(item))} Ã— ${item.quantity} m = <strong style="color:#132038">${inr(getUnitPrice(item) * item.quantity)}</strong></span><br>
             <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
-              <button class="btn" data-dec="${item._id}" style="padding:2px 8px;font-size:1rem">−</button>
+              <button class="btn" data-dec="${item._id}" style="padding:2px 8px;font-size:1rem">âˆ’</button>
               <span style="font-weight:700">${item.quantity} m</span>
               <button class="btn" data-inc="${item._id}" style="padding:2px 8px;font-size:1rem">+</button>
             </div>
           </div>
-          <button class="btn" data-rem="${item._id}" style="font-size:.8rem;padding:6px 10px">✕</button>
+          <button class="btn" data-rem="${item._id}" style="font-size:.8rem;padding:6px 10px">âœ•</button>
         </div>`).join("");
       $$("[data-dec]").forEach(b => b.addEventListener("click", () => { changeQty(b.dataset.dec, -1); }));
       $$("[data-inc]").forEach(b => b.addEventListener("click", () => { changeQty(b.dataset.inc, 1); }));
@@ -2737,7 +2751,7 @@
       if (d) d.style.right = "-440px"; if (b) b.style.display = "none";
     }
 
-    // ── Storefront Products ─────────────────────────────────────
+    // â”€â”€ Storefront Products â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function productCard(p) {
       const displayPrice = (p.offerPrice && p.offerPrice < p.price) ? p.offerPrice : p.price;
       const hasOffer     = p.offerPrice && p.offerPrice < p.price;
@@ -2752,7 +2766,7 @@
           <span class="tag">${p.category}</span>
           <h4 style="margin:6px 0 4px">${p.name}</h4>
           ${badges.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;">${badges.map(b=>`<span style="font-size:.7rem;background:#eef3ff;color:#3a5c9a;border-radius:999px;padding:2px 8px;font-weight:700;">${b}</span>`).join("")}</div>` : ""}
-          ${p.colour ? `<p style="font-size:.78rem;color:#5f7395;margin-bottom:4px;">🎨 ${p.colour}${p.pattern ? " · " + p.pattern : ""}</p>` : ""}
+          ${p.colour ? `<p style="font-size:.78rem;color:#5f7395;margin-bottom:4px;">ðŸŽ¨ ${p.colour}${p.pattern ? " Â· " + p.pattern : ""}</p>` : ""}
           <div class="price-row">
             <div>
               <strong style="color:#0b2e67;">${inr(displayPrice)}<span style="font-size:.78rem;font-weight:500;color:#5f7395"> /${p.lengthUnit||"m"}</span></strong>
@@ -2785,7 +2799,7 @@
       updateCartCount();
     }
 
-    // ── Checkout ────────────────────────────────────────────────
+    // â”€â”€ Checkout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function openCheckout() {
       if (!_state.cart.length) { alert("Your cart is empty."); return; }
       closeCart();
@@ -2803,7 +2817,7 @@
                 <span>${i.name}</span>
                 <strong>${inr(unitPrice * i.quantity)}</strong>
               </div>
-              <div style="color:#5f7395;font-size:.84rem;margin-top:4px">${inr(unitPrice)} / meter &nbsp;·&nbsp; <span style="color:#132038;font-weight:700">${i.quantity} m × ${inr(unitPrice)} = ${inr(unitPrice * i.quantity)}</span></div>
+              <div style="color:#5f7395;font-size:.84rem;margin-top:4px">${inr(unitPrice)} / meter &nbsp;Â·&nbsp; <span style="color:#132038;font-weight:700">${i.quantity} m Ã— ${inr(unitPrice)} = ${inr(unitPrice * i.quantity)}</span></div>
             </div>
             <label style="display:flex;align-items:center;gap:8px;justify-self:end;color:#2a4b7a;font-weight:700;font-size:.85rem">
               Meter
@@ -2826,7 +2840,7 @@
       div.style.cssText = "position:fixed;inset:0;background:rgba(3,11,26,.75);z-index:180;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(5px);";
       div.innerHTML = `
     <div style="width:min(480px,100%);background:linear-gradient(150deg,#f9fcff,#e6f0ff);border:1px solid #bdd4f8;border-radius:22px;padding:28px;box-shadow:0 30px 90px rgba(3,18,50,.3);text-align:center;">
-      <div style="width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,#1fa97a,#17855f);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.9rem;">✓</div>
+      <div style="width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,#1fa97a,#17855f);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.9rem;">âœ“</div>
       <h3 style="font-family:'Cormorant Garamond',serif;font-size:2rem;margin:0 0 6px;color:#0b2e67;">Order Placed!</h3>
       <p style="color:#4e6790;margin-bottom:14px;">Thank you for your order. We'll process it right away.</p>
       <div style="background:#fff;border:1px solid #d5e2f5;border-radius:12px;padding:14px;margin-bottom:16px;text-align:left;">
@@ -2835,7 +2849,7 @@
         <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#5f7395;font-size:.88rem">Payment Status</span><strong style="color:${order.paymentStatus === "PAID" ? "#1fa97a" : "#be7a14"}">${order.paymentStatus === "PAID" ? "Paid" : "Pending"}</strong></div>
         <div style="display:flex;justify-content:space-between;"><span style="color:#5f7395;font-size:.88rem">Total Amount</span><strong style="color:#0b2e67;font-size:1.05rem">INR ${Number(order.total).toLocaleString("en-IN")}</strong></div>
       </div>
-      ${order.paymentMethod === "COD" ? '<p style="background:#fff9ef;border:1px solid #ffe3a0;border-radius:9px;padding:10px;color:#7a5a00;font-size:.88rem;margin-bottom:14px;">💰 Please keep the exact amount ready for the delivery person.</p>' : '<p style="background:#effff7;border:1px solid #a8e8cc;border-radius:9px;padding:10px;color:#166340;font-size:.88rem;margin-bottom:14px;">✓ Your payment has been confirmed. Order is being processed.</p>'}
+      ${order.paymentMethod === "COD" ? '<p style="background:#fff9ef;border:1px solid #ffe3a0;border-radius:9px;padding:10px;color:#7a5a00;font-size:.88rem;margin-bottom:14px;">ðŸ’° Please keep the exact amount ready for the delivery person.</p>' : '<p style="background:#effff7;border:1px solid #a8e8cc;border-radius:9px;padding:10px;color:#166340;font-size:.88rem;margin-bottom:14px;">âœ“ Your payment has been confirmed. Order is being processed.</p>'}
       <button onclick="document.getElementById('orderSuccessModal').remove()" class="btn primary" style="padding:13px 30px;font-size:1rem;width:100%;">Continue Shopping</button>
     </div>`;
       document.body.appendChild(div);
@@ -2894,7 +2908,7 @@
       } catch(err) { msg.textContent = err.message; msg.style.color = "#de4f63"; }
     }
 
-    // ── Owner Auth ──────────────────────────────────────────────
+    // â”€â”€ Owner Auth â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function openOwnerModal() {
       const m = $("#ownerModal"); if (!m) return;
       $("#ownerError").textContent = "";
@@ -2932,7 +2946,7 @@
       _state.token = ""; localStorage.removeItem("fi_token");
     }
 
-    // ── Dashboard Tabs ──────────────────────────────────────────
+    // â”€â”€ Dashboard Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const TABS = ["tabOverview", "tabProducts", "tabOrders", "tabCategories", "tabSettings", "tabShipping"];
     function switchTab(tabId) {
       TABS.forEach(t => { const el = $("#" + t); if (el) el.style.display = t === tabId ? "block" : "none"; });
@@ -2945,7 +2959,7 @@
       const h = $("#dashTabTitle"); if (h && titles[tabId]) h.textContent = titles[tabId];
     }
 
-    // ── Dashboard: Load Data ────────────────────────────────────
+    // â”€â”€ Dashboard: Load Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     async function loadDashboardData() {
       try {
         const [ordersData, productsData] = await Promise.all([
@@ -2988,7 +3002,7 @@
           recentEl.innerHTML = recent.length ? recent.map(o => `
             <div class="recent-item" style="margin-bottom:8px">
               <img src="${(o.items[0]?.imageUrl) || ""}" alt="" style="width:40px;height:40px;border-radius:8px;object-fit:cover;background:#e8f0ff"/>
-              <div><strong style="font-size:.86rem">${o.orderNo}</strong><span style="font-size:.76rem;color:#647fa9">${o.shippingAddress.fullName} · ${new Date(o.createdAt).toLocaleDateString()}</span></div>
+              <div><strong style="font-size:.86rem">${o.orderNo}</strong><span style="font-size:.76rem;color:#647fa9">${o.shippingAddress.fullName} Â· ${new Date(o.createdAt).toLocaleDateString()}</span></div>
               <div style="text-align:right"><strong style="font-size:.86rem">${inr(o.total)}</strong><br><span style="font-size:.74rem;color:#647fa9">${o.orderStatus}</span></div>
             </div>`).join("") : '<p style="color:#5f7395;font-size:.88rem">No orders yet.</p>';
         }
@@ -3012,7 +3026,7 @@
       } catch(err) { console.error("Dashboard load error", err); }
     }
 
-    // ── Admin Products Table ─────────────────────────────────────
+    // â”€â”€ Admin Products Table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function renderAdminProducts(products) {
       const tbody = $("#productTableBody"); if (!tbody) return;
       tbody.innerHTML = products.map(p => {
@@ -3022,7 +3036,7 @@
         <td style="padding:8px;border-bottom:1px solid #e5eefb"><img src="${p.imageUrl}" style="width:44px;height:44px;border-radius:8px;object-fit:cover"/></td>
         <td style="padding:8px;border-bottom:1px solid #e5eefb;min-width:160px;">
           <input data-field="name" data-id="${p._id}" value="${p.name.replace(/"/g,"&quot;")}" style="width:100%;border:1px solid #d5e2f5;border-radius:7px;padding:5px 7px;font:inherit;margin-bottom:3px"/>
-          <span style="font-size:.72rem;color:#7a94bc;font-family:monospace;">${p.sku || "—"}</span>
+          <span style="font-size:.72rem;color:#7a94bc;font-family:monospace;">${p.sku || "â€”"}</span>
         </td>
         <td style="padding:8px;border-bottom:1px solid #e5eefb">
           <span style="font-size:.84rem;font-weight:700;color:#132038;">${p.category}</span>
@@ -3037,10 +3051,10 @@
         </td>
         <td style="padding:8px;border-bottom:1px solid #e5eefb;">
           <input type="number" data-field="stock" data-id="${p._id}" value="${p.stock}" min="0" style="width:70px;border:1px solid ${stockWarn?"#f5c6c6":"#d5e2f5"};border-radius:7px;padding:5px 7px;font:inherit;color:${stockWarn?"#c0392b":"inherit"}"/>
-          ${stockWarn ? `<br><span style="font-size:.7rem;color:#c0392b;font-weight:700;">⚠ Low</span>` : ""}
+          ${stockWarn ? `<br><span style="font-size:.7rem;color:#c0392b;font-weight:700;">âš  Low</span>` : ""}
         </td>
         <td style="padding:8px;border-bottom:1px solid #e5eefb;font-size:.8rem;white-space:nowrap;">
-          ${p.fabricType ? p.fabricType : "—"}
+          ${p.fabricType ? p.fabricType : "â€”"}
           ${p.width ? `<br><span style="color:#7a94bc;">${p.width}</span>` : ""}
           ${p.gsm ? `<br><span style="color:#7a94bc;">${p.gsm} GSM</span>` : ""}
         </td>
@@ -3061,7 +3075,7 @@
           await api(`/api/admin/products/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name: g("name"), stock: Number(g("stock")) })
           });
-          b.textContent = "✓"; setTimeout(() => { b.textContent = "Save"; }, 1500);
+          b.textContent = "âœ“"; setTimeout(() => { b.textContent = "Save"; }, 1500);
         } catch(e) { alert(e.message); }
       }));
       $$("[data-toggle]").forEach(b => b.addEventListener("click", async () => {
@@ -3080,13 +3094,13 @@
       }));
     }
 
-    // ── Admin Orders Table ───────────────────────────────────────
+    // â”€â”€ Admin Orders Table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function renderAdminOrders(orders) {
       const tbody = $("#orderTableBody"); if (!tbody) return;
       tbody.innerHTML = orders.map(o => `<tr>
         <td style="padding:8px;border-bottom:1px solid #e5eefb"><strong>${o.orderNo}</strong><br><span style="color:#647fa9;font-size:.76rem">${new Date(o.createdAt).toLocaleString()}</span></td>
         <td style="padding:8px;border-bottom:1px solid #e5eefb">${o.shippingAddress.fullName}<br><span style="color:#647fa9;font-size:.76rem">${o.shippingAddress.phone}</span></td>
-        <td style="padding:8px;border-bottom:1px solid #e5eefb;font-size:.82rem">${o.items.map(i=>i.name+"×"+i.quantity).join(", ")}</td>
+        <td style="padding:8px;border-bottom:1px solid #e5eefb;font-size:.82rem">${o.items.map(i=>i.name+"Ã—"+i.quantity).join(", ")}</td>
         <td style="padding:8px;border-bottom:1px solid #e5eefb;font-weight:700">${inr(o.total)}</td>
         <td style="padding:8px;border-bottom:1px solid #e5eefb"><span class="pill">${o.paymentMethod}</span><br><span class="pill" style="margin-top:3px;color:${o.paymentStatus==="PAID"?"#1a6e3e":o.paymentStatus==="FAILED"?"#8a3030":"#7a5a00"}">${o.paymentStatus}</span></td>
         <td style="padding:8px;border-bottom:1px solid #e5eefb"><span class="pill">${o.orderStatus}</span></td>
@@ -3098,11 +3112,11 @@
       $$("[data-osave]").forEach(b => b.addEventListener("click", async () => {
         const id = b.dataset.osave;
         const st = document.querySelector(`[data-oid="${id}"]`)?.value;
-        try { await api(`/api/admin/orders/${id}/status`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ orderStatus: st }) }); b.textContent = "✓"; setTimeout(() => { b.textContent = "Update"; }, 1500); } catch(e) { alert(e.message); }
+        try { await api(`/api/admin/orders/${id}/status`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ orderStatus: st }) }); b.textContent = "âœ“"; setTimeout(() => { b.textContent = "Update"; }, 1500); } catch(e) { alert(e.message); }
       }));
     }
 
-    // ── Static decorative data (kept exactly as before) ──────────────
+    // â”€â”€ Static decorative data (kept exactly as before) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const productImages = [
       "assets/WhatsApp-Image-2026-06-24-at-2.24.13-PM-1.jpeg",
       "assets/WhatsApp-Image-2026-06-24-at-2.24.13-PM-2.jpeg",
@@ -3167,19 +3181,46 @@
       image: productImages[i],
       text: "New this week"
     }));
-    // Four new banner photos for hero slideshow
+    const fallbackMegaMenus = [
+      {
+        _id: "fallback-fabrics",
+        navLabel: "Fabrics",
+        columns: [
+          { heading: "Shop Prints", items: [{ label: "Ajrakh" }, { label: "Indigo" }, { label: "Bagru" }, { label: "Batik" }] },
+          { heading: "Popular Bases", items: [{ label: "Cotton" }, { label: "Mulmul" }, { label: "Linen" }, { label: "Cambric" }] }
+        ]
+      },
+      {
+        _id: "fallback-dress-material",
+        navLabel: "Dress Material",
+        columns: [
+          { heading: "Everyday Wear", items: [{ label: "Cotton Suits" }, { label: "Printed Sets" }, { label: "Unstitched Suits" }] },
+          { heading: "Occasion Edit", items: [{ label: "Festive Wear" }, { label: "Kurta Sets" }, { label: "Premium Dress Material" }] }
+        ]
+      },
+      {
+        _id: "fallback-dupatta",
+        navLabel: "Dupatta",
+        columns: [
+          { heading: "Styles", items: [{ label: "Cotton Dupatta" }, { label: "Mulmul Dupatta" }, { label: "Chanderi Dupatta" }] },
+          { heading: "Looks", items: [{ label: "Handblock Dupatta" }, { label: "Festive Dupatta" }, { label: "Everyday Dupatta" }] }
+        ]
+      }
+    ];
+
+    // Four customer-provided banner photos for the hero slideshow
     const newBannerImages = [
-      "https://i.postimg.cc/d1KmTsFV/Festive-Vibes-Banner.jpg",
-      "https://i.postimg.cc/X7M7f5Yq/Elevate-Every-Creation-Banner.jpg",
-      "https://i.postimg.cc/j2bmh3T6/Every-Dupatta-Tells-a-Story-Banner.jpg",
-      "https://i.postimg.cc/mDZkjJjS/Softness-with-Perfection-Banner.jpg"
+      "assets/banner-slide-1-dupatta-story.png",
+      "assets/banner-slide-2-softness-perfection.jpeg",
+      "assets/banner-slide-3-festive-vibes.jpeg",
+      "assets/banner-slide-4-elevate-creation.png"
     ];
 
     const heroSlides = [
-      { img: newBannerImages[0], title: "Festive Vibes", text: "The Beauty of Indian Weaves — Embrace tradition with handcrafted elegance." },
-      { img: newBannerImages[1], title: "Elevate Every Creation", text: "Premium Fabrics That Bring Your Designs to Life." },
-      { img: newBannerImages[2], title: "Every Dupatta Tells a Story", text: "Inspired by Heritage. Designed for Today." },
-      { img: newBannerImages[3], title: "Softness with Perfection", text: "Luxurious textures for timeless style." }
+      { img: newBannerImages[0], title: "Every Dupatta Tells a Story", text: "Inspired by Heritage. Designed for Today." },
+      { img: newBannerImages[1], title: "Softness with Perfection", text: "Soft silhouettes and graceful dress materials for modern wardrobes." },
+      { img: newBannerImages[2], title: "Festive Vibes", text: "The beauty of Indian weaves, styled for celebrations and statement looks." },
+      { img: newBannerImages[3], title: "Elevate Every Creation", text: "Premium fabrics that bring your designs to life." }
     ];
 
     function mkCard(item, mode = "product") {
@@ -3208,12 +3249,17 @@
     renderCollections();
 
     const sliderWrap = document.getElementById("heroSlider");
-    const slideTitle = document.getElementById("slideTitle");
-    const slideText = document.getElementById("slideText");
     heroSlides.forEach((s, i) => {
       const div = document.createElement("div");
       div.className = `slide ${i === 0 ? "active" : ""}`;
-      div.style.backgroundImage = `linear-gradient(45deg, rgba(4,18,46,.05), rgba(4,18,46,.2)), url('${encodeURI(s.img)}')`;
+      div.style.backgroundImage = `url('${encodeURI(s.img)}')`;
+      
+      // Add overlay text
+      const overlay = document.createElement("div");
+      overlay.className = "overlay-copy";
+      overlay.innerHTML = `<h3>${s.title}</h3><p>${s.text}</p>`;
+      div.appendChild(overlay);
+      
       sliderWrap.appendChild(div);
     });
     let slideIndex = 0;
@@ -3221,16 +3267,14 @@
     setInterval(() => {
       slideIndex = (slideIndex + 1) % heroSlides.length;
       slideEls.forEach((el, idx) => el.classList.toggle("active", idx === slideIndex));
-      slideTitle.textContent = heroSlides[slideIndex].title;
-      slideText.textContent = heroSlides[slideIndex].text;
-    }, 2000); // Changed from 4300ms to 2000ms (2 seconds) for faster slideshow
+    }, 2000); // 2 seconds
 
     document.getElementById("instaGrid").innerHTML = productImages.slice(0, 12).map((src) => `<figure><img src="${encodeURI(src)}" alt="Fabric Infinity Instagram" loading="lazy"></figure>`).join("");
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add("show"); });
     }, { threshold: 0.14 });
     document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-    // ── Mobile nav toggle ──────────────────────────────────────
+    // â”€â”€ Mobile nav toggle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     function initMobileNav() {
       const menuToggle = document.getElementById("menuToggle");
       const nav = document.getElementById("mainNav");
@@ -3284,10 +3328,10 @@
         if (!link || window.innerWidth > 1140) return;
         const hasMegaId = link.dataset.megaid;
         if (hasMegaId) {
-          // It's a top-level dropdown trigger — toggle accordion, don't close nav
+          // It's a top-level dropdown trigger â€” toggle accordion, don't close nav
           return;
         }
-        // It's a category chip or static link — close nav after brief delay
+        // It's a category chip or static link â€” close nav after brief delay
         setTimeout(closeMobileNav, 220);
       });
       
@@ -3358,7 +3402,7 @@
       { img: productImages[16], name: "Modal Silk Fabric", sub: "Stock: 10 mtrs", meta: "Low Stock" }
     ], true);
 
-    // ── Mega Menu: Storefront ────────────────────────────────────
+    // â”€â”€ Mega Menu: Storefront â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     let _megaMenuData = [];
 
     function buildMegaSkeletonHTML() {
@@ -3397,28 +3441,31 @@
         `).join("");
     }
 
+    let megaMenuOutsideHandlerBound = false;
+
     function injectMegaMenuItems(menus) {
-      _megaMenuData = menus;
+      const renderMenus = (menus || []).filter(menu => menu && menu.isActive !== false);
+      _megaMenuData = renderMenus.length ? renderMenus : fallbackMegaMenus;
       const list = $("#megaNavList");
       if (!list) return;
 
       // Remove previously injected dynamic items
       $$(".mega-nav-item").forEach(el => el.remove());
 
-      // Find the anchor point (Home li) — insert AFTER it in correct order
+      // Find the anchor point (Home li) â€” insert AFTER it in correct order
       // by appending to the list but BEFORE the static links (New Arrivals etc)
       const staticLinks = list.querySelectorAll("li:not(.mega-nav-item)");
       // Insert point: after Home (first li), before "New Arrivals" (second static li)
       const insertBefore = staticLinks[1] || null; // "New Arrivals" li
 
-      menus.forEach(menu => {
+      _megaMenuData.forEach(menu => {
         const li = document.createElement("li");
         li.className = "mega-nav-item";
         const hasColumns = menu.columns && menu.columns.length > 0;
         li.innerHTML = `
           <a href="#shop" data-megaid="${menu._id}" style="justify-content:space-between;">
             <span>${menu.navLabel}</span>
-            <span class="nav-arrow">▾</span>
+            <span class="nav-arrow">â–¾</span>
           </a>
           <div class="mega-panel${hasColumns && menu.columns.length <= 2 ? ' mega-small' : ''}" id="mega-${menu._id}">
             ${buildMegaPanelHTML(menu)}
@@ -3434,8 +3481,7 @@
         // Toggle open on click (touch-friendly + desktop)
         const trigger = li.querySelector("a[data-megaid]");
         trigger.addEventListener("click", (e) => {
-          // On desktop only prevent navigation when panel has content
-          if (window.innerWidth > 1140 && menu.columns && menu.columns.length) {
+          if (menu.columns && menu.columns.length) {
             e.preventDefault();
           }
           const isOpen = li.classList.contains("mega-open");
@@ -3444,13 +3490,14 @@
           if (!isOpen) li.classList.add("mega-open");
         });
       });
-
-      // Close on outside click
-      document.addEventListener("click", (e) => {
-        if (!e.target.closest(".mega-nav-item")) {
-          $$(".mega-nav-item").forEach(x => x.classList.remove("mega-open"));
-        }
-      });
+      if (!megaMenuOutsideHandlerBound) {
+        document.addEventListener("click", (e) => {
+          if (!e.target.closest(".mega-nav-item")) {
+            $$(".mega-nav-item").forEach(x => x.classList.remove("mega-open"));
+          }
+        });
+        megaMenuOutsideHandlerBound = true;
+      }
     }
 
     // Filter storefront to show only products matching clicked category
@@ -3473,10 +3520,10 @@
           const waPhone = (_state.shopPhone || "918530361444").replace(/\D/g,"");
           grid.innerHTML = `
             <div style="grid-column:1/-1;text-align:center;padding:48px 20px;">
-              <div style="font-size:3rem;margin-bottom:12px;">🧵</div>
+              <div style="font-size:3rem;margin-bottom:12px;">ðŸ§µ</div>
               <h3 style="font-family:'Cormorant Garamond',serif;color:#132038;margin-bottom:8px;">${label}</h3>
               <p style="color:#5f7395;font-size:1rem;margin-bottom:16px;">
-                Currently not available — we're sourcing fresh stock for this category.
+                Currently not available â€” we're sourcing fresh stock for this category.
               </p>
               <p style="color:#7a94bc;font-size:.88rem;">
                 Browse our other collections or
@@ -3484,7 +3531,7 @@
                    target="_blank" rel="noopener"
                    style="color:#1464ce;font-weight:700;">WhatsApp us to pre-order</a>.
               </p>
-              <button class="btn" onclick="loadStorefrontProducts()" style="margin-top:16px;">← View All Products</button>
+              <button class="btn" onclick="loadStorefrontProducts()" style="margin-top:16px;">â† View All Products</button>
             </div>`;
         } else {
           grid.innerHTML = matched.map(p => productCard(p)).join("");
@@ -3497,29 +3544,16 @@
     }
 
     async function loadMegaMenu() {
-      // Show skeleton immediately
-      const list = $("#megaNavList");
-      if (list) {
-        const insertBefore = list.querySelectorAll("li:not(.mega-nav-item)")[1] || null;
-        const skeletonLi = document.createElement("li");
-        skeletonLi.id = "megaNavSkeleton";
-        skeletonLi.className = "mega-nav-item";
-        skeletonLi.innerHTML = `<a href="#shop">FABRICS <span class="nav-arrow">▾</span></a><div class="mega-panel" style="display:flex">${buildMegaSkeletonHTML()}</div>`;
-        if (insertBefore) list.insertBefore(skeletonLi, insertBefore); else list.appendChild(skeletonLi);
-        setTimeout(() => { const sk = $("#megaNavSkeleton"); if (sk) sk.remove(); }, 1200);
-      }
+      injectMegaMenuItems(fallbackMegaMenus);
       try {
         const data = await api("/api/mega-menu");
         const menus = (data.menus || []).sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-        const sk = $("#megaNavSkeleton"); if (sk) sk.remove();
         injectMegaMenuItems(menus);
       } catch(e) {
-        const sk = $("#megaNavSkeleton"); if (sk) sk.remove();
         console.warn("Mega menu load failed", e);
       }
     }
-
-    // ── Categories Dashboard ─────────────────────────────────────
+    // â”€â”€ Categories Dashboard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     let _adminMenus = [];
 
     function renderMenuManager(menus) {
@@ -3554,14 +3588,14 @@
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap;">
                   <input value="${col.heading.replace(/"/g,'&quot;')}" data-col-heading="${menu._id}-${ci}" placeholder="Column heading" style="font:inherit;font-weight:700;font-size:.9rem;border:1px solid #d0e0f8;border-radius:7px;padding:4px 8px;flex:1;min-width:120px;"/>
                   <button class="btn" data-col-save="${menu._id}" data-col-idx="${ci}" style="font-size:.78rem;padding:4px 10px;">Save Col</button>
-                  <button class="btn" data-col-del="${menu._id}" data-col-idx="${ci}" style="font-size:.78rem;padding:4px 10px;color:#c0392b;border-color:#f5c6c6;">✕ Col</button>
+                  <button class="btn" data-col-del="${menu._id}" data-col-idx="${ci}" style="font-size:.78rem;padding:4px 10px;color:#c0392b;border-color:#f5c6c6;">âœ• Col</button>
                 </div>
                 <!-- Items list -->
                 <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;" id="items-${menu._id}-${ci}">
                   ${col.items.map((item, ii) => `
                     <span style="display:inline-flex;align-items:center;gap:4px;background:${item.highlight ? '#ddeaff' : '#f0f5ff'};border:1px solid ${item.highlight ? '#9dc0f5' : '#d4e2f8'};border-radius:999px;padding:4px 10px;font-size:.82rem;font-weight:${item.highlight ? 700 : 500};color:${item.highlight ? '#1a5bc4' : '#2c456e'};">
                       ${item.label}
-                      <button data-item-del="${menu._id}" data-item-col="${ci}" data-item-idx="${ii}" style="background:none;border:none;cursor:pointer;color:#c0392b;font-size:.9rem;padding:0 0 0 4px;line-height:1;" title="Remove">×</button>
+                      <button data-item-del="${menu._id}" data-item-col="${ci}" data-item-idx="${ii}" style="background:none;border:none;cursor:pointer;color:#c0392b;font-size:.9rem;padding:0 0 0 4px;line-height:1;" title="Remove">Ã—</button>
                     </span>
                   `).join("")}
                 </div>
@@ -3595,7 +3629,7 @@
         const isActive = document.querySelector(`[data-mfield="isActive"][data-mid="${id}"]`)?.checked;
         try {
           await api(`/api/admin/mega-menu/${id}`, { method: "PUT", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ navLabel: label, slug, isActive }) });
-          b.textContent = "✓ Saved"; setTimeout(() => { b.textContent = "Save Label"; }, 1500);
+          b.textContent = "âœ“ Saved"; setTimeout(() => { b.textContent = "Save Label"; }, 1500);
           await reloadAdminMenus();
         } catch(e) { alert(e.message); }
       }));
@@ -3620,7 +3654,7 @@
         if (cols[ci]) cols[ci].heading = heading;
         try {
           await api(`/api/admin/mega-menu/${id}`, { method: "PUT", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ columns: cols }) });
-          b.textContent = "✓"; setTimeout(() => { b.textContent = "Save Col"; }, 1500);
+          b.textContent = "âœ“"; setTimeout(() => { b.textContent = "Save Col"; }, 1500);
           await reloadAdminMenus();
         } catch(e) { alert(e.message); }
       }));
@@ -3701,7 +3735,7 @@
       await reloadAdminMenus();
     }
 
-    // ── Icon Action Bar ──────────────────────────────────────────
+    // â”€â”€ Icon Action Bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     (function initIconBar() {
 
       // helper: close all flyouts
@@ -3712,7 +3746,7 @@
         if (af) { af.classList.remove("open"); document.getElementById("accountIconBtn")?.setAttribute("aria-expanded","false"); }
       }
 
-      // ── Search ──
+      // â”€â”€ Search â”€â”€
       const searchBtn    = document.getElementById("searchIconBtn");
       const searchFlyout = document.getElementById("searchFlyout");
       const searchInput  = document.getElementById("searchInput");
@@ -3747,7 +3781,7 @@
             <img src="${p.imageUrl}" alt="${p.name}" loading="lazy"/>
             <div>
               <strong>${p.name}</strong>
-              <span>${p.category} · INR ${Number(p.price).toLocaleString("en-IN")}/m</span>
+              <span>${p.category} Â· INR ${Number(p.price).toLocaleString("en-IN")}/m</span>
             </div>
           </div>`).join("");
         searchResults.querySelectorAll(".search-result-item").forEach(el => {
@@ -3764,7 +3798,7 @@
         searchInput.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAll(); });
       }
 
-      // ── Account flyout ──
+      // â”€â”€ Account flyout â”€â”€
       const accountBtn    = document.getElementById("accountIconBtn");
       const accountFlyout = document.getElementById("accountFlyout");
 
@@ -3790,7 +3824,7 @@
 
     })();
 
-    // ── Wire up everything ───────────────────────────────────────
+    // â”€â”€ Wire up everything â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     // Cart
     const cartOpenBtn = document.getElementById("cartOpenBtn");
     if (cartOpenBtn) cartOpenBtn.addEventListener("click", openCart);
@@ -3809,7 +3843,7 @@
     const checkoutModalEl = document.getElementById("checkoutModal");
     if (checkoutModalEl) checkoutModalEl.addEventListener("click", (e) => { if (e.target === checkoutModalEl) closeCheckout(); });
 
-    // Owner modal — button now lives inside account flyout
+    // Owner modal â€” button now lives inside account flyout
     const ownerOpenBtn = document.getElementById("ownerOpenBtn");
     if (ownerOpenBtn) ownerOpenBtn.addEventListener("click", () => {
       // close account flyout first
@@ -3832,7 +3866,7 @@
     const visitStoreBtn = document.getElementById("visitStoreBtn");
     if (visitStoreBtn) visitStoreBtn.addEventListener("click", () => { const d = document.getElementById("ownerDashboard"); if (d) d.classList.remove("open"); document.body.style.overflow = ""; });
 
-    // ── Dashboard Mobile Sidebar ────────────────────────────────
+    // â”€â”€ Dashboard Mobile Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     (function initDashMobileSidebar() {
       const menuBtn   = document.getElementById("dashMenuBtn");
       const side      = document.getElementById("dashSide");
@@ -3877,7 +3911,7 @@
       window.addEventListener("resize", applyMobileState);
     })();
 
-    // ── AI Product Upload Form ───────────────────────────────────
+    // â”€â”€ AI Product Upload Form â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     (function initAiProductForm() {
       const imgInput     = document.getElementById("productImageInput");
       const imgPreview   = document.getElementById("productImagePreview");
@@ -3946,10 +3980,10 @@
         if (!aiEnabled) {
           // Just show fields empty for manual fill
           if (fieldsWrap) fieldsWrap.style.display = "block";
-          setStatus("AI off — fill manually", "#7a94bc");
+          setStatus("AI off â€” fill manually", "#7a94bc");
           return;
         }
-        setStatus("✨ Analysing with AI…", "#1464ce");
+        setStatus("âœ¨ Analysing with AIâ€¦", "#1464ce");
         try {
           const fd = new FormData();
           fd.append("image", file);
@@ -3957,9 +3991,9 @@
           const data = await api("/api/admin/ai-product-detect", { method: "POST", body: fd });
           aiSuggestion = data.suggestion || {};
           fillFields(aiSuggestion);
-          setStatus("✓ AI filled all fields — edit if needed", "#1fa97a");
+          setStatus("âœ“ AI filled all fields â€” edit if needed", "#1fa97a");
         } catch (err) {
-          setStatus("AI failed: " + err.message + " — fill manually", "#de4f63");
+          setStatus("AI failed: " + err.message + " â€” fill manually", "#de4f63");
           if (fieldsWrap) fieldsWrap.style.display = "block";
         }
       }
@@ -4019,13 +4053,13 @@
 
       if (resetBtn) resetBtn.addEventListener("click", resetForm);
 
-      // Submit — send all fields
+      // Submit â€” send all fields
       if (addProductForm) {
         addProductForm.addEventListener("submit", async (e) => {
           e.preventDefault();
           if (!lastFile) { alert("Please select a product image first."); return; }
           const msg = document.getElementById("addProductMsg");
-          msg.textContent = "Uploading…"; msg.style.color = "#5f7395";
+          msg.textContent = "Uploadingâ€¦"; msg.style.color = "#5f7395";
           const g = id => document.getElementById(id)?.value?.trim() || "";
           const gn = id => document.getElementById(id)?.value || "";
           try {
@@ -4067,7 +4101,7 @@
             fd.append("metaDesc",  g("pf_metaDesc"));
             fd.append("keywords",  g("pf_keywords"));
             await api("/api/admin/products", { method: "POST", body: fd });
-            msg.textContent = "✓ Product added!"; msg.style.color = "#1fa97a";
+            msg.textContent = "âœ“ Product added!"; msg.style.color = "#1fa97a";
             setTimeout(resetForm, 1200);
             await loadDashboardData();
           } catch(err) { msg.textContent = err.message; msg.style.color = "#de4f63"; }
@@ -4087,11 +4121,11 @@
       reseedMenuBtn.addEventListener("click", async () => {
         if (!confirm("This will reset ALL mega-menu categories to the default Fabric Infinity tree. Any manual changes will be lost. Continue?")) return;
         const msg = document.getElementById("reseedMsg");
-        msg.textContent = "Resetting…"; msg.style.color = "#5f7395";
+        msg.textContent = "Resettingâ€¦"; msg.style.color = "#5f7395";
         reseedMenuBtn.disabled = true;
         try {
           const data = await api("/api/admin/reseed-menu", { method: "POST" });
-          msg.textContent = `✓ Done — ${data.count} menus: ${data.menus.join(", ")}`;
+          msg.textContent = `âœ“ Done â€” ${data.count} menus: ${data.menus.join(", ")}`;
           msg.style.color = "#1fa97a";
           // Refresh storefront navbar live
           const pubData = await api("/api/mega-menu");
@@ -4120,7 +4154,7 @@
         try {
           await api("/api/admin/mega-menu", { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ navLabel: label, slug, columns: [], order: 99 }) });
           addMenuForm.reset();
-          msg.textContent = "✓ Menu added!"; msg.style.color = "#1fa97a";
+          msg.textContent = "âœ“ Menu added!"; msg.style.color = "#1fa97a";
           setTimeout(() => { msg.textContent = ""; }, 2000);
           await reloadAdminMenus();
         } catch(err) { msg.textContent = err.message; msg.style.color = "#de4f63"; }
@@ -4151,7 +4185,7 @@
       s.src = "https://checkout.razorpay.com/v1/checkout.js";
       document.head.appendChild(s);
     }
-    // ── Payment Method Card Toggle ───────────────────────────────
+    // â”€â”€ Payment Method Card Toggle â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     (function setupPaymentCards() {
       function initPaymentCards() {
         const pmCOD = document.getElementById("pmCardCOD");
@@ -4182,14 +4216,14 @@
       document.addEventListener("DOMContentLoaded", initPaymentCards);
       setTimeout(initPaymentCards, 300);
     })();
-    // ── Chat Widget ──────────────────────────────────────────────
+    // â”€â”€ Chat Widget â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     (function initChatWidget() {
 
       const launcher = document.getElementById("chatLauncher");
       const widget   = document.getElementById("chatWidget");
       if (!launcher || !widget) return;
 
-      // ── open / close ────────────────────────────────────────
+      // â”€â”€ open / close â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
       function openWidget() {
         widget.classList.add("widget-open");
         launcher.classList.add("widget-open");
@@ -4204,7 +4238,7 @@
         widget.classList.contains("widget-open") ? closeWidget() : openWidget();
       });
 
-      // ── tabs ─────────────────────────────────────────────────
+      // â”€â”€ tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
       const tabs   = Array.from(document.querySelectorAll(".cw-tab"));
       const panels = Array.from(document.querySelectorAll(".cw-panel"));
       tabs.forEach(tab => {
@@ -4218,7 +4252,7 @@
         });
       });
 
-      // ── WhatsApp link ────────────────────────────────────────
+      // â”€â”€ WhatsApp link â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
       // Pull phone from config API or fall back to a default
       const cwWaBtn = document.getElementById("cwWaBtn");
       (async () => {
@@ -4231,7 +4265,7 @@
         }
       })();
 
-      // ── Email form ────────────────────────────────────────────
+      // â”€â”€ Email form â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
       const cwEmailForm = document.getElementById("cwEmailForm");
       if (cwEmailForm) {
         cwEmailForm.addEventListener("submit", async (e) => {
@@ -4244,7 +4278,7 @@
           if (!name || !email || !msg) {
             fb.className = "cw-msg-err"; fb.textContent = "Please fill in all fields."; return;
           }
-          // Build mailto link — opens user's mail client
+          // Build mailto link â€” opens user's mail client
           const subject = encodeURIComponent(`Customer Enquiry from ${name}`);
           const body    = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${msg}`);
           try {
@@ -4252,7 +4286,7 @@
             const shopEmail = cfg.shop?.email || "hello@fabricinfinity.com";
             window.open(`mailto:${shopEmail}?subject=${subject}&body=${body}`, "_blank");
             fb.className = "cw-msg-ok";
-            fb.textContent = "✓ Your email client has been opened. Send the message from there!";
+            fb.textContent = "âœ“ Your email client has been opened. Send the message from there!";
             cwEmailForm.reset();
           } catch (_) {
             fb.className = "cw-msg-err"; fb.textContent = "Could not open email client. Please email us directly.";
@@ -4260,7 +4294,7 @@
         });
       }
 
-      // ── AI Chat ───────────────────────────────────────────────
+      // â”€â”€ AI Chat â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
       const messagesWrap = document.getElementById("cwAiMessages");
       const aiInput      = document.getElementById("cwAiInput");
       const aiSend       = document.getElementById("cwAiSend");
@@ -4344,16 +4378,16 @@
       }
     })();
 
-    // ── Settings Tab ─────────────────────────────────────────────
+    // â”€â”€ Settings Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     async function loadSettingsTab() {
       try {
         const s = await api("/api/admin/settings");
         if (document.getElementById("st_groqKey") && s.groqApiKeySet)
-          document.getElementById("st_groqStatus").textContent = "✓ Key is set (masked for security)";
+          document.getElementById("st_groqStatus").textContent = "âœ“ Key is set (masked for security)";
         if (document.getElementById("st_srEmail"))
           document.getElementById("st_srEmail").value = s.shiprocketEmail || "";
         if (s.shiprocketPasswordSet && document.getElementById("st_srPass"))
-          document.getElementById("st_srPass").placeholder = "••••••••••• (set)";
+          document.getElementById("st_srPass").placeholder = "â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢ (set)";
         const fields = { st_shopName: s.shopName, st_shopPhone: s.shopPhone,
           st_shopEmail: s.shopEmail, st_shopAddress: s.shopAddress, st_announcement: s.announcement };
         Object.entries(fields).forEach(([id, val]) => { const el = document.getElementById(id); if (el && val) el.value = val; });
@@ -4368,19 +4402,19 @@
       try {
         await api("/api/admin/settings", { method: "PUT", headers: {"Content-Type":"application/json"}, body: JSON.stringify({ groqApiKey: key }) });
         document.getElementById("st_groqKey").value = "";
-        msg.textContent = "✓ Groq key saved!"; msg.style.color = "#1fa97a";
+        msg.textContent = "âœ“ Groq key saved!"; msg.style.color = "#1fa97a";
       } catch(e) { msg.textContent = e.message; msg.style.color = "#de4f63"; }
     });
 
     // Test Groq key
     document.getElementById("st_testGroq")?.addEventListener("click", async () => {
       const msg = document.getElementById("st_groqStatus");
-      msg.textContent = "Testing…"; msg.style.color = "#5f7395";
+      msg.textContent = "Testingâ€¦"; msg.style.color = "#5f7395";
       try {
         const r = await api("/api/chat", { method: "POST", headers: {"Content-Type":"application/json"},
           body: JSON.stringify({ messages: [{ role: "user", content: "Say: Groq is working!" }] }) });
-        msg.textContent = "✓ Groq working: " + (r.reply || "OK"); msg.style.color = "#1fa97a";
-      } catch(e) { msg.textContent = "✗ " + e.message; msg.style.color = "#de4f63"; }
+        msg.textContent = "âœ“ Groq working: " + (r.reply || "OK"); msg.style.color = "#1fa97a";
+      } catch(e) { msg.textContent = "âœ— " + e.message; msg.style.color = "#de4f63"; }
     });
 
     // Save Shiprocket
@@ -4389,13 +4423,13 @@
       const pass  = document.getElementById("st_srPass")?.value.trim();
       const msg   = document.getElementById("st_srMsg");
       if (!email) { msg.textContent = "Enter Shiprocket email"; msg.style.color = "#de4f63"; return; }
-      msg.textContent = "Saving…"; msg.style.color = "#5f7395";
+      msg.textContent = "Savingâ€¦"; msg.style.color = "#5f7395";
       try {
         const payload = { shiprocketEmail: email };
         if (pass) payload.shiprocketPassword = pass;
         await api("/api/admin/settings", { method: "PUT", headers: {"Content-Type":"application/json"}, body: JSON.stringify(payload) });
         document.getElementById("st_srPass").value = "";
-        msg.textContent = "✓ Shiprocket credentials saved!"; msg.style.color = "#1fa97a";
+        msg.textContent = "âœ“ Shiprocket credentials saved!"; msg.style.color = "#1fa97a";
         setTimeout(() => { msg.textContent = ""; }, 3000);
       } catch(e) { msg.textContent = e.message; msg.style.color = "#de4f63"; }
     });
@@ -4412,7 +4446,7 @@
       };
       try {
         await api("/api/admin/settings", { method: "PUT", headers: {"Content-Type":"application/json"}, body: JSON.stringify(payload) });
-        msg.textContent = "✓ Saved!"; msg.style.color = "#1fa97a";
+        msg.textContent = "âœ“ Saved!"; msg.style.color = "#1fa97a";
         // Update announcement bar live
         if (payload.announcement) {
           const bar = document.querySelector(".announcement");
@@ -4422,7 +4456,7 @@
       } catch(e) { msg.textContent = e.message; msg.style.color = "#de4f63"; }
     });
 
-    // ── Shipping Tab ─────────────────────────────────────────────
+    // â”€â”€ Shipping Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     async function loadShippingTab() {
       // Populate order select with pending/processing orders
       try {
@@ -4430,8 +4464,8 @@
         const sel  = document.getElementById("sh_orderSelect");
         if (!sel) return;
         const pending = (data.orders || []).filter(o => ["NEW","PROCESSING","PACKED"].includes(o.orderStatus));
-        sel.innerHTML = `<option value="">— Choose an order —</option>` +
-          pending.map(o => `<option value="${o._id}">${o.orderNo} — ${o.shippingAddress?.fullName || ""} (${o.orderStatus})</option>`).join("");
+        sel.innerHTML = `<option value="">â€” Choose an order â€”</option>` +
+          pending.map(o => `<option value="${o._id}">${o.orderNo} â€” ${o.shippingAddress?.fullName || ""} (${o.orderStatus})</option>`).join("");
       } catch(e) { console.error("loadShipping:", e); }
     }
 
@@ -4441,16 +4475,16 @@
       const pin     = document.getElementById("sh_pickupPin")?.value.trim() || "411021";
       const msg     = document.getElementById("sh_createMsg");
       if (!orderId) { msg.textContent = "Select an order first"; msg.style.color = "#de4f63"; return; }
-      msg.textContent = "Creating shipment…"; msg.style.color = "#5f7395";
+      msg.textContent = "Creating shipmentâ€¦"; msg.style.color = "#5f7395";
       try {
         const r = await api(`/api/admin/shipping/create/${orderId}`, {
           method: "POST",
           headers: {"Content-Type":"application/json"},
           body: JSON.stringify({ pickupPincode: pin })
         });
-        msg.textContent = `✓ Shipment created! AWB: ${r.awb || "—"}`; msg.style.color = "#1fa97a";
+        msg.textContent = `âœ“ Shipment created! AWB: ${r.awb || "â€”"}`; msg.style.color = "#1fa97a";
         loadShippingTab();
-      } catch(e) { msg.textContent = "✗ " + e.message; msg.style.color = "#de4f63"; }
+      } catch(e) { msg.textContent = "âœ— " + e.message; msg.style.color = "#de4f63"; }
     });
 
     // Track shipment
@@ -4458,7 +4492,7 @@
       const awb = document.getElementById("sh_awbInput")?.value.trim();
       const res = document.getElementById("sh_trackResult");
       if (!awb) { res.style.display = "block"; res.textContent = "Enter AWB number"; return; }
-      res.style.display = "block"; res.textContent = "Tracking…";
+      res.style.display = "block"; res.textContent = "Trackingâ€¦";
       try {
         const data = await api(`/api/shipping/track/${awb}`);
         const info = data.tracking_data || data;
@@ -4468,7 +4502,7 @@
           ${location ? `<strong style="color:#0b2e67;">Location:</strong> ${location}` : ""}
           <details style="margin-top:8px;"><summary style="cursor:pointer;font-size:.8rem;color:#5f7395;">Raw response</summary>
           <pre style="font-size:.72rem;overflow:auto;max-height:200px;">${JSON.stringify(data, null, 2)}</pre></details>`;
-      } catch(e) { res.textContent = "✗ " + e.message; }
+      } catch(e) { res.textContent = "âœ— " + e.message; }
     });
 
     // Check rates
@@ -4479,7 +4513,7 @@
       const cod     = document.getElementById("sh_rateCOD")?.checked;
       const res     = document.getElementById("sh_rateResult");
       if (!toPin) { res.style.display = "block"; res.textContent = "Enter delivery pincode"; return; }
-      res.style.display = "block"; res.textContent = "Checking rates…";
+      res.style.display = "block"; res.textContent = "Checking ratesâ€¦";
       try {
         const data = await api("/api/shipping/rates", {
           method: "POST",
@@ -4495,9 +4529,9 @@
                 <strong style="font-size:.88rem;color:#0b2e67;">${c.courier_name}</strong>
                 <span style="font-size:.78rem;color:#5f7395;margin-left:8px;">${c.estimated_delivery_days} days</span>
               </div>
-              <strong style="color:#1464ce;">₹${c.rate}</strong>
+              <strong style="color:#1464ce;">â‚¹${c.rate}</strong>
             </div>`).join("") + `</div>`;
-      } catch(e) { res.textContent = "✗ " + e.message; }
+      } catch(e) { res.textContent = "âœ— " + e.message; }
     });
 
   </script>
