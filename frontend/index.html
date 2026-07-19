@@ -464,15 +464,15 @@
       background-repeat: no-repeat;
     }
     .slide.active { opacity: 1; }
-    .slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      object-position: center;
-      border-radius: calc(var(--radius-xl) - 8px);
-      box-shadow: 0 14px 36px rgba(10, 32, 82, .16);
-      background: rgba(255,255,255,.72);
-    }
+.slide img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    border-radius:0;
+    box-shadow:none;
+    background:none;
+}
     .slide.active { opacity: 1; transform: scale(1); }
     .overlay-copy {
       position: absolute;
@@ -966,11 +966,16 @@
 
       /* hero stacks */
       .hero-grid { display: block !important; padding: 0 !important; margin: 0 !important; }
-      .hero-slider { min-height: 50vh !important; height: 50vh !important; border-radius: 0 !important; }
+      .hero-slider{
+    width:100%;
+    height:85vh;
+    min-height:650px;
+    overflow:hidden;
+    position:relative;
+    margin:0;
+    border-radius:0;
+}
       .split { grid-template-columns: 1fr !important; }
-      .hero-copy h1 { font-size: clamp(2rem, 7vw, 3.4rem) !important; }
-      .overlay-copy h3 { font-size: clamp(1.8rem, 4vw, 2.5rem) !important; }
-      .overlay-copy p { font-size: clamp(0.9rem, 2vw, 1.2rem) !important; }
 
       /* product grids */
       .grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
@@ -3217,10 +3222,10 @@
     ];
 
     const heroSlides = [
-      { img: newBannerImages[0], title: "Every Dupatta Tells a Story", text: "Inspired by Heritage. Designed for Today." },
-      { img: newBannerImages[1], title: "Softness with Perfection", text: "Soft silhouettes and graceful dress materials for modern wardrobes." },
-      { img: newBannerImages[2], title: "Festive Vibes", text: "The beauty of Indian weaves, styled for celebrations and statement looks." },
-      { img: newBannerImages[3], title: "Elevate Every Creation", text: "Premium fabrics that bring your designs to life." }
+      { img: newBannerImages[0], title: ".", text: "." },
+      { img: newBannerImages[1], title: ".", text: "." },
+      { img: newBannerImages[2], title: "." },
+      { img: newBannerImages[3], title: "." }
     ];
 
     function mkCard(item, mode = "product") {
